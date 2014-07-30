@@ -6,15 +6,15 @@ import memo.controller.utils.PlatformUtils;
 import memo.controller.utils.WindowsUtils;
 
 
-public class Cotroller extends AbstractController {
+public class Controller extends AbstractController {
 
     private PlatformUtils platformUtils;
 
-    public Cotroller() {
+    public Controller() {
         platformUtils = new WindowsUtils();
     }
 
-    public Cotroller(PlatformUtils platformUtils) {
+    public Controller(PlatformUtils platformUtils) {
         this.platformUtils = platformUtils;
     }
 
