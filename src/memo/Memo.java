@@ -63,6 +63,6 @@ public class Memo extends Application {
      */
     public static void main(String[] args) {
         launch(args);
-    }
-    
+        //всем пизда
+    }    
 }
