@@ -22,12 +22,12 @@ public abstract class AbstractController implements PropertyChangeListener {
     
     public void addModel(AbstractModel model) {
         registeredModels.add(model);
-        //model.addPropertyChangeListener(this);
+        model.addPropertyChangeListener(this);
     }
     
     public void removeModel(AbstractModel model) {
         registeredModels.remove(model);
-        //model.removePropertyChangeListener(this);
+        model.removePropertyChangeListener(this);
     }
     
     public void addView(ViewInterface view) {

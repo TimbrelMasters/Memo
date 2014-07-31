@@ -1,5 +1,5 @@
 
-package memo.controller.utils;
+package memo.utils.platform;
 
 
 public interface PlatformUtils {

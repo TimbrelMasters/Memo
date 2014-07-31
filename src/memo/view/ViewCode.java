@@ -1,5 +1,7 @@
 package memo.view;
 
+import java.awt.SystemTray;
+import java.beans.PropertyChangeEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
@@ -20,6 +22,11 @@ public class ViewCode implements ViewInterface{
     @FXML
     private MenuItem exitItem;
     
+    @Override
+    public void modelPropertyChange(PropertyChangeEvent evt) {
+        //it's empty bacause model empty
+    }
+    
  /*
    ***
    *** Initialize methods
@@ -27,9 +34,17 @@ public class ViewCode implements ViewInterface{
     */ 
     
     @Override
-    public void initialize() {
+    public void initialize() {        
+        initSystemTray();
         handleAddToStartUpClick();
         handleExitClick();
+    }
+    
+    /**
+     * set icon, popupmenu, tooltip for tray
+     */
+    private void initSystemTray() {
+        
     }
 
     private void handleAddToStartUpClick(){

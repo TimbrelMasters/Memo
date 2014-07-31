@@ -2,8 +2,9 @@
 package memo.controller;
 
 import javafx.application.Platform;
-import memo.controller.utils.PlatformUtils;
-import memo.controller.utils.WindowsUtils;
+import memo.utils.platform.PlatformUtils;
+import memo.utils.platform.WindowsUtils;
+
 
 
 public class Controller extends AbstractController {
