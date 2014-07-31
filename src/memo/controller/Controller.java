@@ -29,6 +29,13 @@ public class Controller extends AbstractController {
     }
 
     @Override
+    public void removeFromStartUp() {
+        platformUtils.removeFromStartUp();
+    }
+    
+    
+
+    @Override
     public void exit() {
         Platform.exit();
     }

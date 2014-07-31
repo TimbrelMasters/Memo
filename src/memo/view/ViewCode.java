@@ -52,7 +52,7 @@ public class ViewCode implements ViewInterface{
             if (addToStratUpItem.isSelected()) 
                 controller.addToStartUp();
             else 
-                throw new UnsupportedOperationException("Not supported yet removeFromStartUp"); 
+                controller.removeFromStartUp();
         });
     }
 

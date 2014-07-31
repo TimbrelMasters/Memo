@@ -20,5 +20,20 @@ public class WindowsUtils implements PlatformUtils{
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void removeFromStartUp() {
+        try {
+        WinRegistry.deleteValue(WinRegistry.HKEY_LOCAL_MACHINE, 
+                "SOFTWARE\\MICROSOFT\\Windows\\CurrentVersion\\Run", "Memo");
+        }
+        catch(IllegalArgumentException e) {
+            System.err.println("The program wasn't in the startup"); // Should be kind of MessageBox here 
+                                                                     // or just empy catch
+        } 
+        catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
     
 }
