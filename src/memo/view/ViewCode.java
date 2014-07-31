@@ -1,6 +1,5 @@
 package memo.view;
 
-import java.awt.SystemTray;
 import java.beans.PropertyChangeEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -49,10 +48,12 @@ public class ViewCode implements ViewInterface{
 
     private void handleAddToStartUpClick(){
         addToStratUpItem.setOnAction((ActionEvent e) -> {
-            if (addToStratUpItem.isSelected()) 
+            if (addToStratUpItem.isSelected()){
                 controller.addToStartUp();
-            else 
+            }
+            else {
                 controller.removeFromStartUp();
+            }
         });
     }
 

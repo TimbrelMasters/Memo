@@ -13,7 +13,7 @@ import java.awt.TrayIcon;
  */
 public class TrayUtility {
     private SystemTray tray;
-    private TrayIcon icon;
+    private final TrayIcon icon;
     private static boolean isTraySupported;
     
     public TrayUtility(){
@@ -28,7 +28,7 @@ public class TrayUtility {
      * if tray is supported, shows it on the task bar
      * else does nothing
      */
-    public void show() {
+    public void showIcon() {
         try {
             if (isTraySupported){
                 tray.add(icon);
@@ -45,7 +45,7 @@ public class TrayUtility {
      * if tray is supported, hides it from task bar
      * else does nothing 
      */
-    public void hide() {
+    public void hideIcon() {
         if (isTraySupported){
             tray.remove(icon);
         }
