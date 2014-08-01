@@ -4,11 +4,14 @@ package memo.controller;
 import javafx.application.Platform;
 import memo.utils.platform.PlatformUtils;
 import memo.utils.platform.WindowsUtils;
+import memo.view.ViewInterface;
 
 
 
 public class Controller extends AbstractController {
 
+    private ViewInterface view;
+    
     private PlatformUtils platformUtils;
 
     public Controller() {
@@ -22,6 +25,10 @@ public class Controller extends AbstractController {
     public void setPlatformUtils(PlatformUtils platformUtils) {
         this.platformUtils = platformUtils;
     }
+
+    public void setView(ViewInterface view) {
+        this.view = view;
+    }
     
     @Override
     public void addToStartUp() {
@@ -31,6 +38,11 @@ public class Controller extends AbstractController {
     @Override
     public void removeFromStartUp() {
         platformUtils.removeFromStartUp();
+    }
+
+    @Override
+    public void showStage() {
+        view.showStage();
     }
     
     

@@ -25,4 +25,5 @@ public interface ViewInterface {
     public void handleAddToStartUpClick();
     public void handleExitClick();
     */
+    public void showStage();
 }

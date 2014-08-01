@@ -67,4 +67,6 @@ public abstract class AbstractController implements PropertyChangeListener {
     
     public abstract void exit();
     
+    public abstract void showStage();
+    
 }
