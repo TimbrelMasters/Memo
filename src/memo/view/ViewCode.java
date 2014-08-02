@@ -81,9 +81,6 @@ public class ViewCode implements ViewInterface{
             trayUtility.setToolTip(System.getProperty("user.dir")); //don't know what tooltip to show
             trayUtility.setMenu(trayMenu);
         }
-        else{
-            addToStratUpItem.disableProperty().setValue(Boolean.TRUE);
-        }
     }
 
     private void handleAddToStartUpClick(){
@@ -124,7 +121,12 @@ public class ViewCode implements ViewInterface{
     
     private void handleCloseRequest(){
         primaryStage.setOnCloseRequest((WindowEvent event) -> {
-            controller.hideStageToTray();
+            if (TrayUtility.isTraySupported()){
+                controller.hideStageToTray();
+            }
+            else{
+                throw new UnsupportedOperationException("Must be dialog about exit");
+            }
             event.consume();
         });      
     }
