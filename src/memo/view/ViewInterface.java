@@ -1,6 +1,7 @@
 package memo.view;
 
 import java.beans.PropertyChangeEvent;
+import javafx.stage.Stage;
 import memo.controller.AbstractController;
 
 
@@ -8,9 +9,10 @@ public interface ViewInterface {
     /**
      * <p> Initializes control's handlers with current controller </p>
      */
-    public void initialize();
+    public void manualInitialize();
     
     public void setController(AbstractController controller);
+    public void setPrimaryStage(Stage primaryStage);
     
     /**
      * <p> Controller notifies this method about model changing
@@ -19,11 +21,9 @@ public interface ViewInterface {
     public void modelPropertyChange(final PropertyChangeEvent evt);
     
     //public boolean isHideableToTray();
-    
-    
-    /*
-    public void handleAddToStartUpClick();
-    public void handleExitClick();
-    */
+    public void hideStage();
     public void showStage();
+    
+    public void showTrayIcon();
+    public void hideTrayIcon();
 }

@@ -12,8 +12,8 @@ import memo.view.ViewInterface;
 
 public abstract class AbstractController implements PropertyChangeListener {
     
-    private ArrayList<AbstractModel> registeredModels;
-    private ArrayList<ViewInterface> registeredViews;
+    protected ArrayList<AbstractModel> registeredModels;
+    protected ArrayList<ViewInterface> registeredViews;
 
     public AbstractController() {
         registeredModels = new ArrayList<>();
@@ -62,11 +62,11 @@ public abstract class AbstractController implements PropertyChangeListener {
     /* These methods are connected to the logic of program */
     
     public abstract void addToStartUp();
-    
     public abstract void removeFromStartUp();
     
     public abstract void exit();
     
-    public abstract void showStage();
+    public abstract void showStageFromTray();
+    public abstract void hideStageToTray();
     
 }

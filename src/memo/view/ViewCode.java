@@ -1,12 +1,14 @@
 package memo.view;
 
-import java.awt.PopupMenu;
 import java.beans.PropertyChangeEvent;
+import java.net.URL;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import memo.controller.AbstractController;
 import memo.utils.TrayUtility;
 
@@ -16,13 +18,15 @@ import memo.utils.TrayUtility;
  */
 public class ViewCode implements ViewInterface{
     
+    private final URL TRAY_ICON_URL;
+    
     private AbstractController controller;
     
     private Stage primaryStage;
     private TrayUtility trayUtility;
-    private java.awt.MenuItem trayCloseItem;
+    private java.awt.PopupMenu trayMenu;
+    private java.awt.MenuItem trayExitItem;
     private java.awt.MenuItem trayOpenItem;
-    
 
     @FXML
     private RadioMenuItem addToStratUpItem;
@@ -42,10 +46,27 @@ public class ViewCode implements ViewInterface{
     */ 
     
     @Override
-    public void initialize() {        
+    public void manualInitialize() {        
         initSystemTray();
+        
         handleAddToStartUpClick();
         handleExitClick();
+        handleCloseRequest();
+        
+        handleTrayOpenClick();
+        handleTrayExitClick();
+        handleTrayDoubleClick();
+    }
+    
+    private void initTrayMenu(){
+        trayMenu = new java.awt.PopupMenu();
+        
+        trayOpenItem = new java.awt.MenuItem("Open");
+        trayExitItem = new java.awt.MenuItem("Exit");
+        
+        trayMenu.add(trayOpenItem);
+        trayMenu.add(new java.awt.MenuItem("-"));
+        trayMenu.add(trayExitItem);
     }
     
     /**
@@ -53,14 +74,16 @@ public class ViewCode implements ViewInterface{
      */
     private void initSystemTray() {
         trayUtility = new TrayUtility();
-        //trayUtility.setIcon(path);
-        trayUtility.setToolTip("tooltip"); //don't know what tooltip to show
-        PopupMenu menu = new PopupMenu();
-        trayOpenItem = new java.awt.MenuItem("Open");
-        trayCloseItem = new java.awt.MenuItem("Close");
-        menu.add(trayOpenItem);
-        menu.add(trayCloseItem);
-        trayUtility.setMenu(menu);
+        initTrayMenu();
+        
+        if (TrayUtility.isTraySupported()){
+            trayUtility.setIcon(TRAY_ICON_URL);
+            trayUtility.setToolTip(System.getProperty("user.dir")); //don't know what tooltip to show
+            trayUtility.setMenu(trayMenu);
+        }
+        else{
+            addToStratUpItem.disableProperty().setValue(Boolean.TRUE);
+        }
     }
 
     private void handleAddToStartUpClick(){
@@ -81,17 +104,29 @@ public class ViewCode implements ViewInterface{
     }
         
     private void handleTrayExitClick() {
-        trayCloseItem.addActionListener((java.awt.event.ActionEvent e) -> {
-            trayUtility.hideIcon();
+        trayExitItem.addActionListener((java.awt.event.ActionEvent e) -> {
+            hideTrayIcon();
             controller.exit();
         });
     }
 
     private void handleTrayOpenClick() {
         trayOpenItem.addActionListener((java.awt.event.ActionEvent e) -> {
-            trayUtility.hideIcon();
-            controller.showStage();
+            controller.showStageFromTray();
         });
+    }
+    
+    private void handleTrayDoubleClick(){
+        trayUtility.setOnDoubleClick((java.awt.event.ActionEvent e) -> {
+            controller.showStageFromTray();
+        });
+    }
+    
+    private void handleCloseRequest(){
+        primaryStage.setOnCloseRequest((WindowEvent event) -> {
+            controller.hideStageToTray();
+            event.consume();
+        });      
     }
     
  /*
@@ -101,11 +136,12 @@ public class ViewCode implements ViewInterface{
     */ 
     
     public ViewCode(){
-        this.controller = null;
+        this(null);
     }
     
     public ViewCode(AbstractController controller){
         this.controller = controller;
+        TRAY_ICON_URL = this.getClass().getResource("trayIcon.png");
     }
 
  /*
@@ -119,6 +155,7 @@ public class ViewCode implements ViewInterface{
         this.controller = controller;
     }
     
+    @Override
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
@@ -131,7 +168,24 @@ public class ViewCode implements ViewInterface{
     
     @Override
     public void showStage() {
-        primaryStage.show();
+        Platform.runLater(() -> {
+            primaryStage.show();
+        });
+    }
+
+    @Override
+    public void hideStage() {
+        primaryStage.hide();
+    }
+
+    @Override
+    public void showTrayIcon() {
+        trayUtility.showIcon();
+    }
+
+    @Override
+    public void hideTrayIcon() {
+        trayUtility.hideIcon();
     }
     
 }

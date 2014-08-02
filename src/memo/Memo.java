@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -29,6 +30,7 @@ public class Memo extends Application {
     
     @Override
     public void start(Stage primaryStage) {
+        Platform.setImplicitExit(false);
         this.primaryStage = primaryStage;
         
         try {
@@ -52,10 +54,11 @@ public class Memo extends Application {
         this.view = loader.getController();
         
         view.setController(controller);
+        view.setPrimaryStage(primaryStage);
         controller.addModel(model);
-        controller.addView(view);        
+        controller.addView(view);  
         
-        view.initialize();
+        view.manualInitialize();
     }
 
     /**

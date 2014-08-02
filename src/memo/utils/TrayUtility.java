@@ -6,6 +6,9 @@ import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 
 /**
  * This class simplifies work with SystemTray
@@ -14,11 +17,12 @@ import java.awt.TrayIcon;
 public class TrayUtility {
     private SystemTray tray;
     private final TrayIcon icon;
-    private static boolean isTraySupported;
+    private static boolean isTraySupported = SystemTray.isSupported();
     
     public TrayUtility(){
-        isTraySupported = SystemTray.isSupported();
-        icon = new TrayIcon(null, null, new PopupMenu());
+        icon = new TrayIcon(new BufferedImage(1, 1, 1), null, new PopupMenu());
+        icon.setImageAutoSize(true);
+        
         if (isTraySupported){
             tray = SystemTray.getSystemTray();
         }
@@ -54,12 +58,25 @@ public class TrayUtility {
         }
     }
     
+    public void setOnDoubleClick(ActionListener e){
+        icon.addActionListener(e);
+    }
+    
     /**
      *  
      * @param filepath path to image JPEG, GIF, PNG
      */
     public void setIcon(String filepath){
         Image image = Toolkit.getDefaultToolkit().getImage(filepath);
+        icon.setImage(image);
+    }
+    
+    /**
+     *  
+     * @param url url to image JPEG, GIF, PNG
+     */
+    public void setIcon(URL url){
+        Image image = Toolkit.getDefaultToolkit().getImage(url);
         icon.setImage(image);
     }
     
