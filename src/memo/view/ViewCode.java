@@ -1,12 +1,14 @@
 package memo.view;
 
 import java.beans.PropertyChangeEvent;
+import java.io.IOException;
 import java.net.URL;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import memo.controller.AbstractController;
@@ -48,6 +50,7 @@ public class ViewCode implements ViewInterface{
     @Override
     public void manualInitialize() {        
         initSystemTray();
+        initIcons();
         
         handleAddToStartUpClick();
         handleExitClick();
@@ -69,16 +72,26 @@ public class ViewCode implements ViewInterface{
         trayMenu.add(trayExitItem);
     }
     
+    private void initIcons(){
+        try {
+            primaryStage.getIcons().add(
+                    new Image(TRAY_ICON_URL.openStream()));
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+    
     /**
      * set icon, popupmenu, tooltip for tray
      */
     private void initSystemTray() {
         trayUtility = new TrayUtility();
-        initTrayMenu();
         
         if (TrayUtility.isTraySupported()){
+            initTrayMenu();
+            
             trayUtility.setIcon(TRAY_ICON_URL);
-            trayUtility.setToolTip(System.getProperty("user.dir")); //don't know what tooltip to show
+            trayUtility.setToolTip("Memo");
             trayUtility.setMenu(trayMenu);
         }
     }
@@ -102,7 +115,6 @@ public class ViewCode implements ViewInterface{
         
     private void handleTrayExitClick() {
         trayExitItem.addActionListener((java.awt.event.ActionEvent e) -> {
-            hideTrayIcon();
             controller.exit();
         });
     }
@@ -143,7 +155,7 @@ public class ViewCode implements ViewInterface{
     
     public ViewCode(AbstractController controller){
         this.controller = controller;
-        TRAY_ICON_URL = this.getClass().getResource("trayIcon.png");
+        TRAY_ICON_URL = this.getClass().getResource("resources/trayIcon.png");
     }
 
  /*
@@ -188,6 +200,11 @@ public class ViewCode implements ViewInterface{
     @Override
     public void hideTrayIcon() {
         trayUtility.hideIcon();
+    }
+
+    @Override
+    public boolean isShowing() {
+        return primaryStage.isShowing();
     }
     
 }

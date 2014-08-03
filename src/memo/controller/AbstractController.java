@@ -1,10 +1,7 @@
-
 package memo.controller;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import memo.model.AbstractModel;
 import memo.view.ViewInterface;
@@ -38,24 +35,10 @@ public abstract class AbstractController implements PropertyChangeListener {
         registeredViews.remove(view);
     }
     
-    protected void setModelProperty(String propertyName, Object newValue) {
-        for (AbstractModel model: registeredModels) {
-            try {
-                Method method = model.getClass().
-                    getMethod("set"+propertyName, new Class[] {newValue.getClass()});
-                method.invoke(model, newValue);
-            } 
-            catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                System.err.println("Exception caused by Reflection API");
-                throw new RuntimeException(e);
-            }
-        }
-    }
-    
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         for(int i = 0; i < registeredViews.size(); i++) {
-            //registeredViews[i].modelPropertyChange(evt);
+            registeredViews.get(i).modelPropertyChange(evt);
         }
     }
     

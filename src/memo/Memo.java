@@ -65,7 +65,12 @@ public class Memo extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        launch(args);
+        try{
+            launch(args);
+        }
+        catch (RuntimeException e){
+            Logger.getLogger(Memo.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+        }
     }
     
 }

@@ -9,6 +9,7 @@ import java.awt.TrayIcon;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import javax.swing.ImageIcon;
 
 /**
  * This class simplifies work with SystemTray
@@ -17,7 +18,11 @@ import java.net.URL;
 public class TrayUtility {
     private SystemTray tray;
     private final TrayIcon icon;
-    private static boolean isTraySupported = SystemTray.isSupported();
+    private static final boolean isTraySupported;
+    
+    static{
+        isTraySupported = SystemTray.isSupported();
+    }
     
     public TrayUtility(){
         icon = new TrayIcon(new BufferedImage(1, 1, 1), null, new PopupMenu());

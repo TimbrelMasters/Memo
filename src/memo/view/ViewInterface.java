@@ -26,4 +26,6 @@ public interface ViewInterface {
     
     public void showTrayIcon();
     public void hideTrayIcon();
+    
+    public boolean isShowing();
 }
