@@ -46,6 +46,7 @@ public abstract class AbstractController implements PropertyChangeListener {
     
     public abstract void addToStartUp();
     public abstract void removeFromStartUp();
+    public abstract boolean isAddedToStartUp(); 
     
     public abstract void exit();
     

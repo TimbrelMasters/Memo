@@ -24,12 +24,17 @@ public class Controller extends AbstractController {
     
     @Override
     public void addToStartUp() {
-        platformUtils.addToStartup();    
+        platformUtils.addToStartUp();    
     }
 
     @Override
     public void removeFromStartUp() {
         platformUtils.removeFromStartUp();
+    }
+    
+    @Override
+    public boolean isAddedToStartUp() {
+        return platformUtils.isAddedToStartUp();
     }
 
     @Override
@@ -41,7 +46,7 @@ public class Controller extends AbstractController {
     }
     
     @Override
-    public void hideStageToTray(){
+    public void hideStageToTray() {
         for (int i = 0; i < registeredViews.size(); i++) {
             registeredViews.get(i).showTrayIcon();
             registeredViews.get(i).hideStage();

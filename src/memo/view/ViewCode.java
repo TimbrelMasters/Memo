@@ -49,13 +49,16 @@ public class ViewCode implements ViewInterface{
     
     @Override
     public void manualInitialize() {        
+        initStartUpItem();
         initSystemTray();
         initIcons();
         
+        /*-----MAIN MENU-------*/
         handleAddToStartUpClick();
         handleExitClick();
         handleCloseRequest();
         
+        /*-----TRAY MENU-------*/
         handleTrayOpenClick();
         handleTrayExitClick();
         handleTrayDoubleClick();
@@ -94,6 +97,10 @@ public class ViewCode implements ViewInterface{
             trayUtility.setToolTip("Memo");
             trayUtility.setMenu(trayMenu);
         }
+    }
+    
+    private void initStartUpItem(){
+        addToStratUpItem.setSelected(controller.isAddedToStartUp());
     }
 
     private void handleAddToStartUpClick(){
