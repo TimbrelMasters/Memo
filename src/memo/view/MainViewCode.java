@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import memo.controller.AbstractController;
 import memo.model.User;
@@ -14,21 +15,25 @@ import memo.model.User;
  * @author Pisarik
  */
 public class MainViewCode implements ViewInterface{
-    
+
     @FXML
     private ComboBox<User> userComboBox;
-    
+
+    @FXML
+    private VBox menuVBox;
+
     private AbstractController controller;
     private Stage primaryStage;
-    
+
     public MainViewCode(){
-        
+
     }
 
     @Override
     public void manualInitialize() {
         ObservableList<User> users = FXCollections.observableArrayList();
         userComboBox.setItems(controller.getUserList());
+
     }
 
     @Override

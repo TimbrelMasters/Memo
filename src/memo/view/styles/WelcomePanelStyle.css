@@ -1,0 +1,73 @@
+/*
+    Created on : Aug 6, 2014, 9:59:22 PM
+    Author     : Pisarik
+*/
+
+.addUserButton {
+    -fx-background-color: #33c833;
+    -fx-background-radius: 100;
+    -fx-border-radius: 100;
+    -fx-text-fill: #FFFFFF;
+    -fx-padding: 0;
+}
+
+.addUserButton:hover {
+    -fx-scale-x: 1.5;
+    -fx-scale-y: 1.5;
+}
+
+.welcomePane {
+    -fx-background-color: #FFFFFF;
+}
+
+.userComboBox {
+    -fx-background-color: #FFFFFF;
+    -fx-border-style: none;
+    -fx-font-family: 'Comic Sans MS', Arial, sans-serif;
+    -fx-font-size: 20;
+    -fx-padding: 0;
+}
+
+.userComboBox:hover {
+    -fx-text-decoration: underline;
+    -fx-text-decoration-color: activecaption;
+}
+
+.userComboBox > .arrow-button > .arrow,
+.web-view .form-select-button .arrow {
+    -fx-background-insets: 0 0 0 0, 0;
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 0 0 0 0 ; /* 2 4 2 4 */
+    -fx-shape: "";
+}
+
+.menuButtonBox{
+    -fx-background-color: #FFFFFF;
+    -fx-fill-width: true;
+}
+
+.menuButton{
+    -fx-border-style: none;
+    -fx-background-color: #FFFFFF;
+    -fx-font-family: 'Comic Sans MS', Arial, bold;
+    -fx-font-size: 18;
+    -fx-text-alignment: left;
+}
+
+.menuButton:hover{
+    -fx-background-color: #FFFFFF;
+    -fx-scale-x: 1.5;
+    -fx-scale-y: 1.5;
+}
+
+.menuButton > .box{
+    -fx-background-color: #FFbbFF;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-scale-x: 0;
+    -fx-scale-y: 0;
+}
+
+.check-box:selected{
+    -fx-background-color: #338b20;
+}

@@ -1,13 +1,15 @@
 package memo.controller;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import memo.model.User;
 import memo.utils.platform.PlatformUtils;
 import memo.utils.platform.WindowsUtils;
 
 
 
 public class Controller extends AbstractController {
-    
+
     private PlatformUtils platformUtils;
 
     public Controller() {
@@ -21,17 +23,17 @@ public class Controller extends AbstractController {
     public void setPlatformUtils(PlatformUtils platformUtils) {
         this.platformUtils = platformUtils;
     }
-    
+
     @Override
     public void addToStartUp() {
-        platformUtils.addToStartUp();    
+        platformUtils.addToStartUp();
     }
 
     @Override
     public void removeFromStartUp() {
         platformUtils.removeFromStartUp();
     }
-    
+
     @Override
     public boolean isAddedToStartUp() {
         return platformUtils.isAddedToStartUp();
@@ -44,7 +46,7 @@ public class Controller extends AbstractController {
             registeredViews.get(i).showStage();
         }
     }
-    
+
     @Override
     public void hideStageToTray() {
         for (int i = 0; i < registeredViews.size(); i++) {
@@ -52,8 +54,6 @@ public class Controller extends AbstractController {
             registeredViews.get(i).hideStage();
         }
     }
-    
-    
 
     @Override
     public void exit() {
@@ -62,5 +62,10 @@ public class Controller extends AbstractController {
         }
         Platform.exit();
     }
-    
+
+    @Override
+    public ObservableList<User> getUserList(){
+        return registeredModels.get(0).getUserList();
+    }
+
 }

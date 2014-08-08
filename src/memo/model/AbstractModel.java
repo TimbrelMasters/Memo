@@ -2,10 +2,11 @@ package memo.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import javafx.collections.ObservableList;
 
 
 public abstract class AbstractModel {
-    
+
     protected PropertyChangeSupport propertyChangeSupport;
 
     public AbstractModel()
@@ -24,5 +25,7 @@ public abstract class AbstractModel {
     protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
     }
-    
+
+    public abstract ObservableList<User> getUserList();
+
 }

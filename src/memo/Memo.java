@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import memo.controller.AbstractController;
@@ -20,25 +21,28 @@ import memo.view.ViewInterface;
  * @author TimbrelMasters
  */
 public class Memo extends Application {
-    
+
     private Stage primaryStage;
-    private Pane rootLayout;
-    
+    private BorderPane rootLayout;
+    private Pane mainLayout;
+
     private AbstractModel model;
     private AbstractController controller;
-    private ViewInterface view;
-    
+    private ViewInterface rootView, mainView;
+
     @Override
     public void start(Stage primaryStage) {
         Platform.setImplicitExit(false);
         this.primaryStage = primaryStage;
-        
+
         try {
             initMVC();
         } catch (IOException ex) {
             Logger.getLogger(Memo.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
+        rootLayout.setCenter(mainLayout);
+
         Scene scene = new Scene(rootLayout);
         primaryStage.setTitle("Memo");
         primaryStage.setScene(scene);
@@ -46,19 +50,27 @@ public class Memo extends Application {
     }
 
     private void initMVC() throws IOException{
-        FXMLLoader loader = new FXMLLoader(Memo.this.getClass().getResource("view/ViewDesign.fxml"));
-        this.rootLayout = loader.load();
-        
+        FXMLLoader rootLoader = new FXMLLoader(Memo.this.getClass().getResource("view/RootLayoutDesign.fxml"));
+        this.rootLayout = (BorderPane)rootLoader.load();
+
+        FXMLLoader mainLoader = new FXMLLoader(Memo.this.getClass().getResource("view/MainViewDesign.fxml"));
+        this.mainLayout = mainLoader.load();
+
         this.model = new Model();
         this.controller = new Controller();
-        this.view = loader.getController();
-        
-        view.setController(controller);
-        view.setPrimaryStage(primaryStage);
+        this.rootView = rootLoader.getController();
+        this.mainView = mainLoader.getController();
+
+        rootView.setController(controller);
+        rootView.setPrimaryStage(primaryStage);
+        mainView.setController(controller);
+        mainView.setPrimaryStage(primaryStage);
         controller.addModel(model);
-        controller.addView(view);  
-        
-        view.manualInitialize();
+        controller.addView(rootView);
+        controller.addView(mainView);
+
+        rootView.manualInitialize();
+        mainView.manualInitialize();
     }
 
     /**
@@ -72,5 +84,5 @@ public class Memo extends Application {
             Logger.getLogger(Memo.class.getName()).log(Level.SEVERE, e.getMessage(), e);
         }
     }
-    
+
 }

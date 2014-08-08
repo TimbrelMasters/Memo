@@ -1,0 +1,18 @@
+/*
+    Created on : Aug 6, 2014, 7:29:32 PM
+    Author     : Pisarik
+*/
+
+.splitPaneWithoutDivider > .split-pane-divider {
+    -fx-padding: 0; /* 0 3 0 3 */
+    -fx-border-color:  transparent;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.splitPaneWithoutDivider > .split-pane-divider > .horizontal-grabber {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-shape: " ";
+}

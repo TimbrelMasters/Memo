@@ -6,19 +6,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="memo.view.ViewCode">
-   <children>
-      <MenuBar layoutX="8.0" layoutY="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="memo.view.RootLayoutCode">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
                   <RadioMenuItem fx:id="addToStratUpItem" mnemonicParsing="false" text="Launches with system" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-              <MenuItem fx:id="exitItem" mnemonicParsing="false" text="Exit" />
+                  <MenuItem fx:id="exitItem" mnemonicParsing="false" text="Exit" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
-   </children>
-</AnchorPane>
+   </top>
+</BorderPane>

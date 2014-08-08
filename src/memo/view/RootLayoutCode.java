@@ -18,7 +18,7 @@ import memo.utils.TrayUtility;
  *
  * @author Pisarik
  */
-public class ViewCode implements ViewInterface{
+public class RootLayoutCode implements ViewInterface{
     
     private final URL TRAY_ICON_URL;
     
@@ -34,7 +34,7 @@ public class ViewCode implements ViewInterface{
     private RadioMenuItem addToStratUpItem;
     
     @FXML
-    private MenuItem exitItem;
+    private MenuItem exitItem;    
     
     @Override
     public void modelPropertyChange(PropertyChangeEvent evt) {
@@ -156,11 +156,11 @@ public class ViewCode implements ViewInterface{
    ***
     */ 
     
-    public ViewCode(){
+    public RootLayoutCode(){
         this(null);
     }
     
-    public ViewCode(AbstractController controller){
+    public RootLayoutCode(AbstractController controller){
         this.controller = controller;
         TRAY_ICON_URL = this.getClass().getResource("resources/trayIcon.png");
     }
