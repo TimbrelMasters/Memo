@@ -27,7 +27,7 @@
                   </Button>
                   <AnchorPane layoutX="14.0" layoutY="56.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
                      <children>
-                        <VBox prefHeight="222.0" prefWidth="284.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox fx:id="menuVBox" prefHeight="222.0" prefWidth="284.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                             <Button mnemonicParsing="false" prefHeight="37.0" styleClass="menuButton" text="Main" />
                               <Button mnemonicParsing="false" prefHeight="37.0" styleClass="menuButton" stylesheets="@styles/WelcomePanelStyle.css" text="Settings" />
@@ -39,7 +39,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="menuVBox" minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="403.0" />
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="403.0" />
          </items>
       </SplitPane>
    </children>
