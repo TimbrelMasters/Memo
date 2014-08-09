@@ -3,29 +3,41 @@
     Author     : Pisarik
 */
 
-.addUserButton {
-    -fx-background-color: #33c833;
-    -fx-background-radius: 100;
-    -fx-border-radius: 100;
+.headerUserLabel {
+    -fx-border-style: none;
+    -fx-background-color: #FFFFFF;
+    -fx-font-family: bold "Segoe UI ", Helvetica, Arial, sans-serif;
+    -fx-font-size: 18;
+    -fx-text-alignment: center;
+}
+
+.headerAddUserButton {
+    -fx-background-color: #999;
+    -fx-border-style: none;
+    -fx-background-radius: 0;
     -fx-text-fill: #FFFFFF;
     -fx-padding: 0;
 }
 
-.addUserButton:hover {
-    -fx-scale-x: 1.5;
-    -fx-scale-y: 1.5;
+.headerAddUserButton:hover{
+    -fx-background-color: #666;
+}
+
+.headerUserComboBox {
+    -fx-background-color: #FFFFFF;
+    -fx-border-style: solid;
+    -fx-border-color: #999;
+    -fx-font-family: bold "Segoe UI Light", Helvetica, Arial, sans-serif;
+    -fx-font-size: 14;
+    -fx-padding: 0;
+}
+
+.headerUserComboBox:hover{
+    -fx-border-color: #666;
 }
 
 .welcomePane {
     -fx-background-color: #FFFFFF;
-}
-
-.userComboBox {
-    -fx-background-color: #FFFFFF;
-    -fx-border-style: none;
-    -fx-font-family: 'Comic Sans MS', Arial, sans-serif;
-    -fx-font-size: 20;
-    -fx-padding: 0;
 }
 
 .userComboBox:hover {
@@ -47,17 +59,18 @@
 }
 
 .menuButton{
+
     -fx-border-style: none;
     -fx-background-color: #FFFFFF;
-    -fx-font-family: 'Comic Sans MS', Arial, bold;
+    -fx-font-family: bold "Segoe UI ", Helvetica, Arial, sans-serif;
     -fx-font-size: 18;
     -fx-text-alignment: left;
 }
 
 .menuButton:hover{
     -fx-background-color: #FFFFFF;
-    -fx-scale-x: 1.5;
-    -fx-scale-y: 1.5;
+    //-fx-scale-x: 1.5;
+    //-fx-scale-y: 1.5;
 }
 
 .menuButton > .box{
