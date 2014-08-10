@@ -66,6 +66,7 @@ public abstract class AbstractController implements PropertyChangeListener, NewI
             }
             else{
                 showStageFromTray();
+                break;
             }
         }
     }
