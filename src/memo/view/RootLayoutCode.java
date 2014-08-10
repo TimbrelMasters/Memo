@@ -19,11 +19,11 @@ import memo.utils.TrayUtility;
  * @author Pisarik
  */
 public class RootLayoutCode implements ViewInterface{
-    
+
     private final URL TRAY_ICON_URL;
-    
+
     private AbstractController controller;
-    
+
     private Stage primaryStage;
     private TrayUtility trayUtility;
     private java.awt.PopupMenu trayMenu;
@@ -32,49 +32,49 @@ public class RootLayoutCode implements ViewInterface{
 
     @FXML
     private RadioMenuItem addToStratUpItem;
-    
+
     @FXML
-    private MenuItem exitItem;    
-    
+    private MenuItem exitItem;
+
     @Override
     public void modelPropertyChange(PropertyChangeEvent evt) {
         //it's empty bacause model empty
     }
-    
+
  /*
    ***
    *** Initialize methods
    ***
-    */ 
-    
+    */
+
     @Override
-    public void manualInitialize() {        
+    public void manualInitialize() {
         initStartUpItem();
         initSystemTray();
         initIcons();
-        
+
         /*-----MAIN MENU-------*/
         handleAddToStartUpClick();
         handleExitClick();
         handleCloseRequest();
-        
+
         /*-----TRAY MENU-------*/
         handleTrayOpenClick();
         handleTrayExitClick();
         handleTrayDoubleClick();
     }
-    
+
     private void initTrayMenu(){
         trayMenu = new java.awt.PopupMenu();
-        
+
         trayOpenItem = new java.awt.MenuItem("Open");
         trayExitItem = new java.awt.MenuItem("Exit");
-        
+
         trayMenu.add(trayOpenItem);
         trayMenu.add(new java.awt.MenuItem("-"));
         trayMenu.add(trayExitItem);
     }
-    
+
     private void initIcons(){
         try {
             primaryStage.getIcons().add(
@@ -83,22 +83,22 @@ public class RootLayoutCode implements ViewInterface{
             throw new RuntimeException(ex);
         }
     }
-    
+
     /**
      * set icon, popupmenu, tooltip for tray
      */
     private void initSystemTray() {
         trayUtility = new TrayUtility();
-        
+
         if (TrayUtility.isTraySupported()){
             initTrayMenu();
-            
+
             trayUtility.setIcon(TRAY_ICON_URL);
             trayUtility.setToolTip("Memo");
             trayUtility.setMenu(trayMenu);
         }
     }
-    
+
     private void initStartUpItem(){
         addToStratUpItem.setSelected(controller.isAddedToStartUp());
     }
@@ -119,7 +119,7 @@ public class RootLayoutCode implements ViewInterface{
             controller.exit();
         });
     }
-        
+
     private void handleTrayExitClick() {
         trayExitItem.addActionListener((java.awt.event.ActionEvent e) -> {
             controller.exit();
@@ -131,13 +131,13 @@ public class RootLayoutCode implements ViewInterface{
             controller.showStageFromTray();
         });
     }
-    
+
     private void handleTrayDoubleClick(){
         trayUtility.setOnDoubleClick((java.awt.event.ActionEvent e) -> {
             controller.showStageFromTray();
         });
     }
-    
+
     private void handleCloseRequest(){
         primaryStage.setOnCloseRequest((WindowEvent event) -> {
             if (TrayUtility.isTraySupported()){
@@ -147,19 +147,19 @@ public class RootLayoutCode implements ViewInterface{
                 throw new UnsupportedOperationException("Must be dialog about exit");
             }
             event.consume();
-        });      
+        });
     }
-    
+
  /*
    ***
    *** Constructors and Destructors
    ***
-    */ 
-    
+    */
+
     public RootLayoutCode(){
         this(null);
     }
-    
+
     public RootLayoutCode(AbstractController controller){
         this.controller = controller;
         TRAY_ICON_URL = this.getClass().getResource("resources/trayIcon.png");
@@ -167,26 +167,26 @@ public class RootLayoutCode implements ViewInterface{
 
  /*
    ***
-   *** Setters and Getters 
+   *** Setters and Getters
    ***
-    */   
-    
+    */
+
     @Override
     public void setController(AbstractController controller) {
         this.controller = controller;
     }
-    
+
     @Override
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
-    
+
   /*
    ***
    *** Some action methods
    ***
     */
-    
+
     @Override
     public void showStage() {
         Platform.runLater(() -> {
@@ -213,5 +213,16 @@ public class RootLayoutCode implements ViewInterface{
     public boolean isShowing() {
         return primaryStage.isShowing();
     }
-    
+
+    @Override
+    public void showToFront() {
+        Platform.runLater(() ->{
+           if (primaryStage.isIconified())
+               primaryStage.setIconified(false);
+           else{
+            primaryStage.toFront();
+           }
+        });
+    }
+
 }

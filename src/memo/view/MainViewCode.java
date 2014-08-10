@@ -76,4 +76,9 @@ public class MainViewCode implements ViewInterface{
         return primaryStage.isShowing();
     }
 
+    @Override
+    public void showToFront() {
+        //???
+    }
+
 }

@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import javafx.collections.ObservableList;
 import memo.model.AbstractModel;
 import memo.model.User;
+import memo.utils.singleinstance.NewInstanceListener;
 import memo.view.ViewInterface;
 
 
-public abstract class AbstractController implements PropertyChangeListener {
+public abstract class AbstractController implements PropertyChangeListener, NewInstanceListener {
 
     protected ArrayList<AbstractModel> registeredModels;
     protected ArrayList<ViewInterface> registeredViews;
@@ -32,7 +33,7 @@ public abstract class AbstractController implements PropertyChangeListener {
     public void addView(ViewInterface view) {
         registeredViews.add(view);
     }
-    
+
     public void removeView(ViewInterface view) {
         registeredViews.remove(view);
     }
@@ -56,5 +57,17 @@ public abstract class AbstractController implements PropertyChangeListener {
     public abstract void hideStageToTray();
 
     public abstract ObservableList<User> getUserList();
+
+    @Override
+    public void onNewInstance() {
+        for (int i = 0; i < registeredViews.size(); i++){
+            if (registeredViews.get(i).isShowing()){
+                registeredViews.get(i).showToFront();
+            }
+            else{
+                showStageFromTray();
+            }
+        }
+    }
 
 }

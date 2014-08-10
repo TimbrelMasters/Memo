@@ -5,10 +5,11 @@ import javafx.collections.ObservableList;
 import memo.model.User;
 import memo.utils.platform.PlatformUtils;
 import memo.utils.platform.WindowsUtils;
+import memo.utils.singleinstance.SingleInstanceUtility;
 
 
 
-public class Controller extends AbstractController {
+public class Controller extends AbstractController{
 
     private PlatformUtils platformUtils;
 
@@ -57,9 +58,12 @@ public class Controller extends AbstractController {
 
     @Override
     public void exit() {
-        if (!registeredViews.get(0).isShowing()) {
-            registeredViews.get(0).hideTrayIcon();
+        for (int i = 0; i < registeredViews.size(); i++){
+            if (!registeredViews.get(i).isShowing()) {
+                registeredViews.get(i).hideTrayIcon();
+            }
         }
+        SingleInstanceUtility.closeInstance();
         Platform.exit();
     }
 

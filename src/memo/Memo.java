@@ -14,6 +14,7 @@ import memo.controller.AbstractController;
 import memo.controller.Controller;
 import memo.model.AbstractModel;
 import memo.model.Model;
+import memo.utils.singleinstance.SingleInstanceUtility;
 import memo.view.ViewInterface;
 
 /**
@@ -71,6 +72,7 @@ public class Memo extends Application {
 
         rootView.manualInitialize();
         mainView.manualInitialize();
+        SingleInstanceUtility.setNewInstanceListener(controller);
     }
 
     /**
@@ -78,7 +80,16 @@ public class Memo extends Application {
      */
     public static void main(String[] args) {
         try{
-            launch(args);
+            SingleInstanceUtility.setPort(43456);
+            SingleInstanceUtility.setSharedKey("&&MemoInstance&&\n");
+
+            if (!SingleInstanceUtility.registerInstance()){
+                SingleInstanceUtility.closeInstance();
+                Platform.exit();
+            }
+            else{
+                launch(args);
+            }
         }
         catch (RuntimeException e){
             Logger.getLogger(Memo.class.getName()).log(Level.SEVERE, e.getMessage(), e);
