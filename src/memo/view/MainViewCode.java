@@ -20,7 +20,10 @@ public class MainViewCode implements ViewInterface{
     private ComboBox<User> userComboBox;
 
     @FXML
-    private VBox menuVBox;
+    private VBox vBoxForAccordion;
+
+    CustomAccordion mainAccordion;
+
 
     private AbstractController controller;
     private Stage primaryStage;
@@ -33,6 +36,9 @@ public class MainViewCode implements ViewInterface{
     public void manualInitialize() {
         ObservableList<User> users = FXCollections.observableArrayList();
         userComboBox.setItems(controller.getUserList());
+
+        mainAccordion = new CustomAccordion(new User("Lol"));
+        vBoxForAccordion.getChildren().add(mainAccordion.getRoot());
 
     }
 

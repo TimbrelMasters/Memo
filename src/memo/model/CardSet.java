@@ -14,6 +14,7 @@ public class CardSet {
 
     public CardSet(String name) {
         this.name = name;
+        cardSet = new ArrayList<Card>();
     }
 
     public void addCard(Card card) {
@@ -39,5 +40,5 @@ public class CardSet {
     public void setCardSet(ArrayList<Card> cardSet) {
         this.cardSet = cardSet;
     }
-    
+
 }

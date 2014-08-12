@@ -22,14 +22,14 @@ import memo.model.User;
 
 
 public class CustomAccordion {
-    
-    private static final double LIST_VIEW_HEIGHT = 23.1;
+
+    private static final double LIST_VIEW_HEIGHT = 35.0;
     private static final double INNER_ACCORDION_PADDING = 24;
     private Accordion accordion;
     private User storage;
-    
-    
- 
+
+
+
     public CustomAccordion(User storage) {
         this.storage = storage;
         accordion = new Accordion();
@@ -37,6 +37,7 @@ public class CustomAccordion {
         ArrayList<Section> themes = storage.getSections();
         for(int i = 0; i < themes.size(); i++) {
             Accordion inner = addFirstLevelLabel(themes.get(i).getName());
+            inner.setMinWidth(50);
             inner.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
             ArrayList<CardSet> decks = themes.get(i).getCardSets();
             for(int j = 0; j < decks.size(); j++) {
@@ -52,7 +53,7 @@ public class CustomAccordion {
             }
         }
     }
-    
+
     public Accordion addFirstLevelLabel(String name) {
         Accordion inner = new Accordion();
         TitledPane titledPane = new TitledPane(name, inner);
@@ -60,7 +61,7 @@ public class CustomAccordion {
         accordion.getPanes().add(titledPane);
         return inner;
     }
-    
+
     public ListView addSecondLevelLabel(String name, Accordion inner) {
         ListView listView = new ListView();
         TitledPane titledPane = new TitledPane(name, listView);
@@ -68,49 +69,49 @@ public class CustomAccordion {
         inner.getPanes().add(titledPane);
         return listView;
     }
-    
+
     public void addThirdLevelLabel(Card card, ListView listView) {
         listView.getItems().add(card);
     }
-    
+
     private void addComboBox(TitledPane titledPane, Accordion acco) {
         Label label = new Label();
         CheckBox checkBox = new CheckBox();
-        AnchorPane title = new AnchorPane();  
-        AnchorPane.setLeftAnchor(label, 0.0);  
-        AnchorPane.setRightAnchor(checkBox, 0.0);  
-        title.getChildren().addAll(label, checkBox);  
-        titledPane.setGraphic(title);  
+        AnchorPane title = new AnchorPane();
+        AnchorPane.setLeftAnchor(label, 0.0);
+        AnchorPane.setRightAnchor(checkBox, 0.0);
+        title.getChildren().addAll(label, checkBox);
+        titledPane.setGraphic(title);
         titledPane.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         Region arrow = (Region) titledPane.lookup(".arrow-button");
         label.textProperty().bind(titledPane.textProperty());
-        title.prefWidthProperty().bind(new DoubleBinding() {  
-            {  
-                super.bind(acco.widthProperty());  
+        title.prefWidthProperty().bind(new DoubleBinding() {
+            {
+                super.bind(acco.widthProperty());
             }
-  
-            @Override  
-            protected double computeValue() {  
+
+            @Override
+            protected double computeValue() {
                 double breathingSpace = 15;
                 double arrowSpace = 24;
                 double insets = acco.getInsets().getLeft();
                 if(insets != 0)
                     insets--;
-                double value = acco.getWidth() - arrowSpace - breathingSpace - insets;  
-                return value;  
-            }  
+                double value = acco.getWidth() - arrowSpace - breathingSpace - insets;
+                return value;
+            }
         });
-  
+
     }
-    
+
     public void addCard() {
-        
+
         //accordion.getPanes()
-        
+
     }
-    
+
     public Accordion getRoot() {
         return accordion;
     }
-    
+
 }

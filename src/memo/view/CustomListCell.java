@@ -13,7 +13,7 @@ import javafx.scene.layout.Priority;
 import memo.model.Card;
 
 public class CustomListCell extends ListCell<Card> {
-    
+
     private final HBox hBox;
     private final Label label;
     private final Pane pane;
@@ -34,7 +34,7 @@ public class CustomListCell extends ListCell<Card> {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 CustomListCell.this.getItem().setIsSelected(newValue);
             }
-            
+
         });
     }
 
@@ -50,5 +50,5 @@ public class CustomListCell extends ListCell<Card> {
             setGraphic(hBox);
         }
     }
-    
+
 }
