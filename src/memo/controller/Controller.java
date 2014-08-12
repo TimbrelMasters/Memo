@@ -1,7 +1,7 @@
 package memo.controller;
 
+import java.util.ArrayList;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import memo.model.User;
 import memo.utils.platform.PlatformUtils;
 import memo.utils.platform.WindowsUtils;
@@ -68,8 +68,13 @@ public class Controller extends AbstractController{
     }
 
     @Override
-    public ObservableList<User> getUserList(){
+    public ArrayList<User> getUserList(){
         return registeredModels.get(0).getUserList();
+    }
+
+    @Override
+    public void addUser(User user) {
+        registeredModels.get(0).addUser(user);
     }
 
 }

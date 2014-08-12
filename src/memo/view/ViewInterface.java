@@ -3,6 +3,7 @@ package memo.view;
 import java.beans.PropertyChangeEvent;
 import javafx.stage.Stage;
 import memo.controller.AbstractController;
+import memo.model.User;
 
 
 public interface ViewInterface {
@@ -28,6 +29,8 @@ public interface ViewInterface {
     public void hideTrayIcon();
 
     public boolean isShowing();
+
+    public void addUser(User user);
 
     /**
      * Bring the Window to foreground

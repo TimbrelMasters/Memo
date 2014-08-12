@@ -62,6 +62,7 @@ public class Memo extends Application {
         this.rootView = rootLoader.getController();
         this.mainView = mainLoader.getController();
 
+        model.addPropertyChangeListener(controller);
         rootView.setController(controller);
         rootView.setPrimaryStage(primaryStage);
         mainView.setController(controller);

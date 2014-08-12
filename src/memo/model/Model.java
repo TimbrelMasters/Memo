@@ -1,7 +1,6 @@
 package memo.model;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.util.ArrayList;
 
 /**
  *
@@ -9,15 +8,23 @@ import javafx.collections.ObservableList;
  */
 public class Model extends AbstractModel{
 
-    ObservableList<User> users;
+    ArrayList<User> users;
 
     public Model(){
-        users = FXCollections.observableArrayList();
+        users = new ArrayList<>();
         users.add(new User());
     }
 
     @Override
-    public ObservableList<User> getUserList() {
+    public ArrayList<User> getUserList() {
         return users;
+    }
+
+    @Override
+    public void addUser(User user) {
+        System.out.println("in model");
+        users.add(user);
+        //firePropertyChange(new AddUserEvent(user));
+        propertyChangeSupport.firePropertyChange("name", "1", "2");
     }
 }

@@ -3,7 +3,6 @@ package memo.controller;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import javafx.collections.ObservableList;
 import memo.model.AbstractModel;
 import memo.model.User;
 import memo.utils.singleinstance.NewInstanceListener;
@@ -40,9 +39,12 @@ public abstract class AbstractController implements PropertyChangeListener, NewI
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("in listener");
+        /*AbstractProperrtyChangeEvent aEvt = (AbstractProperrtyChangeEvent)evt;
         for(int i = 0; i < registeredViews.size(); i++) {
-            registeredViews.get(i).modelPropertyChange(evt);
-        }
+            aEvt.setView(registeredViews.get(i));
+            aEvt.perform();
+        }*/
     }
 
     /* These methods are connected to the logic of program */
@@ -56,7 +58,8 @@ public abstract class AbstractController implements PropertyChangeListener, NewI
     public abstract void showStageFromTray();
     public abstract void hideStageToTray();
 
-    public abstract ObservableList<User> getUserList();
+    public abstract ArrayList<User> getUserList();
+    public abstract void addUser(User user);
 
     @Override
     public void onNewInstance() {

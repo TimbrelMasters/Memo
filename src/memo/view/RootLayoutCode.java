@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import memo.controller.AbstractController;
+import memo.model.User;
 import memo.utils.TrayUtility;
 
 /**
@@ -223,6 +224,11 @@ public class RootLayoutCode implements ViewInterface{
             primaryStage.toFront();
            }
         });
+    }
+
+    @Override
+    public void addUser(User user) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }
