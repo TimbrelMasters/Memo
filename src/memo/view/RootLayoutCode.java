@@ -228,7 +228,7 @@ public class RootLayoutCode implements ViewInterface{
 
     @Override
     public void addUser(User user) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

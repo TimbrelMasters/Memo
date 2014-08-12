@@ -1,6 +1,7 @@
 package memo.model;
 
 import java.util.ArrayList;
+import memo.events.AddUserEvent;
 
 /**
  *
@@ -22,9 +23,7 @@ public class Model extends AbstractModel{
 
     @Override
     public void addUser(User user) {
-        System.out.println("in model");
         users.add(user);
-        //firePropertyChange(new AddUserEvent(user));
-        propertyChangeSupport.firePropertyChange("name", "1", "2");
+        firePropertyChange(new AddUserEvent(user));
     }
 }
