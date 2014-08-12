@@ -32,6 +32,10 @@ public class Section {
     public void addCardSet(CardSet cardSet) {
         cardSets.add(cardSet);
     }
+
+    public ArrayList<CardSet> getCardSets() {
+        return cardSets;
+    }
     
     public int getCardSetsCount() {
         return cardSets.size();

@@ -5,14 +5,15 @@ import java.util.ArrayList;
 
 public class CardSet {
 
+    private String name;
     private ArrayList<Card> cardSet;
 
     public CardSet() {
         cardSet = new ArrayList<Card>();
     }
 
-    public CardSet(ArrayList<Card> cardSet) {
-        this.cardSet = cardSet;
+    public CardSet(String name) {
+        this.name = name;
     }
 
     public void addCard(Card card) {
@@ -23,4 +24,20 @@ public class CardSet {
         return cardSet.size();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ArrayList<Card> getCardSet() {
+        return cardSet;
+    }
+
+    public void setCardSet(ArrayList<Card> cardSet) {
+        this.cardSet = cardSet;
+    }
+    
 }
