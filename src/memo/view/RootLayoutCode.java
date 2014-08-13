@@ -4,11 +4,17 @@ import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.net.URL;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import memo.controller.AbstractController;
@@ -25,6 +31,11 @@ public class RootLayoutCode implements ViewInterface{
 
     private AbstractController controller;
 
+    private MainViewCode mainView;
+
+    private BorderPane rootLayout;
+    private Pane mainViewPane;
+
     private Stage primaryStage;
     private TrayUtility trayUtility;
     private java.awt.PopupMenu trayMenu;
@@ -36,6 +47,13 @@ public class RootLayoutCode implements ViewInterface{
 
     @FXML
     private MenuItem exitItem;
+
+    @FXML
+    private ComboBox<User> userComboBox;
+
+    CustomAccordion mainAccordion;
+
+    ObservableList<User> users;
 
     @Override
     public void modelPropertyChange(PropertyChangeEvent evt) {
@@ -53,6 +71,8 @@ public class RootLayoutCode implements ViewInterface{
         initStartUpItem();
         initSystemTray();
         initIcons();
+        initInnerViews();
+        initStartView();
 
         /*-----MAIN MENU-------*/
         handleAddToStartUpClick();
@@ -63,6 +83,26 @@ public class RootLayoutCode implements ViewInterface{
         handleTrayOpenClick();
         handleTrayExitClick();
         handleTrayDoubleClick();
+
+        /*------CONTROLS-------*/
+        users = FXCollections.observableArrayList(controller.getUserList());
+        userComboBox.setItems(users);
+    }
+
+    private void initInnerViews(){
+        try{
+            FXMLLoader mainViewLoader = new FXMLLoader(this.getClass().getResource("MainViewDesign.fxml"));
+            mainViewPane = mainViewLoader.load();
+            mainView = mainViewLoader.getController();
+            mainView.manualInitialize();
+        }
+        catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void initStartView(){ //may be setInnerView
+        rootLayout.setRight(mainViewPane);
     }
 
     private void initTrayMenu(){
@@ -153,6 +193,17 @@ public class RootLayoutCode implements ViewInterface{
 
  /*
    ***
+   *** Controls handle
+   ***
+    */
+
+    @FXML
+    public void OnUserAdd(ActionEvent event){
+        controller.addUser(new User("Pisarik"));
+    }
+
+ /*
+   ***
    *** Constructors and Destructors
    ***
     */
@@ -180,6 +231,11 @@ public class RootLayoutCode implements ViewInterface{
     @Override
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+    }
+
+    @Override
+    public void setRootLayout(BorderPane rootLayout) {
+        this.rootLayout = rootLayout;
     }
 
   /*
@@ -228,7 +284,7 @@ public class RootLayoutCode implements ViewInterface{
 
     @Override
     public void addUser(User user) {
-        //throw new UnsupportedOperationException("Not supported yet.");
+        users.add(user);
     }
 
 }

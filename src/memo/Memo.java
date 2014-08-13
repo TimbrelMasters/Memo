@@ -29,7 +29,7 @@ public class Memo extends Application {
 
     private AbstractModel model;
     private AbstractController controller;
-    private ViewInterface rootView, mainView;
+    private ViewInterface rootView;
 
     @Override
     public void start(Stage primaryStage) {
@@ -42,7 +42,7 @@ public class Memo extends Application {
             Logger.getLogger(Memo.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        rootLayout.setCenter(mainLayout);
+        //rootLayout.setRight(mainLayout);
 
         Scene scene = new Scene(rootLayout);
         primaryStage.setTitle("Memo");
@@ -54,24 +54,17 @@ public class Memo extends Application {
         FXMLLoader rootLoader = new FXMLLoader(Memo.this.getClass().getResource("view/RootLayoutDesign.fxml"));
         this.rootLayout = (BorderPane)rootLoader.load();
 
-        FXMLLoader mainLoader = new FXMLLoader(Memo.this.getClass().getResource("view/MainViewDesign.fxml"));
-        this.mainLayout = mainLoader.load();
-
         this.model = new Model();
         this.controller = new Controller();
         this.rootView = rootLoader.getController();
-        this.mainView = mainLoader.getController();
 
         rootView.setController(controller);
         rootView.setPrimaryStage(primaryStage);
-        mainView.setController(controller);
-        mainView.setPrimaryStage(primaryStage);
+        rootView.setRootLayout(this.rootLayout);
         controller.addModel(model);
         controller.addView(rootView);
-        controller.addView(mainView);
 
         rootView.manualInitialize();
-        mainView.manualInitialize();
         SingleInstanceUtility.setNewInstanceListener(controller);
     }
 
@@ -93,6 +86,7 @@ public class Memo extends Application {
         }
         catch (RuntimeException e){
             Logger.getLogger(Memo.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+            SingleInstanceUtility.closeInstance();
         }
     }
 

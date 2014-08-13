@@ -23,7 +23,7 @@ import memo.model.User;
 
 public class CustomAccordion {
 
-    private static final double LIST_VIEW_HEIGHT = 35.0;
+    private static final double LIST_VIEW_HEIGHT = 45;
     private static final double INNER_ACCORDION_PADDING = 24;
     private Accordion accordion;
     private User storage;

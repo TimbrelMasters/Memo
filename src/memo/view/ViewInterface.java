@@ -1,6 +1,7 @@
 package memo.view;
 
 import java.beans.PropertyChangeEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import memo.controller.AbstractController;
 import memo.model.User;
@@ -14,6 +15,7 @@ public interface ViewInterface {
 
     public void setController(AbstractController controller);
     public void setPrimaryStage(Stage primaryStage);
+    public void setRootLayout(BorderPane rootLayout);
 
     /**
      * <p> Controller notifies this method about model changing

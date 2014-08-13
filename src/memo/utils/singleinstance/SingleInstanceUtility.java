@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- *  Help you manage new instances of application through ServerSocket
+ *  Helps you manage new instances of application through ServerSocket
  * Require some improvements about use-case:
  * registerInstance -> setPort -> registerInstance
  * @author Pisarik

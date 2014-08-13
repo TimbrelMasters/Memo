@@ -9,7 +9,6 @@ import java.awt.TrayIcon;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.net.URL;
-import javax.swing.ImageIcon;
 
 /**
  * This class simplifies work with SystemTray
@@ -19,20 +18,20 @@ public class TrayUtility {
     private SystemTray tray;
     private final TrayIcon icon;
     private static final boolean isTraySupported;
-    
+
     static{
         isTraySupported = SystemTray.isSupported();
     }
-    
+
     public TrayUtility(){
         icon = new TrayIcon(new BufferedImage(1, 1, 1), null, new PopupMenu());
         icon.setImageAutoSize(true);
-        
+
         if (isTraySupported){
             tray = SystemTray.getSystemTray();
         }
     }
-    
+
     /**
      * if tray is supported, shows it on the task bar
      * else does nothing
@@ -49,10 +48,10 @@ public class TrayUtility {
             throw new RuntimeException(e);
         }
     }
-    
+
     /**
      * if tray is supported, hides it from task bar
-     * else does nothing 
+     * else does nothing
      */
     public void hideIcon() {
         if (isTraySupported){
@@ -62,49 +61,49 @@ public class TrayUtility {
             //do nothing
         }
     }
-    
+
     public void setOnDoubleClick(ActionListener e){
         icon.addActionListener(e);
     }
-    
+
     /**
-     *  
+     *
      * @param filepath path to image JPEG, GIF, PNG
      */
     public void setIcon(String filepath){
         Image image = Toolkit.getDefaultToolkit().getImage(filepath);
         icon.setImage(image);
     }
-    
+
     /**
-     *  
+     *
      * @param url url to image JPEG, GIF, PNG
      */
     public void setIcon(URL url){
         Image image = Toolkit.getDefaultToolkit().getImage(url);
         icon.setImage(image);
     }
-    
+
     public void setMenu(PopupMenu menu){
         icon.setPopupMenu(menu);
     }
-    
+
     public void setToolTip(String tip){
         icon.setToolTip(tip);
     }
-    
+
     public Image getImage(){
         return icon.getImage();
     }
-    
+
     public PopupMenu getMenu(){
         return icon.getPopupMenu();
     }
-    
+
     public String getToolTip(){
         return icon.getToolTip();
     }
-    
+
     public static boolean isTraySupported(){
         return isTraySupported;
     }
