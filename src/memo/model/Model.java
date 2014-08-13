@@ -12,6 +12,7 @@ public class Model extends AbstractModel{
     ArrayList<User> users;
 
     public Model(){
+        super();
         users = new ArrayList<>();
         users.add(new User());
     }
@@ -24,6 +25,6 @@ public class Model extends AbstractModel{
     @Override
     public void addUser(User user) {
         users.add(user);
-        firePropertyChange(new AddUserEvent(user));
+        fireModelChanged(new AddUserEvent(user));
     }
 }

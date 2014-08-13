@@ -6,8 +6,9 @@ import memo.model.User;
  *
  * @author Pisarik
  */
-public class AddUserEvent extends AbstractProperrtyChangeEvent{
-    User user;
+public class AddUserEvent extends ModelChangedEvent{
+    
+    private User user;
 
     public AddUserEvent(User user){
         this.user = user;

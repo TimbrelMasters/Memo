@@ -3,14 +3,14 @@ package memo.controller;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import memo.events.AbstractProperrtyChangeEvent;
+import memo.events.ModelChangedEvent;
 import memo.model.AbstractModel;
 import memo.model.User;
 import memo.utils.singleinstance.NewInstanceListener;
 import memo.view.ViewInterface;
 
 
-public abstract class AbstractController implements PropertyChangeListener, NewInstanceListener {
+public abstract class AbstractController implements ModelChangedListener, NewInstanceListener {
 
     protected ArrayList<AbstractModel> registeredModels;
     protected ArrayList<ViewInterface> registeredViews;
@@ -22,12 +22,12 @@ public abstract class AbstractController implements PropertyChangeListener, NewI
 
     public void addModel(AbstractModel model) {
         registeredModels.add(model);
-        model.addPropertyChangeListener(this);
+        model.addModelChangedistener(this);
     }
 
     public void removeModel(AbstractModel model) {
         registeredModels.remove(model);
-        model.removePropertyChangeListener(this);
+        model.removeModelChangedListener(this);
     }
 
     public void addView(ViewInterface view) {
@@ -39,13 +39,13 @@ public abstract class AbstractController implements PropertyChangeListener, NewI
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        AbstractProperrtyChangeEvent aEvt = (AbstractProperrtyChangeEvent)evt;
+    public void modelChanged(ModelChangedEvent event) {
         for(int i = 0; i < registeredViews.size(); i++) {
-            aEvt.setView(registeredViews.get(i));
-            aEvt.perform();
+            event.setView(registeredViews.get(i));
+            event.perform();
         }
     }
+
 
     /* These methods are connected to the logic of program */
 
