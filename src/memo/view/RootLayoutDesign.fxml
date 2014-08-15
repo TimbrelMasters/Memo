@@ -27,7 +27,7 @@
          <children>
             <VBox prefHeight="368.0" prefWidth="328.0" styleClass="welcomePane" stylesheets="@styles/WelcomePanelStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <HBox styleClass="welcomePane" stylesheets="@styles/WelcomePanelStyle.css">
+                  <HBox stylesheets="@styles/WelcomePanelStyle.css">
                      <children>
                         <Label layoutX="17.0" layoutY="172.0" prefHeight="30.0" styleClass="headerUserLabel" stylesheets="@styles/WelcomePanelStyle.css" text="User:">
                            <font>
@@ -52,7 +52,7 @@
                         </Button>
                      </children>
                   </HBox>
-                  <Accordion prefHeight="221.0" prefWidth="204.0" VBox.vgrow="ALWAYS" />
+                  <Accordion fx:id="themeAccordion" prefHeight="221.0" prefWidth="204.0" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </children>
