@@ -23,16 +23,20 @@ import memo.model.User;
 
 public class CustomAccordion {
 
-    private static final double LIST_VIEW_HEIGHT = 45;
+    private static final double LIST_VIEW_HEIGHT = 23.1;
+
     private static final double INNER_ACCORDION_PADDING = 24;
     private Accordion accordion;
     private User storage;
 
 
+    public CustomAccordion(User storage){
+        this(storage, new Accordion());
+    }
 
-    public CustomAccordion(User storage) {
+    public CustomAccordion(User storage, Accordion outerAccordion) {
         this.storage = storage;
-        accordion = new Accordion();
+        this.accordion = outerAccordion;
         accordion.setMinWidth(50);
         ArrayList<Section> themes = storage.getSections();
         for(int i = 0; i < themes.size(); i++) {
@@ -110,7 +114,7 @@ public class CustomAccordion {
 
     }
 
-    public Accordion getRoot() {
+    public Accordion getAccordion() {
         return accordion;
     }
 

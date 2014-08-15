@@ -1,32 +1,32 @@
 package memo.model;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import memo.controller.ModelChangedListener;
+import memo.events.ModelChangedEvent;
 
 
 public abstract class AbstractModel {
 
-    protected PropertyChangeSupport propertyChangeSupport;
+    private final ArrayList<ModelChangedListener> listeners;
 
-    public AbstractModel()
-    {
-        propertyChangeSupport = new PropertyChangeSupport(this);
+    public AbstractModel() {
+        this.listeners = new ArrayList<>();
     }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
+    
+    public void addModelChangedistener(ModelChangedListener listener) {
+        listeners.add(listener);
     }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
+    
+    public void removeModelChangedListener(ModelChangedListener listener) {
+        listeners.remove(listener);
     }
-
-    protected void firePropertyChange(PropertyChangeEvent evt) {
-        propertyChangeSupport.firePropertyChange(evt);
+    
+    public void fireModelChanged(ModelChangedEvent event) {
+        for(int i = 0; i < listeners.size(); i++) {
+            listeners.get(i).modelChanged(event);
+        }
     }
-
+    
     public abstract ArrayList<User> getUserList();
     public abstract void addUser(User user);
 

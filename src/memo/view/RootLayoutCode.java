@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
@@ -51,7 +52,10 @@ public class RootLayoutCode implements ViewInterface{
     @FXML
     private ComboBox<User> userComboBox;
 
-    CustomAccordion mainAccordion;
+    @FXML
+    Accordion themeAccordion;
+
+    CustomAccordion customAccordion;
 
     ObservableList<User> users;
 
@@ -87,6 +91,8 @@ public class RootLayoutCode implements ViewInterface{
         /*------CONTROLS-------*/
         users = FXCollections.observableArrayList(controller.getUserList());
         userComboBox.setItems(users);
+
+        customAccordion = new CustomAccordion(users.get(0), themeAccordion); //NEED SET USER WHICH IN COMBOBOX
     }
 
     private void initInnerViews(){
