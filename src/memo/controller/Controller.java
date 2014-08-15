@@ -75,6 +75,12 @@ public class Controller extends AbstractController{
     @Override
     public void addUser(User user) {
         registeredModels.get(0).addUser(user);
-    }
+    }    
 
+    @Override
+    public void setCurrentUser(User user) {
+        registeredModels.get(0).setCurrentUser(user);
+    }
+    
+    
 }

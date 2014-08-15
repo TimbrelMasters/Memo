@@ -1,9 +1,10 @@
 package memo.view;
 
-import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.net.URL;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -53,16 +54,11 @@ public class RootLayoutCode implements ViewInterface{
     private ComboBox<User> userComboBox;
 
     @FXML
-    Accordion themeAccordion;
+    private Accordion themeAccordion;
 
-    CustomAccordion customAccordion;
+    private CustomAccordion customAccordion;
 
-    ObservableList<User> users;
-
-    @Override
-    public void modelPropertyChange(PropertyChangeEvent evt) {
-        //it's empty bacause model empty
-    }
+    private ObservableList<User> users;
 
  /*
    ***
@@ -89,10 +85,10 @@ public class RootLayoutCode implements ViewInterface{
         handleTrayDoubleClick();
 
         /*------CONTROLS-------*/
-        users = FXCollections.observableArrayList(controller.getUserList());
-        userComboBox.setItems(users);
+        initUserComboBox();
 
-        customAccordion = new CustomAccordion(users.get(0), themeAccordion); //NEED SET USER WHICH IN COMBOBOX
+        customAccordion = new CustomAccordion(users.get(0), themeAccordion);
+        
     }
 
     private void initInnerViews(){
@@ -148,6 +144,20 @@ public class RootLayoutCode implements ViewInterface{
 
     private void initStartUpItem(){
         addToStratUpItem.setSelected(controller.isAddedToStartUp());
+    }
+    
+    private void initUserComboBox() {
+        users = FXCollections.observableArrayList(controller.getUserList());
+        userComboBox.setItems(users);
+        userComboBox.getSelectionModel().selectFirst();
+        userComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<User>() {
+            
+            @Override
+            public void changed(ObservableValue<? extends User> observable, User oldValue, User newValue) {
+                controller.setCurrentUser(newValue);
+            } 
+            
+        });
     }
 
     private void handleAddToStartUpClick(){
@@ -292,5 +302,11 @@ public class RootLayoutCode implements ViewInterface{
     public void addUser(User user) {
         users.add(user);
     }
-
+    
+    @Override
+    public void showUserCards(User user) {
+        customAccordion.setUser(user);
+        customAccordion.showUserCards();
+    }
+    
 }

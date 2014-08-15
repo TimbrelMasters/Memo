@@ -17,8 +17,16 @@ public class User {
         Section english = new Section("English");
         CardSet tenses = new CardSet("Tenses");
         Card presentSimple = new Card("Present Simple");
+        Card pastSimple = new Card("Past Simple");
         tenses.addCard(presentSimple);
+        tenses.addCard(pastSimple);
+        CardSet tenses1 = new CardSet("Tenses");
+        Card presentSimple1 = new Card("Present Simple");
+        Card pastSimple1 = new Card("Past Simple");
+        tenses1.addCard(presentSimple);
+        tenses1.addCard(pastSimple);
         english.addCardSet(tenses);
+        english.addCardSet(tenses1);
 
         sections.add(english);
     }

@@ -4,7 +4,9 @@ package memo.view;
 import java.util.ArrayList;
 import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
@@ -24,58 +26,16 @@ import memo.model.User;
 public class CustomAccordion {
 
     private static final double LIST_VIEW_HEIGHT = 23.1;
-
     private static final double INNER_ACCORDION_PADDING = 24;
     private Accordion accordion;
-    private User storage;
+    private User user;
 
 
-    public CustomAccordion(User storage){
-        this(storage, new Accordion());
-    }
-
-    public CustomAccordion(User storage, Accordion outerAccordion) {
-        this.storage = storage;
-        this.accordion = outerAccordion;
-        accordion.setMinWidth(50);
-        ArrayList<Section> themes = storage.getSections();
-        for(int i = 0; i < themes.size(); i++) {
-            Accordion inner = addFirstLevelLabel(themes.get(i).getName());
-            inner.setMinWidth(50);
-            inner.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
-            ArrayList<CardSet> decks = themes.get(i).getCardSets();
-            for(int j = 0; j < decks.size(); j++) {
-                ListView listView = addSecondLevelLabel(decks.get(j).getName(), inner);
-                listView.setItems(FXCollections.observableArrayList(decks.get(j).getCardSet()));
-                listView.setCellFactory(new Callback<ListView<Card>, ListCell<Card>>() {
-                    @Override
-                    public ListCell<Card> call(ListView<Card> param) {
-                        return new CustomListCell();
-                    }
-                });
-                listView.setPrefHeight(LIST_VIEW_HEIGHT*decks.get(j).getCardSet().size());
-            }
-        }
-    }
-
-    public Accordion addFirstLevelLabel(String name) {
-        Accordion inner = new Accordion();
-        TitledPane titledPane = new TitledPane(name, inner);
-        addComboBox(titledPane, accordion);
-        accordion.getPanes().add(titledPane);
-        return inner;
-    }
-
-    public ListView addSecondLevelLabel(String name, Accordion inner) {
-        ListView listView = new ListView();
-        TitledPane titledPane = new TitledPane(name, listView);
-        addComboBox(titledPane, inner);
-        inner.getPanes().add(titledPane);
-        return listView;
-    }
-
-    public void addThirdLevelLabel(Card card, ListView listView) {
-        listView.getItems().add(card);
+    public CustomAccordion(User user, Accordion accordion) {
+        this.accordion = accordion;
+        this.accordion.setMinWidth(50);
+        this.user = user;
+        showUserCards();
     }
 
     private void addComboBox(TitledPane titledPane, Accordion acco) {
@@ -107,14 +67,74 @@ public class CustomAccordion {
         });
 
     }
-
-    public void addCard() {
-
-        //accordion.getPanes()
-
+    
+    public void showUserCards() {
+        this.user = user;
+        this.accordion.getPanes().clear();
+        ArrayList<Section> sections = user.getSections();
+        for(int i = 0; i < sections.size(); i++) {
+            addSection(sections.get(i));
+            ArrayList<CardSet> cardSets = sections.get(i).getCardSets();
+            for(int j = 0; j < cardSets.size(); j++) {
+                addCardSet(i, cardSets.get(j));
+            }
+        }
     }
 
-    public Accordion getAccordion() {
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void addCard(int i, int j, Card card) {
+        Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
+        ListView listView = (ListView)inner.getPanes().get(j).getContent();
+        listView.getItems().add(card);
+        listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
+    }
+    
+    public void removeCard(int i, int j, int k) {
+        Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
+        ListView listView = (ListView)inner.getPanes().get(j).getContent();
+        listView.getItems().remove(k);
+        listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
+    }
+    
+    public void addCardSet(int i, CardSet cardSet) {
+        Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
+        inner.setMinWidth(50);
+        inner.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
+        ListView listView = new ListView(FXCollections.observableArrayList(cardSet.getCardSet()));
+        listView.setCellFactory(null);
+        listView.setCellFactory(new Callback<ListView<Card>, ListCell<Card>>() {
+            @Override
+            public ListCell<Card> call(ListView<Card> param) {
+                return new CustomListCell();
+            }
+        });
+        listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
+        TitledPane titledPane = new TitledPane(cardSet.getName(), listView);
+        addComboBox(titledPane, inner);
+        inner.getPanes().add(titledPane);
+    }
+    
+    public void removeCardSet(int i, int j) {
+        Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
+        inner.getPanes().remove(j);
+    }
+    
+    public void addSection(Section section) {
+        Accordion inner = new Accordion();
+        inner.setMinWidth(50);
+        TitledPane titledPane = new TitledPane(section.getName(), inner);
+        addComboBox(titledPane, accordion);
+        accordion.getPanes().add(titledPane);
+    }
+    
+    public void removeSection(int i) {
+        accordion.getPanes().remove(i);
+    }
+    
+    public Accordion getRoot() {
         return accordion;
     }
 

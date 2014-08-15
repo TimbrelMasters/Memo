@@ -60,6 +60,7 @@ public abstract class AbstractController implements ModelChangedListener, NewIns
 
     public abstract ArrayList<User> getUserList();
     public abstract void addUser(User user);
+    public abstract void setCurrentUser(User user);
 
     @Override
     public void onNewInstance() {

@@ -17,12 +17,6 @@ public interface ViewInterface {
     public void setPrimaryStage(Stage primaryStage);
     public void setRootLayout(BorderPane rootLayout);
 
-    /**
-     * <p> Controller notifies this method about model changing
-     * @param evt .getPropertyName() is name of variable which has been changed
-     */
-    public void modelPropertyChange(final PropertyChangeEvent evt);
-
     //public boolean isHideableToTray();
     public void hideStage();
     public void showStage();
@@ -33,6 +27,7 @@ public interface ViewInterface {
     public boolean isShowing();
 
     public void addUser(User user);
+    public void showUserCards(User user);
 
     /**
      * Bring the Window to foreground

@@ -2,6 +2,7 @@ package memo.model;
 
 import java.util.ArrayList;
 import memo.events.AddUserEvent;
+import memo.events.CurrentUserChangedEvent;
 
 /**
  *
@@ -9,12 +10,14 @@ import memo.events.AddUserEvent;
  */
 public class Model extends AbstractModel{
 
-    ArrayList<User> users;
+    private ArrayList<User> users;
+    private User currentUser;
 
     public Model(){
         super();
         users = new ArrayList<>();
         users.add(new User());
+        currentUser = users.get(0);
     }
 
     @Override
@@ -27,4 +30,11 @@ public class Model extends AbstractModel{
         users.add(user);
         fireModelChanged(new AddUserEvent(user));
     }
+
+    @Override
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+        fireModelChanged(new CurrentUserChangedEvent(user));
+    }
+    
 }

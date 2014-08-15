@@ -29,5 +29,6 @@ public abstract class AbstractModel {
     
     public abstract ArrayList<User> getUserList();
     public abstract void addUser(User user);
+    public abstract void setCurrentUser(User user);
 
 }
