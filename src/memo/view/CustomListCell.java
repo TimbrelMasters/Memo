@@ -83,7 +83,7 @@ public class CustomListCell extends ListCell<Card> {
                 }
             });
             setText("+ Add new Card");
-            //setGraphic(null);
+            setGraphic(null);
         }
     }
     public String getName() {
