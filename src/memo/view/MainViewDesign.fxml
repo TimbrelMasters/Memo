@@ -10,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="memo.view.MainViewCode">
+<AnchorPane fx:id="thisPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="memo.view.MainViewCode">
    <children>
       <Label layoutY="3.0" text="Content">
          <padding>

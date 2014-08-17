@@ -1,22 +1,28 @@
 package memo.view;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 
 /**
  *
  * @author Pisarik
  */
-public class MainViewCode extends AbstractView{
+public class EditThemeCode extends AbstractView{
 
     @FXML
-    AnchorPane thisPane;
+    private AnchorPane thisPane;
 
-    public MainViewCode(){
+    @FXML
+    private TextArea nameArea;
+
+    public EditThemeCode() {
     }
 
     @Override
     public void manualInitialize(){
         setRootPane(thisPane);
     }
+
+
 }

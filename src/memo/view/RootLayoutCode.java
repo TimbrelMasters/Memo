@@ -3,7 +3,6 @@ package memo.view;
 import java.io.IOException;
 import java.net.URL;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,7 +16,6 @@ import javafx.scene.control.RadioMenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import memo.controller.AbstractController;
 import memo.model.User;
@@ -27,22 +25,19 @@ import memo.utils.TrayUtility;
  *
  * @author Pisarik
  */
-public class RootLayoutCode implements ViewInterface{
+public class RootLayoutCode extends AbstractView implements RootViewInterface{
 
     private final URL TRAY_ICON_URL;
 
-    private AbstractController controller;
-
     private MainViewCode mainView;
 
-    private BorderPane rootLayout;
-    private Pane mainViewPane;
-
-    private Stage primaryStage;
     private TrayUtility trayUtility;
     private java.awt.PopupMenu trayMenu;
     private java.awt.MenuItem trayExitItem;
     private java.awt.MenuItem trayOpenItem;
+
+    @FXML
+    private BorderPane thisPane;
 
     @FXML
     private RadioMenuItem addToStratUpItem;
@@ -68,11 +63,14 @@ public class RootLayoutCode implements ViewInterface{
 
     @Override
     public void manualInitialize() {
+        /*------CONSTRUCTOR----*/
+        setRootPane(thisPane);
+        /*-------SYSTEM--------*/
         initStartUpItem();
         initSystemTray();
         initIcons();
         initInnerViews();
-        initStartView();
+        setInnerPane(mainView.getRootPane());
 
         /*-----MAIN MENU-------*/
         handleAddToStartUpClick();
@@ -88,13 +86,13 @@ public class RootLayoutCode implements ViewInterface{
         initUserComboBox();
 
         customAccordion = new CustomAccordion(users.get(0), themeAccordion);
-        
+
     }
 
     private void initInnerViews(){
         try{
             FXMLLoader mainViewLoader = new FXMLLoader(this.getClass().getResource("MainViewDesign.fxml"));
-            mainViewPane = mainViewLoader.load();
+            mainViewLoader.load();
             mainView = mainViewLoader.getController();
             mainView.manualInitialize();
         }
@@ -103,8 +101,8 @@ public class RootLayoutCode implements ViewInterface{
         }
     }
 
-    private void initStartView(){ //may be setInnerView
-        rootLayout.setRight(mainViewPane);
+    private void setInnerPane(Pane innerPane){
+        thisPane.setRight(innerPane);
     }
 
     private void initTrayMenu(){
@@ -145,18 +143,14 @@ public class RootLayoutCode implements ViewInterface{
     private void initStartUpItem(){
         addToStratUpItem.setSelected(controller.isAddedToStartUp());
     }
-    
+
     private void initUserComboBox() {
         users = FXCollections.observableArrayList(controller.getUserList());
         userComboBox.setItems(users);
         userComboBox.getSelectionModel().selectFirst();
-        userComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<User>() {
-            
-            @Override
-            public void changed(ObservableValue<? extends User> observable, User oldValue, User newValue) {
-                controller.setCurrentUser(newValue);
-            } 
-            
+        userComboBox.getSelectionModel().selectedItemProperty().addListener(
+                (ObservableValue<? extends User> observable, User oldValue, User newValue) -> {
+            controller.setCurrentUser(newValue);
         });
     }
 
@@ -239,21 +233,6 @@ public class RootLayoutCode implements ViewInterface{
    ***
     */
 
-    @Override
-    public void setController(AbstractController controller) {
-        this.controller = controller;
-    }
-
-    @Override
-    public void setPrimaryStage(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-    }
-
-    @Override
-    public void setRootLayout(BorderPane rootLayout) {
-        this.rootLayout = rootLayout;
-    }
-
   /*
    ***
    *** Some action methods
@@ -302,11 +281,11 @@ public class RootLayoutCode implements ViewInterface{
     public void addUser(User user) {
         users.add(user);
     }
-    
+
     @Override
     public void showUserCards(User user) {
         customAccordion.setUser(user);
         customAccordion.showUserCards();
     }
-    
+
 }

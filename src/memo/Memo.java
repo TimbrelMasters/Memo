@@ -15,7 +15,8 @@ import memo.controller.Controller;
 import memo.model.AbstractModel;
 import memo.model.Model;
 import memo.utils.singleinstance.SingleInstanceUtility;
-import memo.view.ViewInterface;
+import memo.view.AbstractView;
+import memo.view.RootViewInterface;
 
 /**
  *
@@ -29,7 +30,8 @@ public class Memo extends Application {
 
     private AbstractModel model;
     private AbstractController controller;
-    private ViewInterface rootView;
+    private AbstractView view;
+    private RootViewInterface viewInterface;
 
     @Override
     public void start(Stage primaryStage) {
@@ -41,8 +43,6 @@ public class Memo extends Application {
         } catch (IOException ex) {
             Logger.getLogger(Memo.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        //rootLayout.setRight(mainLayout);
 
         Scene scene = new Scene(rootLayout);
         primaryStage.setTitle("Memo");
@@ -56,15 +56,15 @@ public class Memo extends Application {
 
         this.model = new Model();
         this.controller = new Controller();
-        this.rootView = rootLoader.getController();
+        this.view = rootLoader.getController();
+        this.viewInterface = rootLoader.getController();
 
-        rootView.setController(controller);
-        rootView.setPrimaryStage(primaryStage);
-        rootView.setRootLayout(this.rootLayout);
+        view.setController(controller);
+        view.setPrimaryStage(primaryStage);
         controller.addModel(model);
-        controller.addView(rootView);
+        controller.addView(viewInterface);
 
-        rootView.manualInitialize();
+        view.manualInitialize();
         SingleInstanceUtility.setNewInstanceListener(controller);
     }
 
