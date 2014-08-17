@@ -6,13 +6,13 @@ import memo.model.AbstractModel;
 import memo.model.Card;
 import memo.model.User;
 import memo.utils.singleinstance.NewInstanceListener;
-import memo.view.ViewInterface;
+import memo.view.RootViewInterface;
 
 
 public abstract class AbstractController implements ModelChangedListener, NewInstanceListener {
 
     protected ArrayList<AbstractModel> registeredModels;
-    protected ArrayList<ViewInterface> registeredViews;
+    protected ArrayList<RootViewInterface> registeredViews;
 
     public AbstractController() {
         registeredModels = new ArrayList<>();
@@ -29,11 +29,11 @@ public abstract class AbstractController implements ModelChangedListener, NewIns
         model.removeModelChangedListener(this);
     }
 
-    public void addView(ViewInterface view) {
+    public void addView(RootViewInterface view) {
         registeredViews.add(view);
     }
 
-    public void removeView(ViewInterface view) {
+    public void removeView(RootViewInterface view) {
         registeredViews.remove(view);
     }
 

@@ -8,6 +8,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventType;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.CheckBox;
@@ -16,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.util.Callback;
@@ -33,6 +35,7 @@ public class CustomAccordion {
     private static final double ACCORDION_MIN_WIDTH = 50;
     private AbstractController controller;
     private Accordion accordion;
+    private EventHandler<MouseEvent> onOpenTheme;
     private User user;
     private ArrayList<CheckBox> sectionCheckBoxes;
     private ArrayList<ArrayList<CheckBox>> cardSetCheckBoxes;
@@ -40,7 +43,7 @@ public class CustomAccordion {
     private int currentSection;
     private int currentSet;
 
-    public CustomAccordion(User user, Accordion accordion, AbstractController controller) {
+    public CustomAccordion(User user, Accordion accordion, AbstractController controller, EventHandler<MouseEvent> onOpenTheme) {
         this.accordion = accordion;
         this.accordion.setMinWidth(ACCORDION_MIN_WIDTH);
         this.accordion.expandedPaneProperty().addListener(new ChangeListener<TitledPane>(){
@@ -56,6 +59,7 @@ public class CustomAccordion {
         cardCheckBoxes = new ArrayList<>();
         CustomListCell.setController(controller);
         CustomListCell.setCustomAccordion(CustomAccordion.this);
+        this.onOpenTheme = onOpenTheme;
         showUserCards();
     }
 
@@ -88,7 +92,7 @@ public class CustomAccordion {
         });
         return checkBox;
     }
-    
+
     public void showUserCards() {
         this.user = user;
         this.accordion.getPanes().clear();
@@ -112,14 +116,14 @@ public class CustomAccordion {
         listView.getItems().add(listView.getItems().size()-1, card);
         listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
     }
-    
+
     public void removeCard(int i, int j, int k) {
         Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
         ListView listView = (ListView)inner.getPanes().get(j).getContent();
         listView.getItems().remove(k);
         listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
     }
-    
+
     public void addCardSet(int i, CardSet cardSet) {
         Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
         inner.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
@@ -146,14 +150,14 @@ public class CustomAccordion {
         cardCheckBoxes.get(i).add(new ArrayList<>());
         inner.getPanes().add(titledPane);
     }
-    
+
     public void removeCardSet(int i, int j) {
         Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
         inner.getPanes().remove(j);
         cardSetCheckBoxes.get(i).remove(j);
         cardCheckBoxes.get(i).remove(j);
     }
-    
+
     public void addSection(Section section) {
         Accordion inner = new Accordion();
         inner.setMinWidth(ACCORDION_MIN_WIDTH);
@@ -172,16 +176,18 @@ public class CustomAccordion {
                     }
             }
         });
+        titledPane.setOnMouseClicked(onOpenTheme);
+        addCheckBox(titledPane, accordion);
         accordion.getPanes().add(titledPane);
     }
-    
+
     public void removeSection(int i) {
         accordion.getPanes().remove(i);
         sectionCheckBoxes.remove(i);
         cardSetCheckBoxes.remove(i);
         cardCheckBoxes.remove(i);
     }
-    
+
     public Accordion getRoot() {
         return accordion;
     }

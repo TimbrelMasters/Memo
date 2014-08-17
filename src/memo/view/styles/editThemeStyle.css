@@ -1,0 +1,29 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : Aug 17, 2014, 11:34:36 AM
+    Author     : Pisarik
+*/
+
+.deleteButton{
+    -fx-background-color: #FF9999;
+    -fx-font-family: bold "Segoe UI ", Helvetica, Arial, sans-serif;
+    -fx-font-size: 15;
+}
+
+.deleteButton:hover{
+    -fx-background-color: #ff3333;
+}
+
+.saveButton{
+    -fx-background-color: #99ff99;
+    -fx-font-family: bold "Segoe UI ", Helvetica, Arial, sans-serif;
+    -fx-font-size: 15;
+}
+
+.saveButton:hover{
+    -fx-background-color: #33ff33;
+}

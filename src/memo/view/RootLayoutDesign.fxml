@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="memo.view.RootLayoutCode">
+<BorderPane fx:id="thisPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="memo.view.RootLayoutCode">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -23,7 +23,7 @@
       </MenuBar>
    </top>
    <left>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="368.0" prefWidth="328.0" BorderPane.alignment="CENTER">
+    <AnchorPane prefHeight="370.0" prefWidth="330.0" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="368.0" prefWidth="328.0" styleClass="welcomePane" stylesheets="@styles/WelcomePanelStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
