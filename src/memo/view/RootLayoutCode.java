@@ -7,6 +7,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Accordion;
@@ -14,6 +15,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.WindowEvent;
@@ -30,6 +32,7 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
     private final URL TRAY_ICON_URL;
 
     private MainViewCode mainView;
+    private EditThemeCode editThemeView;
 
     private TrayUtility trayUtility;
     private java.awt.PopupMenu trayMenu;
@@ -65,6 +68,7 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
     public void manualInitialize() {
         /*------CONSTRUCTOR----*/
         setRootPane(thisPane);
+
         /*-------SYSTEM--------*/
         initStartUpItem();
         initSystemTray();
@@ -85,7 +89,14 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
         /*------CONTROLS-------*/
         initUserComboBox();
 
-        customAccordion = new CustomAccordion(users.get(0), themeAccordion);
+        EventHandler<MouseEvent> onOpenTheme = new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                setInnerPane(editThemeView.getRootPane());
+            }
+        };
+        customAccordion = new CustomAccordion(users.get(0), themeAccordion, onOpenTheme);
 
     }
 
@@ -94,16 +105,22 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
             FXMLLoader mainViewLoader = new FXMLLoader(this.getClass().getResource("MainViewDesign.fxml"));
             mainViewLoader.load();
             mainView = mainViewLoader.getController();
+            mainView.setController(controller);
+            mainView.setPrimaryStage(primaryStage);
             mainView.manualInitialize();
+
+            FXMLLoader editThemeViewLoader = new FXMLLoader(this.getClass().getResource("EditThemeDesign.fxml"));
+            editThemeViewLoader.load();
+            editThemeView = editThemeViewLoader.getController();
+            editThemeView.setController(controller);
+            editThemeView.setPrimaryStage(primaryStage);
+            editThemeView.manualInitialize();
         }
         catch (IOException e){
             throw new RuntimeException(e);
         }
     }
 
-    private void setInnerPane(Pane innerPane){
-        thisPane.setRight(innerPane);
-    }
 
     private void initTrayMenu(){
         trayMenu = new java.awt.PopupMenu();
@@ -212,6 +229,11 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
         controller.addUser(new User("Pisarik"));
     }
 
+    public void OnThemeOpen(ActionEvent event){
+        setInnerPane(editThemeView.getRootPane());
+    }
+
+
  /*
    ***
    *** Constructors and Destructors
@@ -232,6 +254,10 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
    *** Setters and Getters
    ***
     */
+
+    private void setInnerPane(Pane innerPane){
+        thisPane.setRight(innerPane);
+    }
 
   /*
    ***

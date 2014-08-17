@@ -1,7 +1,7 @@
 package memo.view;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -14,7 +14,7 @@ public class EditThemeCode extends AbstractView{
     private AnchorPane thisPane;
 
     @FXML
-    private TextArea nameArea;
+    private TextField nameArea;
 
     public EditThemeCode() {
     }

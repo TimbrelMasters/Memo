@@ -4,9 +4,8 @@ package memo.view;
 import java.util.ArrayList;
 import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
-import javafx.event.EventType;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
@@ -14,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.util.Callback;
@@ -28,13 +28,15 @@ public class CustomAccordion {
     private static final double LIST_VIEW_HEIGHT = 23.1;
     private static final double INNER_ACCORDION_PADDING = 24;
     private Accordion accordion;
+    private EventHandler<MouseEvent> onOpenTheme;
     private User user;
 
 
-    public CustomAccordion(User user, Accordion accordion) {
+    public CustomAccordion(User user, Accordion accordion, EventHandler<MouseEvent> onOpenTheme) {
         this.accordion = accordion;
         this.accordion.setMinWidth(50);
         this.user = user;
+        this.onOpenTheme = onOpenTheme;
         showUserCards();
     }
 
@@ -67,7 +69,7 @@ public class CustomAccordion {
         });
 
     }
-    
+
     public void showUserCards() {
         this.user = user;
         this.accordion.getPanes().clear();
@@ -91,14 +93,14 @@ public class CustomAccordion {
         listView.getItems().add(card);
         listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
     }
-    
+
     public void removeCard(int i, int j, int k) {
         Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
         ListView listView = (ListView)inner.getPanes().get(j).getContent();
         listView.getItems().remove(k);
         listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
     }
-    
+
     public void addCardSet(int i, CardSet cardSet) {
         Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
         inner.setMinWidth(50);
@@ -116,24 +118,25 @@ public class CustomAccordion {
         addComboBox(titledPane, inner);
         inner.getPanes().add(titledPane);
     }
-    
+
     public void removeCardSet(int i, int j) {
         Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
         inner.getPanes().remove(j);
     }
-    
+
     public void addSection(Section section) {
         Accordion inner = new Accordion();
         inner.setMinWidth(50);
         TitledPane titledPane = new TitledPane(section.getName(), inner);
+        titledPane.setOnMouseClicked(onOpenTheme);
         addComboBox(titledPane, accordion);
         accordion.getPanes().add(titledPane);
     }
-    
+
     public void removeSection(int i) {
         accordion.getPanes().remove(i);
     }
-    
+
     public Accordion getRoot() {
         return accordion;
     }

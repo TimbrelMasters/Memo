@@ -23,7 +23,7 @@
       </MenuBar>
    </top>
    <left>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="368.0" prefWidth="328.0" BorderPane.alignment="CENTER">
+    <AnchorPane prefHeight="370.0" prefWidth="330.0" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="368.0" prefWidth="328.0" styleClass="welcomePane" stylesheets="@styles/WelcomePanelStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>

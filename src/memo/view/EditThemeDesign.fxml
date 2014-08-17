@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" fx:id="thisPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="memo.view.EditThemeCode">
+<AnchorPane id="AnchorPane" fx:id="thisPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="370.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="memo.view.EditThemeCode">
    <children>
       <TextField fx:id="nameArea" layoutX="85.0" layoutY="27.0" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="30.0" />
       <Label layoutX="14.0" layoutY="27.0" text="Name" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="30.0">
@@ -16,7 +16,7 @@
             <Font size="17.0" />
          </font>
       </Label>
-      <HBox layoutX="420.0" layoutY="361.0" spacing="5.0" AnchorPane.rightAnchor="10.0">
+      <HBox layoutX="420.0" layoutY="361.0" spacing="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <children>
             <Button layoutX="476.0" layoutY="361.0" mnemonicParsing="false" prefWidth="80.0" styleClass="saveButton" stylesheets="@styles/editThemeStyle.css" text="Save" />
             <Button layoutX="528.0" layoutY="361.0" mnemonicParsing="false" prefWidth="80.0" styleClass="deleteButton" stylesheets="@styles/editThemeStyle.css" text="Delete" />
