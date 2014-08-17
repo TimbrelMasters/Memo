@@ -3,10 +3,12 @@ package memo.view;
 
 import java.util.ArrayList;
 import javafx.beans.binding.DoubleBinding;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventType;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
@@ -17,6 +19,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.util.Callback;
+import memo.controller.AbstractController;
 import memo.model.Card;
 import memo.model.CardSet;
 import memo.model.Section;
@@ -27,18 +30,36 @@ public class CustomAccordion {
 
     private static final double LIST_VIEW_HEIGHT = 23.1;
     private static final double INNER_ACCORDION_PADDING = 24;
+    private static final double ACCORDION_MIN_WIDTH = 50;
+    private AbstractController controller;
     private Accordion accordion;
     private User user;
+    private ArrayList<CheckBox> sectionCheckBoxes;
+    private ArrayList<ArrayList<CheckBox>> cardSetCheckBoxes;
+    private ArrayList<ArrayList<ArrayList<CheckBox>>> cardCheckBoxes;
+    private int currentSection;
+    private int currentSet;
 
-
-    public CustomAccordion(User user, Accordion accordion) {
+    public CustomAccordion(User user, Accordion accordion, AbstractController controller) {
         this.accordion = accordion;
-        this.accordion.setMinWidth(50);
+        this.accordion.setMinWidth(ACCORDION_MIN_WIDTH);
+        this.accordion.expandedPaneProperty().addListener(new ChangeListener<TitledPane>(){
+            @Override
+            public void changed(ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) {
+                currentSection = accordion.getPanes().indexOf(newValue);
+            }
+        });
         this.user = user;
+        this.controller = controller;
+        sectionCheckBoxes = new ArrayList<>();
+        cardSetCheckBoxes = new ArrayList<>();
+        cardCheckBoxes = new ArrayList<>();
+        CustomListCell.setController(controller);
+        CustomListCell.setCustomAccordion(CustomAccordion.this);
         showUserCards();
     }
 
-    private void addComboBox(TitledPane titledPane, Accordion acco) {
+    private CheckBox addCheckBox(TitledPane titledPane, Accordion acco) {
         Label label = new Label();
         CheckBox checkBox = new CheckBox();
         AnchorPane title = new AnchorPane();
@@ -65,7 +86,7 @@ public class CustomAccordion {
                 return value;
             }
         });
-
+        return checkBox;
     }
     
     public void showUserCards() {
@@ -80,7 +101,7 @@ public class CustomAccordion {
             }
         }
     }
-
+    
     public void setUser(User user) {
         this.user = user;
     }
@@ -88,7 +109,7 @@ public class CustomAccordion {
     public void addCard(int i, int j, Card card) {
         Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
         ListView listView = (ListView)inner.getPanes().get(j).getContent();
-        listView.getItems().add(card);
+        listView.getItems().add(listView.getItems().size()-1, card);
         listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
     }
     
@@ -101,10 +122,17 @@ public class CustomAccordion {
     
     public void addCardSet(int i, CardSet cardSet) {
         Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
-        inner.setMinWidth(50);
+        inner.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
+            @Override
+            public void changed(ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) {
+                currentSet = inner.getPanes().indexOf(newValue);
+            }
+        });
+        inner.setMinWidth(ACCORDION_MIN_WIDTH);
         inner.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
-        ListView listView = new ListView(FXCollections.observableArrayList(cardSet.getCardSet()));
-        listView.setCellFactory(null);
+        ObservableList<Card> items = FXCollections.observableArrayList(cardSet.getCardSet());
+        items.add(new FakeCard());
+        ListView listView = new ListView(items);
         listView.setCellFactory(new Callback<ListView<Card>, ListCell<Card>>() {
             @Override
             public ListCell<Card> call(ListView<Card> param) {
@@ -113,29 +141,59 @@ public class CustomAccordion {
         });
         listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
         TitledPane titledPane = new TitledPane(cardSet.getName(), listView);
-        addComboBox(titledPane, inner);
+        CheckBox checkBox = addCheckBox(titledPane, inner);
+        cardSetCheckBoxes.get(i).add(checkBox);
+        cardCheckBoxes.get(i).add(new ArrayList<>());
         inner.getPanes().add(titledPane);
     }
     
     public void removeCardSet(int i, int j) {
         Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
         inner.getPanes().remove(j);
+        cardSetCheckBoxes.get(i).remove(j);
+        cardCheckBoxes.get(i).remove(j);
     }
     
     public void addSection(Section section) {
         Accordion inner = new Accordion();
-        inner.setMinWidth(50);
+        inner.setMinWidth(ACCORDION_MIN_WIDTH);
         TitledPane titledPane = new TitledPane(section.getName(), inner);
-        addComboBox(titledPane, accordion);
+        CheckBox checkBox = addCheckBox(titledPane, accordion);
+        sectionCheckBoxes.add(checkBox);
+        cardSetCheckBoxes.add(new ArrayList<>());
+        cardCheckBoxes.add(new ArrayList<>());
+        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    int i = sectionCheckBoxes.indexOf(checkBox);
+                    ArrayList<CheckBox> innerCheckBoxes = cardSetCheckBoxes.get(i);
+                    for (int j = 0; j < innerCheckBoxes.size(); j++) {
+                        cardSetCheckBoxes.get(i).get(j).setSelected(newValue);
+                    }
+            }
+        });
         accordion.getPanes().add(titledPane);
     }
     
     public void removeSection(int i) {
         accordion.getPanes().remove(i);
+        sectionCheckBoxes.remove(i);
+        cardSetCheckBoxes.remove(i);
+        cardCheckBoxes.remove(i);
     }
     
     public Accordion getRoot() {
         return accordion;
     }
 
+    public int getCurrentSection() {
+        return currentSection;
+    }
+
+    public int getCurrentSet() {
+        return currentSet;
+    }
+    
+    
+    
 }

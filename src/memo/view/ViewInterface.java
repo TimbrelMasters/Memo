@@ -1,9 +1,9 @@
 package memo.view;
 
-import java.beans.PropertyChangeEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import memo.controller.AbstractController;
+import memo.model.Card;
 import memo.model.User;
 
 
@@ -28,6 +28,7 @@ public interface ViewInterface {
 
     public void addUser(User user);
     public void showUserCards(User user);
+    public void addCard(int i, int j, Card card);
 
     /**
      * Bring the Window to foreground

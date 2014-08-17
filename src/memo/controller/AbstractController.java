@@ -1,10 +1,9 @@
 package memo.controller;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import memo.events.ModelChangedEvent;
 import memo.model.AbstractModel;
+import memo.model.Card;
 import memo.model.User;
 import memo.utils.singleinstance.NewInstanceListener;
 import memo.view.ViewInterface;
@@ -61,6 +60,7 @@ public abstract class AbstractController implements ModelChangedListener, NewIns
     public abstract ArrayList<User> getUserList();
     public abstract void addUser(User user);
     public abstract void setCurrentUser(User user);
+    public abstract void addCard(int i, int j, Card card);
 
     @Override
     public void onNewInstance() {

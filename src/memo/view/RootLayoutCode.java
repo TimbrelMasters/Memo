@@ -20,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import memo.controller.AbstractController;
+import memo.model.Card;
 import memo.model.User;
 import memo.utils.TrayUtility;
 
@@ -87,7 +88,7 @@ public class RootLayoutCode implements ViewInterface{
         /*------CONTROLS-------*/
         initUserComboBox();
 
-        customAccordion = new CustomAccordion(users.get(0), themeAccordion);
+        customAccordion = new CustomAccordion(users.get(0), themeAccordion, controller);
         
     }
 
@@ -218,6 +219,7 @@ public class RootLayoutCode implements ViewInterface{
         controller.addUser(new User("Pisarik"));
     }
 
+    
  /*
    ***
    *** Constructors and Destructors
@@ -307,6 +309,11 @@ public class RootLayoutCode implements ViewInterface{
     public void showUserCards(User user) {
         customAccordion.setUser(user);
         customAccordion.showUserCards();
+    }
+    
+    @Override
+    public void addCard(int i, int j, Card card) {
+        customAccordion.addCard(i, j, card);
     }
     
 }

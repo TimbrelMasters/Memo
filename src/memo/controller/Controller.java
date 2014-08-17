@@ -2,6 +2,7 @@ package memo.controller;
 
 import java.util.ArrayList;
 import javafx.application.Platform;
+import memo.model.Card;
 import memo.model.User;
 import memo.utils.platform.PlatformUtils;
 import memo.utils.platform.WindowsUtils;
@@ -81,6 +82,12 @@ public class Controller extends AbstractController{
     public void setCurrentUser(User user) {
         registeredModels.get(0).setCurrentUser(user);
     }
+
+    @Override
+    public void addCard(int i, int j, Card card) {
+        registeredModels.get(0).addCard(i, j, card);
+    }
+    
     
     
 }
