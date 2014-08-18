@@ -3,6 +3,8 @@ package memo.controller;
 import java.util.ArrayList;
 import javafx.application.Platform;
 import memo.model.Card;
+import memo.model.CardSet;
+import memo.model.Section;
 import memo.model.User;
 import memo.utils.platform.PlatformUtils;
 import memo.utils.platform.WindowsUtils;
@@ -87,7 +89,15 @@ public class Controller extends AbstractController{
     public void addCard(int i, int j, Card card) {
         registeredModels.get(0).addCard(i, j, card);
     }
-    
-    
+
+    @Override
+    public void addCardSet(int i, CardSet cardSet) {
+        registeredModels.get(0).addCardSet(i, cardSet);
+    }
+
+    @Override
+    public void addSection(Section section) {
+        registeredModels.get(0).addSection(section);
+    }
     
 }

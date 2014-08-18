@@ -7,7 +7,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventType;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Accordion;
@@ -46,12 +45,6 @@ public class CustomAccordion {
     public CustomAccordion(User user, Accordion accordion, AbstractController controller, EventHandler<MouseEvent> onOpenTheme) {
         this.accordion = accordion;
         this.accordion.setMinWidth(ACCORDION_MIN_WIDTH);
-        this.accordion.expandedPaneProperty().addListener(new ChangeListener<TitledPane>(){
-            @Override
-            public void changed(ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) {
-                currentSection = accordion.getPanes().indexOf(newValue);
-            }
-        });
         this.user = user;
         this.controller = controller;
         sectionCheckBoxes = new ArrayList<>();
@@ -96,9 +89,11 @@ public class CustomAccordion {
     public void showUserCards() {
         this.user = user;
         this.accordion.getPanes().clear();
+        addSectionButton();
         ArrayList<Section> sections = user.getSections();
         for(int i = 0; i < sections.size(); i++) {
             addSection(sections.get(i));
+            addCardSetButton(i);
             ArrayList<CardSet> cardSets = sections.get(i).getCardSets();
             for(int j = 0; j < cardSets.size(); j++) {
                 addCardSet(i, cardSets.get(j));
@@ -123,15 +118,30 @@ public class CustomAccordion {
         listView.getItems().remove(k);
         listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
     }
-
-    public void addCardSet(int i, CardSet cardSet) {
-        Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
+    
+    public void addCardSetButton(int i) {
+        Accordion inner = (Accordion) accordion.getPanes().get(i).getContent();
         inner.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
             @Override
             public void changed(ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) {
                 currentSet = inner.getPanes().indexOf(newValue);
             }
         });
+        inner.setMinWidth(ACCORDION_MIN_WIDTH);
+        inner.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
+        TitledPane titledPane = new TitledPane("+ Add new CardSet", null);
+        titledPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                controller.addCardSet(i, new CardSet("Empty"));
+                inner.getPanes().get(inner.getPanes().size()-2).setExpanded(true);
+            }
+        });
+        inner.getPanes().add(titledPane);
+    }
+    
+    public void addCardSet(int i, CardSet cardSet) {
+        Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
         inner.setMinWidth(ACCORDION_MIN_WIDTH);
         inner.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
         ObservableList<Card> items = FXCollections.observableArrayList(cardSet.getCardSet());
@@ -148,7 +158,7 @@ public class CustomAccordion {
         CheckBox checkBox = addCheckBox(titledPane, inner);
         cardSetCheckBoxes.get(i).add(checkBox);
         cardCheckBoxes.get(i).add(new ArrayList<>());
-        inner.getPanes().add(titledPane);
+        inner.getPanes().add(inner.getPanes().size()-1, titledPane);
     }
 
     public void removeCardSet(int i, int j) {
@@ -157,7 +167,26 @@ public class CustomAccordion {
         cardSetCheckBoxes.get(i).remove(j);
         cardCheckBoxes.get(i).remove(j);
     }
-
+    
+    public void addSectionButton() {
+        this.accordion.expandedPaneProperty().addListener(new ChangeListener<TitledPane>(){
+            @Override
+            public void changed(ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) {
+                currentSection = accordion.getPanes().indexOf(newValue);
+            }
+        });
+        TitledPane titledPane = new TitledPane("+ Add new Section", null);
+        accordion.getPanes().add(titledPane);
+        titledPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                controller.addSection(new Section("Empty"));
+                addCardSetButton(currentSection);
+                accordion.getPanes().get(accordion.getPanes().size()-2).setExpanded(true);
+            }
+        }); 
+    }
+    
     public void addSection(Section section) {
         Accordion inner = new Accordion();
         inner.setMinWidth(ACCORDION_MIN_WIDTH);
@@ -178,7 +207,7 @@ public class CustomAccordion {
         });
         titledPane.setOnMouseClicked(onOpenTheme);
         addCheckBox(titledPane, accordion);
-        accordion.getPanes().add(titledPane);
+        accordion.getPanes().add(accordion.getPanes().size()-1, titledPane);
     }
 
     public void removeSection(int i) {

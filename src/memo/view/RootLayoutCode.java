@@ -21,6 +21,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.WindowEvent;
 import memo.controller.AbstractController;
 import memo.model.Card;
+import memo.model.CardSet;
+import memo.model.Section;
 import memo.model.User;
 import memo.utils.TrayUtility;
 
@@ -318,6 +320,16 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
     @Override
     public void addCard(int i, int j, Card card) {
         customAccordion.addCard(i, j, card);
+    }
+
+    @Override
+    public void addCardSet(int i, CardSet cardSet) {
+        customAccordion.addCardSet(i, cardSet);
+    }
+
+    @Override
+    public void addSection(Section section) {
+        customAccordion.addSection(section);
     }
     
 }

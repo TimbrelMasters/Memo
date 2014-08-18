@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import memo.events.ModelChangedEvent;
 import memo.model.AbstractModel;
 import memo.model.Card;
+import memo.model.CardSet;
+import memo.model.Section;
 import memo.model.User;
 import memo.utils.singleinstance.NewInstanceListener;
 import memo.view.RootViewInterface;
@@ -61,6 +63,8 @@ public abstract class AbstractController implements ModelChangedListener, NewIns
     public abstract void addUser(User user);
     public abstract void setCurrentUser(User user);
     public abstract void addCard(int i, int j, Card card);
+    public abstract void addCardSet(int i, CardSet cardSet);
+    public abstract void addSection(Section section);
 
     @Override
     public void onNewInstance() {

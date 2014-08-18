@@ -1,6 +1,8 @@
 package memo.view;
 
 import memo.model.Card;
+import memo.model.CardSet;
+import memo.model.Section;
 import memo.model.User;
 
 
@@ -19,6 +21,8 @@ public interface RootViewInterface {
     public void addUser(User user);
     public void showUserCards(User user);
     public void addCard(int i, int j, Card card);
+    public void addCardSet(int i, CardSet cardSet);
+    public void addSection(Section section);
 
     /**
      * Bring the Window to foreground

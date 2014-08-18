@@ -3,7 +3,9 @@ package memo.model;
 import java.util.ArrayList;
 import memo.events.AddUserEvent;
 import memo.events.CardAddedEvent;
+import memo.events.CardSetAddedEvent;
 import memo.events.CurrentUserChangedEvent;
+import memo.events.SectionAddedEvent;
 
 /**
  *
@@ -43,6 +45,19 @@ public class Model extends AbstractModel{
         currentUser.getSections().get(i).getCardSets().get(j).addCard(card);
         fireModelChanged(new CardAddedEvent(i, j, card));
     }
+
+    @Override
+    public void addCardSet(int i, CardSet cardSet) {
+        currentUser.getSections().get(i).addCardSet(cardSet);
+        fireModelChanged(new CardSetAddedEvent(i, cardSet));
+    }
+
+    @Override
+    public void addSection(Section section) {
+        currentUser.addSection(section);
+        fireModelChanged(new SectionAddedEvent(section));
+    }
+    
     
     
 }

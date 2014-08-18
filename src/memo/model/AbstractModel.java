@@ -31,4 +31,6 @@ public abstract class AbstractModel {
     public abstract void addUser(User user);
     public abstract void setCurrentUser(User user);
     public abstract void addCard(int i, int j, Card card);
+    public abstract void addCardSet(int i, CardSet cardSet);
+    public abstract void addSection(Section section);
 }
