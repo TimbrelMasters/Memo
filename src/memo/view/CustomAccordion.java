@@ -102,7 +102,7 @@ public class CustomAccordion {
             }
         }
     }
-    
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -120,7 +120,7 @@ public class CustomAccordion {
         listView.getItems().remove(k);
         listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
     }
-    
+
     public void addCardSetButton(int i) {
         Accordion inner = (Accordion) accordion.getPanes().get(i).getContent();
         inner.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
@@ -141,12 +141,12 @@ public class CustomAccordion {
         });
         inner.getPanes().add(titledPane);
     }
-    
+
     public void addCardSet(int i, CardSet cardSet) {
         Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
         inner.setMinWidth(ACCORDION_MIN_WIDTH);
         inner.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
-        ObservableList<Card> items = FXCollections.observableArrayList(cardSet.getCardSet());
+        ObservableList<Card> items = FXCollections.observableArrayList(cardSet.getCards());
         items.add(new FakeCard());
         ListView listView = new ListView(items);
         listView.setCellFactory(new Callback<ListView<Card>, ListCell<Card>>() {
@@ -162,7 +162,7 @@ public class CustomAccordion {
                 System.out.println(currentCard);
             }
         });
-       
+
         listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
         TitledPane titledPane = new TitledPane(cardSet.getName(), listView);
         CheckBox checkBox = addCheckBox(titledPane, inner);
@@ -177,7 +177,7 @@ public class CustomAccordion {
         cardSetCheckBoxes.get(i).remove(j);
         cardCheckBoxes.get(i).remove(j);
     }
-    
+
     public void addSectionButton() {
         this.accordion.expandedPaneProperty().addListener(new ChangeListener<TitledPane>(){
             @Override
@@ -194,9 +194,9 @@ public class CustomAccordion {
                 addCardSetButton(currentSection);
                 accordion.getPanes().get(accordion.getPanes().size()-2).setExpanded(true);
             }
-        }); 
+        });
     }
-    
+
     public void addSection(Section section) {
         Accordion inner = new Accordion();
         inner.setMinWidth(ACCORDION_MIN_WIDTH);
@@ -242,5 +242,5 @@ public class CustomAccordion {
     public int getCurrentCard() {
         return currentCard;
     }
-    
+
 }

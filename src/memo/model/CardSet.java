@@ -2,43 +2,50 @@
 package memo.model;
 
 import java.util.ArrayList;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+
+@XmlRootElement(name = "cardSet")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class CardSet {
-
+    @XmlElement(name = "name")
     private String name;
-    private ArrayList<Card> cardSet;
+    @XmlElement(name = "card")
+    private ArrayList<Card> cards;
 
     public CardSet() {
-        cardSet = new ArrayList<Card>();
+        cards = new ArrayList<>();
     }
 
     public CardSet(String name) {
         this.name = name;
-        cardSet = new ArrayList<Card>();
+        cards = new ArrayList<>();
     }
 
     public void addCard(Card card) {
-        cardSet.add(card);
+        cards.add(card);
     }
 
     public int getCardsCount() {
-        return cardSet.size();
+        return cards.size();
     }
 
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public ArrayList<Card> getCardSet() {
-        return cardSet;
+    public ArrayList<Card> getCards() {
+        return cards;
     }
 
-    public void setCardSet(ArrayList<Card> cardSet) {
-        this.cardSet = cardSet;
+    public void setCards(ArrayList<Card> cardSet) {
+        this.cards = cardSet;
     }
 
 }
