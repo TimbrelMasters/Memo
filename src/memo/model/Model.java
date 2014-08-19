@@ -3,9 +3,12 @@ package memo.model;
 import java.util.ArrayList;
 import memo.events.AddUserEvent;
 import memo.events.CardAddedEvent;
+import memo.events.CardRemovedEvent;
 import memo.events.CardSetAddedEvent;
+import memo.events.CardSetRemovedEvent;
 import memo.events.CurrentUserChangedEvent;
 import memo.events.SectionAddedEvent;
+import memo.events.SectionRemovedEvent;
 
 /**
  *
@@ -42,21 +45,40 @@ public class Model extends AbstractModel{
 
     @Override
     public void addCard(int i, int j, Card card) {
-        currentUser.getSections().get(i).getCardSets().get(j).addCard(card);
+        currentUser.getSections().get(i).getCardSets().get(j).getCardSet().add(card);
         fireModelChanged(new CardAddedEvent(i, j, card));
     }
 
     @Override
     public void addCardSet(int i, CardSet cardSet) {
-        currentUser.getSections().get(i).addCardSet(cardSet);
+        currentUser.getSections().get(i).getCardSets().add(cardSet);
         fireModelChanged(new CardSetAddedEvent(i, cardSet));
     }
 
     @Override
     public void addSection(Section section) {
-        currentUser.addSection(section);
+        currentUser.getSections().add(section);
         fireModelChanged(new SectionAddedEvent(section));
     }
+
+    @Override
+    public void removeCard(int i, int j, int k) {
+        currentUser.getSections().get(i).getCardSets().get(j).getCardSet().remove(k);
+        fireModelChanged(new CardRemovedEvent(i, j, k));
+    }
+
+    @Override
+    public void removeCardSet(int i, int j) {
+        currentUser.getSections().get(i).getCardSets().remove(j);
+        fireModelChanged(new CardSetRemovedEvent(i, j));
+    }
+
+    @Override
+    public void removeSection(int i) {
+        currentUser.getSections().remove(i);
+        fireModelChanged(new SectionRemovedEvent(i));
+    }
+    
     
     
     

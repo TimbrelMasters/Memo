@@ -99,5 +99,20 @@ public class Controller extends AbstractController{
     public void addSection(Section section) {
         registeredModels.get(0).addSection(section);
     }
+
+    @Override
+    public void removeCard(int i, int j, int k) {
+        registeredModels.get(0).removeCard(i, j, k);
+    }
+
+    @Override
+    public void removeCardSet(int i, int j) {
+        registeredModels.get(0).removeCardSet(i, j);
+    }
+
+    @Override
+    public void removeSection(int i) {
+        registeredModels.get(0).removeSection(i);
+    }
     
 }

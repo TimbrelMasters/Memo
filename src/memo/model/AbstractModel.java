@@ -33,4 +33,8 @@ public abstract class AbstractModel {
     public abstract void addCard(int i, int j, Card card);
     public abstract void addCardSet(int i, CardSet cardSet);
     public abstract void addSection(Section section);
+    public abstract void removeCard(int i, int j, int k);
+    public abstract void removeCardSet(int i, int j);
+    public abstract void removeSection(int i);
+    
 }

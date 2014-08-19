@@ -50,7 +50,7 @@ public class User {
     public void setSections(ArrayList<Section> sections) {
         this.sections = sections;
     }
-    
+
     public void addSection(Section section) {
         this.sections.add(section);
     }

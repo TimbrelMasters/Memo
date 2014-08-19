@@ -6,6 +6,7 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -41,6 +42,7 @@ public class CustomAccordion {
     private ArrayList<ArrayList<ArrayList<CheckBox>>> cardCheckBoxes;
     private int currentSection;
     private int currentSet;
+    private int currentCard;
 
     public CustomAccordion(User user, Accordion accordion, AbstractController controller, EventHandler<MouseEvent> onOpenTheme) {
         this.accordion = accordion;
@@ -153,6 +155,14 @@ public class CustomAccordion {
                 return new CustomListCell();
             }
         });
+        listView.getSelectionModel().getSelectedIndices().addListener(new ListChangeListener() {
+            @Override
+            public void onChanged(ListChangeListener.Change c) {
+                currentCard = (Integer)c.getList().get(0);
+                System.out.println(currentCard);
+            }
+        });
+       
         listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
         TitledPane titledPane = new TitledPane(cardSet.getName(), listView);
         CheckBox checkBox = addCheckBox(titledPane, inner);
@@ -228,7 +238,9 @@ public class CustomAccordion {
     public int getCurrentSet() {
         return currentSet;
     }
-    
-    
+
+    public int getCurrentCard() {
+        return currentCard;
+    }
     
 }

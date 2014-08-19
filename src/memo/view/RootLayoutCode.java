@@ -331,5 +331,22 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
     public void addSection(Section section) {
         customAccordion.addSection(section);
     }
+
+    @Override
+    public void removeCard(int i, int j, int k) {
+        customAccordion.removeCard(i, j, k);
+    }
+
+    @Override
+    public void removeCardSet(int i, int j) {
+        customAccordion.removeCardSet(i, j);
+    }
+
+    @Override
+    public void removeSection(int i) {
+        customAccordion.removeSection(i);
+    }
+    
+    
     
 }
