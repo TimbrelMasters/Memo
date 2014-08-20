@@ -113,21 +113,24 @@ public class CustomAccordion {
     }
 
     public void addCard(int i, int j, Card card) {
-        Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
+        ScrollPane innerSroll = (ScrollPane) accordion.getPanes().get(i).getContent();
+        Accordion inner = (Accordion) innerSroll.getContent();
         ListView listView = (ListView)inner.getPanes().get(j).getContent();
         listView.getItems().add(listView.getItems().size()-1, card);
         listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
     }
 
     public void removeCard(int i, int j, int k) {
-        Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
+        ScrollPane innerSroll = (ScrollPane) accordion.getPanes().get(i).getContent();
+        Accordion inner = (Accordion) innerSroll.getContent();
         ListView listView = (ListView)inner.getPanes().get(j).getContent();
         listView.getItems().remove(k);
         listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
     }
 
     public void addCardSetButton(int i) {
-        Accordion inner = (Accordion) accordion.getPanes().get(i).getContent();
+        ScrollPane innerSroll = (ScrollPane) accordion.getPanes().get(i).getContent();
+        Accordion inner = (Accordion) innerSroll.getContent();
         inner.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
             @Override
             public void changed(ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) {
@@ -148,7 +151,8 @@ public class CustomAccordion {
     }
 
     public void addCardSet(int i, CardSet cardSet) {
-        Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
+        ScrollPane innerSroll = (ScrollPane) accordion.getPanes().get(i).getContent();
+        Accordion inner = (Accordion) innerSroll.getContent();
         inner.setMinWidth(ACCORDION_MIN_WIDTH);
         inner.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
         ObservableList<Card> items = FXCollections.observableArrayList(cardSet.getCards());
@@ -177,7 +181,8 @@ public class CustomAccordion {
     }
 
     public void removeCardSet(int i, int j) {
-        Accordion inner = (Accordion)accordion.getPanes().get(i).getContent();
+        ScrollPane innerSroll = (ScrollPane)accordion.getPanes().get(i).getContent();
+        Accordion inner = (Accordion)innerSroll.getContent();
         inner.getPanes().remove(j);
         cardSetCheckBoxes.get(i).remove(j);
         cardCheckBoxes.get(i).remove(j);
@@ -209,8 +214,12 @@ public class CustomAccordion {
 
     public void addSection(Section section) {
         Accordion inner = new Accordion();
+        ScrollPane innerScroll = new ScrollPane(inner);
+        innerScroll.setFitToWidth(true);
+        //innerScroll.prefHeightProperty().bind(inner.heightProperty());
+        innerScroll.setFitToHeight(true);
         inner.setMinWidth(ACCORDION_MIN_WIDTH);
-        TitledPane titledPane = new TitledPane(section.getName(), inner);
+        TitledPane titledPane = new TitledPane(section.getName(), innerScroll);
         CheckBox checkBox = addCheckBox(titledPane, accordion);
         sectionCheckBoxes.add(checkBox);
         cardSetCheckBoxes.add(new ArrayList<>());
