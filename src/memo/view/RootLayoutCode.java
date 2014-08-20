@@ -14,6 +14,7 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -56,6 +57,9 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
 
     @FXML
     private Accordion themeAccordion;
+    
+    @FXML
+    private ScrollPane scrollPane;
 
     private CustomAccordion customAccordion;
 
@@ -97,8 +101,9 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
                 controller.changeControlPane(editThemeView.getRootPane());
             }
         };
-        customAccordion = new CustomAccordion(users.get(0), themeAccordion, controller, onOpenTheme);
-
+        customAccordion = new CustomAccordion(users.get(0), themeAccordion, scrollPane, controller, onOpenTheme);
+        scrollPane.maxHeightProperty().bind(thisPane.heightProperty().subtract(70));
+        scrollPane.minHeightProperty().bind(thisPane.heightProperty().subtract(70));
         /*---AFTER ROOT INIT---*/
         initInnerViews();
         setControlPane(mainView.getRootPane());
