@@ -52,7 +52,11 @@
                         </Button>
                      </children>
                   </HBox>
-                  <Accordion fx:id="themeAccordion" />
+                  <ScrollPane fx:id="scrollPane" pannable="true" prefViewportWidth="330.0">
+                     <content>
+                        <Accordion fx:id="themeAccordion" />
+                     </content>
+                  </ScrollPane>
                </children>
             </VBox>
          </children>

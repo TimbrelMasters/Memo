@@ -16,6 +16,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -43,9 +44,13 @@ public class CustomAccordion {
     private int currentSection;
     private int currentSet;
     private int currentCard;
+    
+    private ScrollPane scrollPane;
 
-    public CustomAccordion(User user, Accordion accordion, AbstractController controller, EventHandler<MouseEvent> onOpenTheme) {
+    public CustomAccordion(User user, Accordion accordion, ScrollPane scrollPane, AbstractController controller, EventHandler<MouseEvent> onOpenTheme) {
         this.accordion = accordion;
+        this.scrollPane = scrollPane;
+        scrollPane.setFitToWidth(true);
         this.accordion.setMinWidth(ACCORDION_MIN_WIDTH);
         this.user = user;
         this.controller = controller;
