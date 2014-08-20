@@ -52,7 +52,7 @@
                         </Button>
                      </children>
                   </HBox>
-                  <Accordion fx:id="themeAccordion" />
+                  <Accordion fx:id="themeAccordion" stylesheets="@styles/ThemeAccordionStyle.css" />
                </children>
             </VBox>
          </children>

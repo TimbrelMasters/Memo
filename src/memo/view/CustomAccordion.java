@@ -185,9 +185,14 @@ public class CustomAccordion {
                 currentSection = accordion.getPanes().indexOf(newValue);
             }
         });
-        TitledPane titledPane = new TitledPane("+ Add new Section", null);
-        accordion.getPanes().add(titledPane);
-        titledPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+        //titled pane customized by css
+        TitledPane addSectionButton = new TitledPane("Add new Section", null);
+        addSectionButton.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
+        addSectionButton.getStyleClass().add("addThemeButton");
+
+        accordion.getPanes().add(addSectionButton);
+        addSectionButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 controller.addSection(new Section("Empty"));
