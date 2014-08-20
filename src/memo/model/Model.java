@@ -45,7 +45,7 @@ public class Model extends AbstractModel{
 
     @Override
     public void addCard(int i, int j, Card card) {
-        currentUser.getSections().get(i).getCardSets().get(j).getCardSet().add(card);
+        currentUser.getSections().get(i).getCardSets().get(j).getCards().add(card);
         fireModelChanged(new CardAddedEvent(i, j, card));
     }
 
@@ -63,7 +63,7 @@ public class Model extends AbstractModel{
 
     @Override
     public void removeCard(int i, int j, int k) {
-        currentUser.getSections().get(i).getCardSets().get(j).getCardSet().remove(k);
+        currentUser.getSections().get(i).getCardSets().get(j).getCards().remove(k);
         fireModelChanged(new CardRemovedEvent(i, j, k));
     }
 
@@ -78,8 +78,8 @@ public class Model extends AbstractModel{
         currentUser.getSections().remove(i);
         fireModelChanged(new SectionRemovedEvent(i));
     }
-    
-    
-    
-    
+
+
+
+
 }

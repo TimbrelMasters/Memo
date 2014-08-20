@@ -19,7 +19,7 @@
       <HBox layoutX="420.0" layoutY="361.0" spacing="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <children>
             <Button layoutX="476.0" layoutY="361.0" mnemonicParsing="false" prefWidth="80.0" styleClass="saveButton" stylesheets="@styles/editThemeStyle.css" text="Save" />
-            <Button layoutX="528.0" layoutY="361.0" mnemonicParsing="false" prefWidth="80.0" styleClass="deleteButton" stylesheets="@styles/editThemeStyle.css" text="Delete" />
+            <Button layoutX="528.0" layoutY="361.0" mnemonicParsing="false" onAction="#OnDeleteClick" prefWidth="80.0" styleClass="deleteButton" stylesheets="@styles/editThemeStyle.css" text="Delete" />
          </children>
       </HBox>
    </children>

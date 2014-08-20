@@ -1,5 +1,6 @@
 package memo.view;
 
+import javafx.scene.layout.Pane;
 import memo.model.Card;
 import memo.model.CardSet;
 import memo.model.Section;
@@ -23,13 +24,16 @@ public interface RootViewInterface {
     public void addCard(int i, int j, Card card);
     public void addCardSet(int i, CardSet cardSet);
     public void addSection(Section section);
+
     public abstract void removeCard(int i, int j, int k);
     public abstract void removeCardSet(int i, int j);
     public abstract void removeSection(int i);
+
+    public abstract void setControlPane(Pane controlPane);
 
     /**
      * Bring the Window to foreground
      */
     public void showToFront();
-    
+
 }

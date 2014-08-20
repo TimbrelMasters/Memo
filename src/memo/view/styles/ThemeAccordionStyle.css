@@ -1,0 +1,21 @@
+/*
+    Created on : Aug 20, 2014, 7:57:04 AM
+    Author     : Pisarik
+*/
+
+.addThemeButton > .title{
+    -fx-background-color: #c7ffc7;
+    -fx-background-radius: 2;
+    -fx-font-weight: bold;
+}
+
+.addThemeButton > .title:hover{
+    -fx-background-color: #33ff33;
+}
+
+.addThemeButton > .title > .arrow-button > .arrow {
+    -fx-background-color: -fx-mark-highlight-color, -fx-mark-color;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-padding: 0.25em 0.3125em 0.25em 0.3125em; /* 3 3.75 3 3.75 */
+    -fx-shape: "M 0 0 v -1 h -0.3 v 2 h 0.6 v -1 h -0.3 z M 0 0 v -0.3 h -1 v 0.6 h 1 v -0.3 z M 0.2 0 v -0.3 h 0.8 v 0.6 h -0.8 v -0.3 z";
+}

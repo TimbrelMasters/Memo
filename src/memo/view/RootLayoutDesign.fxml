@@ -52,11 +52,15 @@
                         </Button>
                      </children>
                   </HBox>
+<<<<<<< HEAD
                   <ScrollPane fx:id="scrollPane" pannable="true" prefViewportWidth="330.0">
                      <content>
                         <Accordion fx:id="themeAccordion" />
                      </content>
                   </ScrollPane>
+=======
+                  <Accordion fx:id="themeAccordion" stylesheets="@styles/ThemeAccordionStyle.css" />
+>>>>>>> origin/master
                </children>
             </VBox>
          </children>

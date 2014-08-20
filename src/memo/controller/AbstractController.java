@@ -1,6 +1,7 @@
 package memo.controller;
 
 import java.util.ArrayList;
+import javafx.scene.layout.Pane;
 import memo.events.ModelChangedEvent;
 import memo.model.AbstractModel;
 import memo.model.Card;
@@ -60,14 +61,22 @@ public abstract class AbstractController implements ModelChangedListener, NewIns
     public abstract void hideStageToTray();
 
     public abstract ArrayList<User> getUserList();
-    public abstract void addUser(User user);
     public abstract void setCurrentUser(User user);
+
+    public abstract void addUser(User user);
     public abstract void addCard(int i, int j, Card card);
     public abstract void addCardSet(int i, CardSet cardSet);
     public abstract void addSection(Section section);
+
     public abstract void removeCard(int i, int j, int k);
     public abstract void removeCardSet(int i, int j);
     public abstract void removeSection(int i);
+
+    /**
+     * Replaces controlPane that provide other functionality
+     * @param controlPane - pane with other functions
+     */
+    public abstract void changeControlPane(Pane controlPane);
 
     @Override
     public void onNewInstance() {

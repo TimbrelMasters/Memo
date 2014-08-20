@@ -2,6 +2,7 @@ package memo.controller;
 
 import java.util.ArrayList;
 import javafx.application.Platform;
+import javafx.scene.layout.Pane;
 import memo.model.Card;
 import memo.model.CardSet;
 import memo.model.Section;
@@ -78,7 +79,7 @@ public class Controller extends AbstractController{
     @Override
     public void addUser(User user) {
         registeredModels.get(0).addUser(user);
-    }    
+    }
 
     @Override
     public void setCurrentUser(User user) {
@@ -114,5 +115,10 @@ public class Controller extends AbstractController{
     public void removeSection(int i) {
         registeredModels.get(0).removeSection(i);
     }
-    
+
+    @Override
+    public void changeControlPane(Pane controlPane) {
+        registeredViews.get(0).setControlPane(controlPane);
+    }
+
 }
