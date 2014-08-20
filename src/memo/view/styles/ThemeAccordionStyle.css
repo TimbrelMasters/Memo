@@ -4,13 +4,13 @@
 */
 
 .addThemeButton > .title{
-    -fx-background-color: #c7ffc7;
-    -fx-background-radius: 2;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 0 0 70 70;
     -fx-font-weight: bold;
 }
 
 .addThemeButton > .title:hover{
-    -fx-background-color: #33ff33;
+    -fx-background-color: #FFE672;
 }
 
 .addThemeButton > .title > .arrow-button > .arrow {
