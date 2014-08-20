@@ -84,7 +84,9 @@ public class SingleInstanceUtility {
             try {
                 Socket clientSocket = new Socket(InetAddress.getByAddress(new byte[] {127, 0, 0, 1}), SINGLE_INSTANCE_SOCKET_PORT);
                 OutputStream output = clientSocket.getOutputStream();
+
                 output.write(SINGLE_INSTANCE_SHARED_KEY.getBytes());
+
                 output.close();
                 clientSocket.close();
                 return false;

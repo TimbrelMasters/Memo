@@ -1,4 +1,3 @@
-
 package memo.model;
 
 import java.util.ArrayList;

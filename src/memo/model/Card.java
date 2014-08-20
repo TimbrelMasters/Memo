@@ -1,4 +1,3 @@
-
 package memo.model;
 
 public class Card {

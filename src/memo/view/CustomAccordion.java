@@ -89,7 +89,7 @@ public class CustomAccordion {
     }
 
     public void showUserCards() {
-        this.user = user;
+        this.user = user;  //-------------------------------------------------------------------------wtf?
         this.accordion.getPanes().clear();
         addSectionButton();
         ArrayList<Section> sections = user.getSections();

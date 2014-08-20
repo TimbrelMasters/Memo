@@ -77,7 +77,7 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
         initSystemTray();
         initIcons();
         initInnerViews();
-        setInnerPane(mainView.getRootPane());
+        setControlPane(mainView.getRootPane());
 
         /*-----MAIN MENU-------*/
         handleAddToStartUpClick();
@@ -96,7 +96,7 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
 
             @Override
             public void handle(MouseEvent event) {
-                setInnerPane(editThemeView.getRootPane());
+                controller.changeControlPane(editThemeView.getRootPane());
             }
         };
         customAccordion = new CustomAccordion(users.get(0), themeAccordion, controller, onOpenTheme);
@@ -235,7 +235,7 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
     /*public void OnThemeOpen(ActionEvent event){
         setInnerPane(editThemeView.getRootPane());
     }*/
-    
+
 
  /*
    ***
@@ -258,8 +258,9 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
    ***
     */
 
-    private void setInnerPane(Pane innerPane){
-        thisPane.setRight(innerPane);
+    @Override
+    public void setControlPane(Pane controlPane){
+        thisPane.setRight(controlPane);
     }
 
   /*
@@ -316,7 +317,7 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
         customAccordion.setUser(user);
         customAccordion.showUserCards();
     }
-    
+
     @Override
     public void addCard(int i, int j, Card card) {
         customAccordion.addCard(i, j, card);
@@ -346,7 +347,7 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
     public void removeSection(int i) {
         customAccordion.removeSection(i);
     }
-    
-    
-    
+
+
+
 }
