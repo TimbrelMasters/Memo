@@ -76,8 +76,6 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
         initStartUpItem();
         initSystemTray();
         initIcons();
-        initInnerViews();
-        setControlPane(mainView.getRootPane());
 
         /*-----MAIN MENU-------*/
         handleAddToStartUpClick();
@@ -101,6 +99,9 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
         };
         customAccordion = new CustomAccordion(users.get(0), themeAccordion, controller, onOpenTheme);
 
+        /*---AFTER ROOT INIT---*/
+        initInnerViews();
+        setControlPane(mainView.getRootPane());
     }
 
     private void initInnerViews(){
@@ -117,6 +118,7 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
             editThemeView = editThemeViewLoader.getController();
             editThemeView.setController(controller);
             editThemeView.setPrimaryStage(primaryStage);
+            editThemeView.setCustomAccordion(customAccordion);
             editThemeView.manualInitialize();
         }
         catch (IOException e){
