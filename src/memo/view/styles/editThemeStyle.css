@@ -30,4 +30,5 @@ and open the template in the editor.
 
 .rootPane{
     -fx-background-color: #FFFFFF;
+    -fx-fit-to-width: true;
 }

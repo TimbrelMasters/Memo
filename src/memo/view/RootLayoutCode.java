@@ -263,7 +263,7 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
 
     @Override
     public void setControlPane(Pane controlPane){
-        thisPane.setRight(controlPane);
+        thisPane.setCenter(controlPane);
     }
 
   /*
