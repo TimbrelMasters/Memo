@@ -45,13 +45,9 @@ public class CustomAccordion {
     private int currentSection;
     private int currentSet;
     private int currentCard;
-    
-    private ScrollPane scrollPane;
 
-    public CustomAccordion(User user, Accordion accordion, ScrollPane scrollPane, AbstractController controller, EventHandler<MouseEvent> onOpenTheme) {
+    public CustomAccordion(User user, Accordion accordion, AbstractController controller, EventHandler<MouseEvent> onOpenTheme) {
         this.accordion = accordion;
-        this.scrollPane = scrollPane;
-        scrollPane.setFitToWidth(true);
         this.accordion.setMinWidth(ACCORDION_MIN_WIDTH);
         this.user = user;
         this.controller = controller;
@@ -95,7 +91,6 @@ public class CustomAccordion {
     }
 
     public void showUserCards() {
-        this.user = user;  //-------------------------------------------------------------------------wtf?
         this.accordion.getPanes().clear();
         addSectionButton();
         ArrayList<Section> sections = user.getSections();
