@@ -27,3 +27,7 @@ and open the template in the editor.
 .saveButton:hover{
     -fx-background-color: #3CE33C;//32A632;
 }
+
+.rootPane{
+    -fx-background-color: #FFFFFF;
+}

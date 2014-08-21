@@ -14,7 +14,6 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -57,9 +56,6 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
 
     @FXML
     private Accordion themeAccordion;
-    
-    @FXML
-    private ScrollPane scrollPane;
 
     private CustomAccordion customAccordion;
 
@@ -101,9 +97,9 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
                 controller.changeControlPane(editThemeView.getRootPane());
             }
         };
-        customAccordion = new CustomAccordion(users.get(0), themeAccordion, scrollPane, controller, onOpenTheme);
-        scrollPane.maxHeightProperty().bind(thisPane.heightProperty().subtract(70));
-        scrollPane.minHeightProperty().bind(thisPane.heightProperty().subtract(70));
+        handleSelectUser();
+        customAccordion = new CustomAccordion(users.get(0), themeAccordion, controller, onOpenTheme);
+
         /*---AFTER ROOT INIT---*/
         initInnerViews();
         setControlPane(mainView.getRootPane());
@@ -175,10 +171,6 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
         users = FXCollections.observableArrayList(controller.getUserList());
         userComboBox.setItems(users);
         userComboBox.getSelectionModel().selectFirst();
-        userComboBox.getSelectionModel().selectedItemProperty().addListener(
-                (ObservableValue<? extends User> observable, User oldValue, User newValue) -> {
-            controller.setCurrentUser(newValue);
-        });
     }
 
     private void handleAddToStartUpClick(){
@@ -235,13 +227,17 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
     */
 
     @FXML
-    public void OnUserAdd(ActionEvent event){
+    private void OnUserAdd(ActionEvent event){
         controller.addUser(new User("Pisarik"));
     }
 
-    /*public void OnThemeOpen(ActionEvent event){
-        setInnerPane(editThemeView.getRootPane());
-    }*/
+
+    private void handleSelectUser(){
+        userComboBox.getSelectionModel().selectedItemProperty().addListener(
+                (ObservableValue<? extends User> observable, User oldValue, User newValue) -> {
+            controller.setCurrentUser(newValue);
+        });
+    }
 
 
  /*

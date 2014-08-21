@@ -5,7 +5,7 @@
 
 .addThemeButton > .title{
     -fx-background-color: #FFFFFF;
-    -fx-background-radius: 0 0 70 70;
+    -fx-background-radius: 0 0 50 50;
     -fx-font-weight: bold;
 }
 
