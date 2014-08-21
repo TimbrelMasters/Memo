@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
@@ -118,6 +119,9 @@ public class CustomAccordion {
         ListView listView = (ListView)inner.getPanes().get(j).getContent();
         listView.getItems().add(listView.getItems().size()-1, card);
         listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
+        CheckBox check = new CheckBox();
+        check.setPadding(new Insets(0, 6, 0, 0));
+        cardCheckBoxes.get(i).get(j).add(check);
     }
 
     public void removeCard(int i, int j, int k) {
@@ -126,6 +130,7 @@ public class CustomAccordion {
         ListView listView = (ListView)inner.getPanes().get(j).getContent();
         listView.getItems().remove(k);
         listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
+        cardCheckBoxes.get(i).get(j).remove(k);
     }
 
     public void addCardSetButton(int i) {
@@ -158,12 +163,7 @@ public class CustomAccordion {
         ObservableList<Card> items = FXCollections.observableArrayList(cardSet.getCards());
         items.add(new FakeCard());
         ListView listView = new ListView(items);
-        listView.setCellFactory(new Callback<ListView<Card>, ListCell<Card>>() {
-            @Override
-            public ListCell<Card> call(ListView<Card> param) {
-                return new CustomListCell();
-            }
-        });
+
         listView.getSelectionModel().getSelectedIndices().addListener(new ListChangeListener() {
             @Override
             public void onChanged(ListChangeListener.Change c) {
@@ -176,7 +176,28 @@ public class CustomAccordion {
         TitledPane titledPane = new TitledPane(cardSet.getName(), listView);
         CheckBox checkBox = addCheckBox(titledPane, inner);
         cardSetCheckBoxes.get(i).add(checkBox);
+        int j = cardSetCheckBoxes.get(i).indexOf(checkBox);
         cardCheckBoxes.get(i).add(new ArrayList<>());
+        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                ArrayList<CheckBox> innerCheckBoxes = cardCheckBoxes.get(i).get(j);
+                for(int k = 0; k < innerCheckBoxes.size(); k++) {
+                    innerCheckBoxes.get(k).setSelected(newValue);
+                }
+            }
+        });
+        for(int k = 0; k < items.size(); k++) {
+            CheckBox check = new CheckBox();
+            check.setPadding(new Insets(0, 6, 0, 0));
+            cardCheckBoxes.get(i).get(j).add(check);
+        }
+        listView.setCellFactory(new Callback<ListView<Card>, ListCell<Card>>() {
+            @Override
+            public ListCell<Card> call(ListView<Card> param) {
+                return new CustomListCell(i, j, cardCheckBoxes.get(i).get(j));
+            }
+        });
         inner.getPanes().add(inner.getPanes().size()-1, titledPane);
     }
 
@@ -187,7 +208,7 @@ public class CustomAccordion {
         cardSetCheckBoxes.get(i).remove(j);
         cardCheckBoxes.get(i).remove(j);
     }
-
+    
     public void addSectionButton() {
         this.accordion.expandedPaneProperty().addListener(new ChangeListener<TitledPane>(){
             @Override
@@ -198,6 +219,7 @@ public class CustomAccordion {
 
         //titled pane customized by css
         TitledPane addSectionButton = new TitledPane("Add new Section", null);
+        addSectionButton.setGraphic(new Button());
         addSectionButton.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
         addSectionButton.getStyleClass().add("addThemeButton");
 
@@ -235,7 +257,6 @@ public class CustomAccordion {
             }
         });
         titledPane.setOnMouseClicked(onOpenTheme);
-        addCheckBox(titledPane, accordion);
         accordion.getPanes().add(accordion.getPanes().size()-1, titledPane);
     }
 
@@ -260,6 +281,10 @@ public class CustomAccordion {
 
     public int getCurrentCard() {
         return currentCard;
+    }
+
+    public User getUser() {
+        return user;
     }
 
 }
