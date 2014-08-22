@@ -96,8 +96,11 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
 
             @Override
             public void handle(MouseEvent event) {
-                controller.changeControlPane(ControlPaneType.ThemeEdit,
+                if (currentControlPaneType != ControlPaneType.ThemeEdit &&
+                        customAccordion.getCurrentSection() != -1){
+                    controller.changeControlPane(ControlPaneType.ThemeEdit,
                         customAccordion.getCurrentSection(), customAccordion.getCurrentSet(), customAccordion.getCurrentCard());
+                }
             }
         };
         customAccordion = new CustomAccordion(users.get(0), themeAccordion, controller, onOpenTheme);

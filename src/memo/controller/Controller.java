@@ -131,7 +131,9 @@ public class Controller extends AbstractController{
         ControlPaneType type = view.getControlPaneType();
 
         if (type == ControlPaneType.ThemeEdit){
-            view.setThemeName(model.getSection(currentSection).getName());
+            if (currentSection != -1){
+                view.setThemeName(model.getSection(currentSection).getName());
+            }
         }
         else if (type == ControlPaneType.Main){
             //empty yet

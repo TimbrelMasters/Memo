@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="thisPane" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="memo.view.RootLayoutCode">
+<BorderPane fx:id="thisPane" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="memo.view.RootLayoutCode">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -23,11 +23,11 @@
       </MenuBar>
    </top>
    <left>
-    <AnchorPane prefHeight="370.0" prefWidth="330.0" BorderPane.alignment="CENTER">
+    <AnchorPane prefHeight="370.0" prefWidth="330.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="368.0" prefWidth="328.0" styleClass="welcomePane" stylesheets="@styles/WelcomePanelStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <HBox stylesheets="@styles/WelcomePanelStyle.css">
+                  <HBox styleClass="welcomePane" stylesheets="@styles/WelcomePanelStyle.css">
                      <children>
                         <Label layoutX="17.0" layoutY="172.0" prefHeight="30.0" styleClass="headerUserLabel" stylesheets="@styles/WelcomePanelStyle.css" text="User:">
                            <font>
@@ -52,9 +52,9 @@
                         </Button>
                      </children>
                   </HBox>
-                  <ScrollPane fitToWidth="true" pannable="true" prefViewportWidth="330.0" VBox.vgrow="ALWAYS">
+                  <ScrollPane fitToWidth="true" pannable="true" prefViewportWidth="330.0" styleClass="whiteScrollPane" stylesheets="@styles/ThemeAccordionStyle.css" VBox.vgrow="ALWAYS">
                      <content>
-                        <Accordion fx:id="themeAccordion" />
+                        <Accordion fx:id="themeAccordion" style="-fx-background-color: #FFFFFF;" />
                      </content>
                   </ScrollPane>
                </children>

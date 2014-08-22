@@ -3,6 +3,10 @@
     Author     : Pisarik
 */
 
+.themePane > .title{
+    -fx-background-color: #fff1b2;
+}
+
 .addThemeButton > .title{
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 0 0 50 50;
@@ -10,7 +14,7 @@
 }
 
 .addThemeButton > .title:hover{
-    -fx-background-color: #FFE672;
+    -fx-background-color: #fff1b2;
 }
 
 .addThemeButton > .title > .arrow-button > .arrow {
@@ -18,4 +22,8 @@
     -fx-background-insets: 1 0 -1 0, 0;
     -fx-padding: 0.25em 0.3125em 0.25em 0.3125em; /* 3 3.75 3 3.75 */
     -fx-shape: "M 0 0 v -1 h -0.3 v 2 h 0.6 v -1 h -0.3 z M 0 0 v -0.3 h -1 v 0.6 h 1 v -0.3 z M 0.2 0 v -0.3 h 0.8 v 0.6 h -0.8 v -0.3 z";
+}
+
+.whiteScrollPane {
+    -fx-background: #FFFFFF;
 }

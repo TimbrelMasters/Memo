@@ -188,9 +188,11 @@ public class CustomAccordion {
     public void addSectionButton() {
         this.accordion.expandedPaneProperty().addListener(new ChangeListener<TitledPane>(){
             @Override
-            public void changed(ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) {
+            public void changed (ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) {
                 currentSection = accordion.getPanes().indexOf(newValue);
-                controller.updateView(currentSection, currentSet, currentCard);
+                if (currentSection != accordion.getPanes().size() - 1){
+                    controller.updateView(currentSection, currentSet, currentCard);
+                }
             }
         });
 
@@ -218,6 +220,8 @@ public class CustomAccordion {
         innerScroll.prefHeightProperty().bind(inner.heightProperty());
         innerScroll.setMaxHeight(SECTION_MAX_HEIGHT);
         TitledPane titledPane = new TitledPane(section.getName(), innerScroll);
+        titledPane.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
+        titledPane.getStyleClass().add("themePane");
         CheckBox checkBox = addCheckBox(titledPane, accordion);
         sectionCheckBoxes.add(checkBox);
         cardSetCheckBoxes.add(new ArrayList<>());
