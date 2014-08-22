@@ -1,4 +1,3 @@
-
 package memo.view;
 
 import javafx.beans.value.ChangeListener;
@@ -19,7 +18,7 @@ import memo.model.Card;
 
 public class CustomListCell extends ListCell<Card> {
 
-    private boolean isSimpleCell; 
+    private boolean isSimpleCell;
     /* CONTOROLS FOR SIMPLE CELL */
     private final HBox simpleCellHBox;
     private final Label label;
@@ -29,13 +28,13 @@ public class CustomListCell extends ListCell<Card> {
     /* CONTROLS FOR FAKECARD CELL */
     private final HBox fakeCardCellHBox;
     private final Button button;
-    
+
     private static AbstractController controller;
     private static CustomAccordion customAccordion;
-    
+
     public CustomListCell() {
         super();
-        /* Simple CardCell initialization */ 
+        /* Simple CardCell initialization */
         simpleCellHBox = new HBox();
         label = new Label();
         pane = new Pane();
@@ -76,7 +75,7 @@ public class CustomListCell extends ListCell<Card> {
         else {
             CustomListCell.this.setOnMouseClicked(new EventHandler<MouseEvent>(){
                 @Override
-                public void handle(MouseEvent event) {     
+                public void handle(MouseEvent event) {
                     controller.addCard(customAccordion.getCurrentSection(), customAccordion.getCurrentSet(), new Card("Empty"));
                     MultipleSelectionModel<Card> selectionModel = CustomListCell.this.getListView().getSelectionModel();
                         selectionModel.clearAndSelect(CustomListCell.this.getListView().getItems().size()-2);
@@ -95,7 +94,7 @@ public class CustomListCell extends ListCell<Card> {
     public static void setController(AbstractController controller) {
         CustomListCell.controller = controller;
     }
-    
+
     public static void setCustomAccordion(CustomAccordion accordion) {
         CustomListCell.customAccordion = accordion;
     }

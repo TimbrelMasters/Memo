@@ -20,7 +20,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
 import javafx.util.Callback;
 import memo.controller.AbstractController;
 import memo.model.Card;
@@ -31,9 +30,12 @@ import memo.model.User;
 
 public class CustomAccordion {
 
-    private static final double LIST_VIEW_HEIGHT = 23.1;
     private static final double INNER_ACCORDION_PADDING = 24;
-    private static final double ACCORDION_MIN_WIDTH = 50;
+    private static final double CARD_HEIGHT = 24;
+    private static final double CARD_SET_HEIGHT = 26;
+    private static final double CARD_SET_MAX_HEIGHT = 120;
+    private static final double SECTION_MAX_HEIGHT = 180;
+
     private AbstractController controller;
     private Accordion accordion;
     private EventHandler<MouseEvent> onOpenTheme;
@@ -47,7 +49,6 @@ public class CustomAccordion {
 
     public CustomAccordion(User user, Accordion accordion, AbstractController controller, EventHandler<MouseEvent> onOpenTheme) {
         this.accordion = accordion;
-        this.accordion.setMinWidth(ACCORDION_MIN_WIDTH);
         this.user = user;
         this.controller = controller;
         sectionCheckBoxes = new ArrayList<>();
@@ -68,7 +69,6 @@ public class CustomAccordion {
         title.getChildren().addAll(label, checkBox);
         titledPane.setGraphic(title);
         titledPane.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-        Region arrow = (Region) titledPane.lookup(".arrow-button");
         label.textProperty().bind(titledPane.textProperty());
         title.prefWidthProperty().bind(new DoubleBinding() {
             {
@@ -90,7 +90,6 @@ public class CustomAccordion {
     }
 
     public void showUserCards() {
-        this.user = user;  //-------------------------------------------------------------------------wtf?
         this.accordion.getPanes().clear();
         addSectionButton();
         ArrayList<Section> sections = user.getSections();
@@ -113,7 +112,7 @@ public class CustomAccordion {
         Accordion inner = (Accordion) innerSroll.getContent();
         ListView listView = (ListView)inner.getPanes().get(j).getContent();
         listView.getItems().add(listView.getItems().size()-1, card);
-        listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
+        listView.setPrefHeight(CARD_HEIGHT*listView.getItems().size());
     }
 
     public void removeCard(int i, int j, int k) {
@@ -121,7 +120,7 @@ public class CustomAccordion {
         Accordion inner = (Accordion) innerSroll.getContent();
         ListView listView = (ListView)inner.getPanes().get(j).getContent();
         listView.getItems().remove(k);
-        listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
+        listView.setPrefHeight(CARD_HEIGHT*listView.getItems().size());
     }
 
     public void addCardSetButton(int i) {
@@ -133,23 +132,23 @@ public class CustomAccordion {
                 currentSet = inner.getPanes().indexOf(newValue);
             }
         });
-        inner.setMinWidth(ACCORDION_MIN_WIDTH);
         inner.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
-        TitledPane titledPane = new TitledPane("+ Add new CardSet", null);
-        titledPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+        //Customized titledPane
+        TitledPane cardSetButton = new TitledPane("+ Add new CardSet", null);
+        cardSetButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 controller.addCardSet(i, new CardSet("Empty"));
                 inner.getPanes().get(inner.getPanes().size()-2).setExpanded(true);
             }
         });
-        inner.getPanes().add(titledPane);
+        inner.getPanes().add(cardSetButton);
     }
 
     public void addCardSet(int i, CardSet cardSet) {
         ScrollPane innerSroll = (ScrollPane) accordion.getPanes().get(i).getContent();
         Accordion inner = (Accordion) innerSroll.getContent();
-        inner.setMinWidth(ACCORDION_MIN_WIDTH);
         inner.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
         ObservableList<Card> items = FXCollections.observableArrayList(cardSet.getCards());
         items.add(new FakeCard());
@@ -168,7 +167,9 @@ public class CustomAccordion {
             }
         });
 
-        listView.setPrefHeight(LIST_VIEW_HEIGHT*listView.getItems().size());
+        listView.setMaxHeight(CARD_SET_MAX_HEIGHT);
+        listView.setPrefHeight(CARD_HEIGHT*listView.getItems().size());
+
         TitledPane titledPane = new TitledPane(cardSet.getName(), listView);
         CheckBox checkBox = addCheckBox(titledPane, inner);
         cardSetCheckBoxes.get(i).add(checkBox);
@@ -212,9 +213,9 @@ public class CustomAccordion {
         Accordion inner = new Accordion();
         ScrollPane innerScroll = new ScrollPane(inner);
         innerScroll.setFitToWidth(true);
-        //innerScroll.prefHeightProperty().bind(inner.heightProperty());
-        innerScroll.setFitToHeight(true);
-        inner.setMinWidth(ACCORDION_MIN_WIDTH);
+        innerScroll.setMinHeight(CARD_SET_HEIGHT);
+        innerScroll.prefHeightProperty().bind(inner.heightProperty());
+        innerScroll.setMaxHeight(SECTION_MAX_HEIGHT);
         TitledPane titledPane = new TitledPane(section.getName(), innerScroll);
         CheckBox checkBox = addCheckBox(titledPane, accordion);
         sectionCheckBoxes.add(checkBox);
