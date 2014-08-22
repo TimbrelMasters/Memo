@@ -114,7 +114,6 @@ public class CustomAccordion {
         ScrollPane innerSroll = (ScrollPane) accordion.getPanes().get(i).getContent();
         Accordion inner = (Accordion) innerSroll.getContent();
         ListView listView = (ListView)inner.getPanes().get(j).getContent();
-        
         //CheckBox check = new CheckBox();
         //check.setPadding(new Insets(0, 6, 0, 0));
         //cardCheckBoxes.get(i).get(j).add(check);

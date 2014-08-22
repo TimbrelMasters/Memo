@@ -21,6 +21,7 @@ public class CustomListCell extends ListCell<Selectable<Card>> {
 
     private ArrayList<Selectable<Card>> cardSelections;
     private boolean isSimpleCell; 
+
     /* CONTOROLS FOR SIMPLE CELL */
     private final HBox simpleCellHBox;
     private final Label label;
@@ -29,13 +30,10 @@ public class CustomListCell extends ListCell<Selectable<Card>> {
     private CheckBox checkBox;
     /* CONTROLS FOR FAKECARD CELL */
     private final HBox fakeCardCellHBox;
-
     private static AbstractController controller;
     private static CustomAccordion customAccordion;
-    private Card card;
     
     public CustomListCell(ArrayList<Selectable<Card>> cardSelections) {
-
         super();
         this.checkBox = new CheckBox();
         checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -76,6 +74,7 @@ public class CustomListCell extends ListCell<Selectable<Card>> {
         }
         else {
             CustomListCell.this.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                @Override
                 public void handle(MouseEvent event) {
                     controller.addCard(customAccordion.getCurrentSection(), customAccordion.getCurrentSet(), new Card("Empty"));
                     MultipleSelectionModel<Selectable<Card>> selectionModel = CustomListCell.this.getListView().getSelectionModel();
