@@ -135,12 +135,16 @@ public class CustomAccordion {
         inner.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
 
         //Customized titledPane
-        TitledPane cardSetButton = new TitledPane("+ Add new CardSet", null);
+        TitledPane cardSetButton = new TitledPane("Add new card set", null);
+        cardSetButton.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
+        cardSetButton.getStyleClass().add("addCardSetButton");
+
         cardSetButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 controller.addCardSet(i, new CardSet("Empty"));
                 inner.getPanes().get(inner.getPanes().size()-2).setExpanded(true);
+                System.out.println(cardSetButton.getStyleClass().toString());
             }
         });
         inner.getPanes().add(cardSetButton);
@@ -171,6 +175,8 @@ public class CustomAccordion {
         listView.setPrefHeight(CARD_HEIGHT*listView.getItems().size());
 
         TitledPane titledPane = new TitledPane(cardSet.getName(), listView);
+        titledPane.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
+        titledPane.getStyleClass().add("cardSetPane");
         CheckBox checkBox = addCheckBox(titledPane, inner);
         cardSetCheckBoxes.get(i).add(checkBox);
         cardCheckBoxes.get(i).add(new ArrayList<>());
@@ -208,6 +214,7 @@ public class CustomAccordion {
                 controller.addSection(new Section("Empty"));
                 addCardSetButton(currentSection);
                 accordion.getPanes().get(accordion.getPanes().size()-2).setExpanded(true);
+                System.out.println(addSectionButton.getStyleClass().toString());
             }
         });
     }
