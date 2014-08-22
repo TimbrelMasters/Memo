@@ -1,7 +1,6 @@
 package memo.controller;
 
 import java.util.ArrayList;
-import javafx.scene.layout.Pane;
 import memo.events.ModelChangedEvent;
 import memo.model.AbstractModel;
 import memo.model.Card;
@@ -72,11 +71,17 @@ public abstract class AbstractController implements ModelChangedListener, NewIns
     public abstract void removeCardSet(int i, int j);
     public abstract void removeSection(int i);
 
+    public enum ControlPaneType {ThemeEdit, Main};
     /**
      * Replaces controlPane that provide other functionality
      * @param controlPane - pane with other functions
+     * @param type - type of panel for specified information
      */
-    public abstract void changeControlPane(Pane controlPane);
+    public abstract void changeControlPane(ControlPaneType type,
+             int currentSection, int currentCardSet, int currentCard); //maybe will be wrapped in class-wrapper);
+
+    public abstract void updateView(int currentSection, int currentCardSet, int currentCard);
+
 
     @Override
     public void onNewInstance() {

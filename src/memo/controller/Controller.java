@@ -2,7 +2,7 @@ package memo.controller;
 
 import java.util.ArrayList;
 import javafx.application.Platform;
-import javafx.scene.layout.Pane;
+import memo.model.AbstractModel;
 import memo.model.Card;
 import memo.model.CardSet;
 import memo.model.Section;
@@ -10,6 +10,7 @@ import memo.model.User;
 import memo.utils.platform.PlatformUtils;
 import memo.utils.platform.WindowsUtils;
 import memo.utils.singleinstance.SingleInstanceUtility;
+import memo.view.RootViewInterface;
 
 
 
@@ -117,8 +118,29 @@ public class Controller extends AbstractController{
     }
 
     @Override
-    public void changeControlPane(Pane controlPane) {
-        registeredViews.get(0).setControlPane(controlPane);
+    public void changeControlPane(ControlPaneType type,
+            int currentSection, int currentCardSet, int currentCard) { //maybe will be wrapped in class-wrapper
+        registeredViews.get(0).setControlPaneType(type);
+        updateView(currentSection, currentCardSet, currentCard);
+    }
+
+    @Override
+    public void updateView(int currentSection, int currentCardSet, int currentCard){
+        AbstractModel model = registeredModels.get(0);
+        RootViewInterface view = registeredViews.get(0);
+        ControlPaneType type = view.getControlPaneType();
+
+        if (type == ControlPaneType.ThemeEdit){
+            if (currentSection != -1){
+                view.setThemeName(model.getSection(currentSection).getName());
+            }
+        }
+        else if (type == ControlPaneType.Main){
+            //empty yet
+        }
+        else{
+            throw new RuntimeException("Type of Control Pane not recognized");
+        }
     }
 
 }

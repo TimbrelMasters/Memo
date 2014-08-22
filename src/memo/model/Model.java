@@ -79,6 +79,16 @@ public class Model extends AbstractModel{
         fireModelChanged(new SectionRemovedEvent(i));
     }
 
+    @Override
+    public Section getSection(int i){
+        return currentUser.getSections().get(i);
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
 
 
 
