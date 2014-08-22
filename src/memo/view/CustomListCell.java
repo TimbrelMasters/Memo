@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -18,11 +17,9 @@ import javafx.scene.layout.Priority;
 import memo.controller.AbstractController;
 import memo.model.Card;
 
-public class CustomListCell extends ListCell<Card> {
+public class CustomListCell extends ListCell<Selectable<Card>> {
 
-    private int sectionNumber;
-    private int cardSetNumber;
-    private ArrayList<CheckBox> checkBoxes;
+    private ArrayList<Selectable<Card>> cardSelections;
     private boolean isSimpleCell; 
     /* CONTOROLS FOR SIMPLE CELL */
     private final HBox simpleCellHBox;
@@ -32,60 +29,47 @@ public class CustomListCell extends ListCell<Card> {
     private CheckBox checkBox;
     /* CONTROLS FOR FAKECARD CELL */
     private final HBox fakeCardCellHBox;
-    private final Button button;
 
     private static AbstractController controller;
     private static CustomAccordion customAccordion;
     private Card card;
     
-    public CustomListCell(int sectionNumber, int cardSetNumber, ArrayList<CheckBox> checkBoxes) {
+    public CustomListCell(ArrayList<Selectable<Card>> cardSelections) {
 
         super();
-        this.sectionNumber = sectionNumber;
-        this.cardSetNumber = cardSetNumber;
         this.checkBox = new CheckBox();
+        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                CustomListCell.this.getItem().setSelected(newValue);
+            }
+        });
         this.checkBox.setPadding(new Insets(0, 6, 0, 0));
-        this.checkBoxes = checkBoxes;
-        /* Simple CardCell init>>>>>>> origin/masterialization */
+        /* Simple CardCell initialization */
         simpleCellHBox = new HBox();
         label = new Label();
         pane = new Pane();
         simpleCellHBox.getChildren().addAll(label,pane, checkBox);
         HBox.setHgrow(pane, Priority.ALWAYS);
         /* Fake CardCell initialization */
-        /*for(int i = 0; i < checkBoxes.size(); i++) {
-            checkBoxes.get(i).selectedProperty().addListener(new ChangeListener<Boolean>(){
-
-                @Override
-                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                    //checkBoxes.get(CustomListCell.this.getIndex()).setSelected(newValue);
-                    checkBox.setSelected(newValue);
-                    updateItem(CustomListCell.this.getItem(), false);
-                }
-                
-            });
-        }*/
-        //checkBox.selectedProperty().bindBidirectional(checkBoxes.get(CustomListCell.this.getIndex()).selectedProperty());
-
         fakeCardCellHBox = new HBox();
-        button = new Button("add new Card");
-        //button.setPrefHeight(23.1);
-        fakeCardCellHBox.getChildren().add(button);
     }
 
     
     
     @Override
-    protected void updateItem(Card item, boolean empty) {
+    protected void updateItem(Selectable<Card> item, boolean empty) {
         super.updateItem(item, empty);
-        isSimpleCell = item instanceof FakeCard != true;
+        if(item != null)
+            isSimpleCell = item.getObject() instanceof FakeCard != true;
         if(isSimpleCell) {
             setText(null);
             if (item == null) {
                 setGraphic(null);
             } else {
-                label.setText(item.getName());
-                //checkBox.setSelected(checkBoxes.get(CustomListCell.this.getIndex()).isSelected());
+                label.setText(item.getObject().getName());
+                System.out.println(item);
+                checkBox.setSelected(item.isSelected());
                 setGraphic(simpleCellHBox);
             }
             CustomListCell.this.setOnMouseClicked(null);
@@ -94,7 +78,7 @@ public class CustomListCell extends ListCell<Card> {
             CustomListCell.this.setOnMouseClicked(new EventHandler<MouseEvent>(){
                 public void handle(MouseEvent event) {
                     controller.addCard(customAccordion.getCurrentSection(), customAccordion.getCurrentSet(), new Card("Empty"));
-                    MultipleSelectionModel<Card> selectionModel = CustomListCell.this.getListView().getSelectionModel();
+                    MultipleSelectionModel<Selectable<Card>> selectionModel = CustomListCell.this.getListView().getSelectionModel();
                         selectionModel.clearAndSelect(CustomListCell.this.getListView().getItems().size()-2);
                 }
             });
@@ -104,7 +88,7 @@ public class CustomListCell extends ListCell<Card> {
     }
     public String getName() {
         if(this.getItem()!=null)
-            return this.getItem().getName();
+            return this.getItem().getObject().getName();
         return "fuck";
     }
 

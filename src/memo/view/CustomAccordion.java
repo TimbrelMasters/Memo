@@ -43,7 +43,8 @@ public class CustomAccordion {
     private User user;
     private ArrayList<CheckBox> sectionCheckBoxes;
     private ArrayList<ArrayList<CheckBox>> cardSetCheckBoxes;
-    private ArrayList<ArrayList<ArrayList<CheckBox>>> cardCheckBoxes;
+    //private ArrayList<ArrayList<ArrayList<CheckBox>>> cardCheckBoxes;
+    private ArrayList<ArrayList<ArrayList<Selectable<Card>>>> cardSelections; //Don't really know if this is helpful
     private int currentSection;
     private int currentSet;
     private int currentCard;
@@ -54,7 +55,8 @@ public class CustomAccordion {
         this.controller = controller;
         sectionCheckBoxes = new ArrayList<>();
         cardSetCheckBoxes = new ArrayList<>();
-        cardCheckBoxes = new ArrayList<>();
+        //cardCheckBoxes = new ArrayList<>();
+        cardSelections = new ArrayList<>();
         CustomListCell.setController(controller);
         CustomListCell.setCustomAccordion(CustomAccordion.this);
         this.onOpenTheme = onOpenTheme;
@@ -112,10 +114,14 @@ public class CustomAccordion {
         ScrollPane innerSroll = (ScrollPane) accordion.getPanes().get(i).getContent();
         Accordion inner = (Accordion) innerSroll.getContent();
         ListView listView = (ListView)inner.getPanes().get(j).getContent();
-        listView.getItems().add(listView.getItems().size()-1, card);
-        CheckBox check = new CheckBox();
-        check.setPadding(new Insets(0, 6, 0, 0));
-        cardCheckBoxes.get(i).get(j).add(check);
+        
+        //CheckBox check = new CheckBox();
+        //check.setPadding(new Insets(0, 6, 0, 0));
+        //cardCheckBoxes.get(i).get(j).add(check);
+        Selectable<Card> selectableCard = new Selectable<>(card);
+        selectableCard.setSelected(cardSetCheckBoxes.get(i).get(j).isSelected());
+        cardSelections.get(i).get(j).add(selectableCard);
+        listView.getItems().add(listView.getItems().size()-1, selectableCard);
         listView.setPrefHeight(CARD_HEIGHT*listView.getItems().size());
     }
 
@@ -124,7 +130,8 @@ public class CustomAccordion {
         Accordion inner = (Accordion) innerSroll.getContent();
         ListView listView = (ListView)inner.getPanes().get(j).getContent();
         listView.getItems().remove(k);
-        cardCheckBoxes.get(i).get(j).remove(k);
+        //cardCheckBoxes.get(i).get(j).remove(k);
+        cardSelections.get(i).get(j).remove(k);
         listView.setPrefHeight(CARD_HEIGHT*listView.getItems().size());
     }
 
@@ -154,13 +161,13 @@ public class CustomAccordion {
         });
         inner.getPanes().add(cardSetButton);
     }
-
+    
     public void addCardSet(int i, CardSet cardSet) {
         ScrollPane innerSroll = (ScrollPane) accordion.getPanes().get(i).getContent();
         Accordion inner = (Accordion) innerSroll.getContent();
         inner.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
-        ObservableList<Card> items = FXCollections.observableArrayList(cardSet.getCards());
-        items.add(new FakeCard());
+        ObservableList<Selectable<Card>> items = FXCollections.observableArrayList(Selectable.getSelectableList(cardSet.getCards()));
+        items.add(new Selectable<>(new FakeCard()));
         ListView listView = new ListView(items);
 
         listView.getSelectionModel().getSelectedIndices().addListener(new ListChangeListener() {
@@ -180,36 +187,52 @@ public class CustomAccordion {
         CheckBox checkBox = addCheckBox(titledPane, inner);
         cardSetCheckBoxes.get(i).add(checkBox);
         int j = cardSetCheckBoxes.get(i).indexOf(checkBox);
-        cardCheckBoxes.get(i).add(new ArrayList<>());
+        //cardCheckBoxes.get(i).add(new ArrayList<>());
+        cardSelections.get(i).add(new ArrayList<>());
         checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                ArrayList<CheckBox> innerCheckBoxes = cardCheckBoxes.get(i).get(j);
+                /*ArrayList<CheckBox> innerCheckBoxes = cardCheckBoxes.get(i).get(j);
                 for(int k = 0; k < innerCheckBoxes.size(); k++) {
                     innerCheckBoxes.get(k).setSelected(newValue);
+                }*/
+                /*ArrayList<Selectable<Card>> selectableCards = cardSelections.get(i).get(j);
+                for (int k = 0; k < selectableCards.size(); k++) {
+                    selectableCards.get(k).setSelected(newValue);
+                    System.out.println();
+                }*/
+                for(int i = 0; i < items.size(); i++) {
+                    items.get(i).setSelected(newValue);
                 }
+                forceListViewRedraw(items);
             }
         });
         for(int k = 0; k < items.size(); k++) {
             CheckBox check = new CheckBox();
             check.setPadding(new Insets(0, 6, 0, 0));
-            cardCheckBoxes.get(i).get(j).add(check);
+            //cardCheckBoxes.get(i).get(j).add(check);
         }
-        listView.setCellFactory(new Callback<ListView<Card>, ListCell<Card>>() {
+        cardSelections.get(i).get(j).addAll(Selectable.getSelectableList(cardSet.getCards()));
+        listView.setCellFactory(new Callback<ListView<Selectable<Card>>, ListCell<Selectable<Card>>>() {
             @Override
-            public ListCell<Card> call(ListView<Card> param) {
-                return new CustomListCell(i, j, cardCheckBoxes.get(i).get(j));
+            public ListCell<Selectable<Card>> call(ListView<Selectable<Card>> param) {
+                return new CustomListCell(cardSelections.get(i).get(j));
             }
         });
         inner.getPanes().add(inner.getPanes().size()-1, titledPane);
     }
-
+    
+    public void forceListViewRedraw(ObservableList<Selectable<Card>> cards) { // Fucking shitcode, but works fine. StackOverflow has similar solution :(
+        cards.add(new Selectable<>(new Card()));
+        cards.remove(cards.size()-1);
+    }
     public void removeCardSet(int i, int j) {
         ScrollPane innerSroll = (ScrollPane)accordion.getPanes().get(i).getContent();
         Accordion inner = (Accordion)innerSroll.getContent();
         inner.getPanes().remove(j);
         cardSetCheckBoxes.get(i).remove(j);
-        cardCheckBoxes.get(i).remove(j);
+        //cardCheckBoxes.get(i).remove(j);
+        cardSelections.get(i).remove(j);
     }
     
     public void addSectionButton() {
@@ -253,7 +276,8 @@ public class CustomAccordion {
         CheckBox checkBox = addCheckBox(titledPane, accordion);
         sectionCheckBoxes.add(checkBox);
         cardSetCheckBoxes.add(new ArrayList<>());
-        cardCheckBoxes.add(new ArrayList<>());
+        //cardCheckBoxes.add(new ArrayList<>());
+        cardSelections.add(new ArrayList<>());
         checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -272,7 +296,8 @@ public class CustomAccordion {
         accordion.getPanes().remove(i);
         sectionCheckBoxes.remove(i);
         cardSetCheckBoxes.remove(i);
-        cardCheckBoxes.remove(i);
+        //cardCheckBoxes.remove(i);
+        cardSelections.remove(i);
     }
 
     public Accordion getRoot() {

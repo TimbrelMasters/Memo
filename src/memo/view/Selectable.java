@@ -5,32 +5,38 @@ package memo.view;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 
 public class Selectable <T> {
     
     private T object;
-    private boolean isSelected;
+    public BooleanProperty selectedProperty;
 
     public Selectable(T object) {
         this.object = object;
-        this.isSelected = false;
+        this.selectedProperty = new SimpleBooleanProperty(false);
     }
 
     public void setSelected(boolean isSelected) {
-        this.isSelected = isSelected;
+        this.selectedProperty.set(isSelected);
     }
 
     public boolean isSelected() {
-        return isSelected;
+        return selectedProperty.get();
     }
     
-    public static List<Selectable> getSelectableList(List list) {
-        ArrayList<Selectable> result = new ArrayList<>();
+    public static <T> ArrayList<Selectable<T>> getSelectableList(ArrayList<T> list) {
+        ArrayList<Selectable<T>> result = new ArrayList<>();
         for(int i = 0; i < list.size(); i++) {
-            result.add(new Selectable(list.get(i)));
+            result.add(new Selectable<>(list.get(i)));
         }
         return result;
+    }
+
+    public T getObject() {
+        return object;
     }
     
 }
