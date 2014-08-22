@@ -17,9 +17,9 @@ import javafx.scene.control.RadioMenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.WindowEvent;
 import memo.controller.AbstractController;
+import memo.controller.AbstractController.ControlPaneType;
 import memo.model.Card;
 import memo.model.CardSet;
 import memo.model.Section;
@@ -34,6 +34,7 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
 
     private final URL TRAY_ICON_URL;
 
+    private ControlPaneType currentControlPaneType;
     private MainViewCode mainView;
     private EditThemeCode editThemeView;
 
@@ -89,20 +90,21 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
 
         /*------CONTROLS-------*/
         initUserComboBox();
+        handleSelectUser();
 
         EventHandler<MouseEvent> onOpenTheme = new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent event) {
-                controller.changeControlPane(editThemeView.getRootPane());
+                controller.changeControlPane(ControlPaneType.ThemeEdit,
+                        customAccordion.getCurrentSection(), customAccordion.getCurrentSet(), customAccordion.getCurrentCard());
             }
         };
-        handleSelectUser();
         customAccordion = new CustomAccordion(users.get(0), themeAccordion, controller, onOpenTheme);
 
         /*---AFTER ROOT INIT---*/
         initInnerViews();
-        setControlPane(mainView.getRootPane());
+        setControlPaneType(ControlPaneType.Main);
     }
 
     private void initInnerViews(){
@@ -262,8 +264,28 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
     */
 
     @Override
-    public void setControlPane(Pane controlPane){
-        thisPane.setCenter(controlPane);
+    public void setControlPaneType(ControlPaneType type){
+        currentControlPaneType = type;
+
+        if (type == ControlPaneType.ThemeEdit){
+            thisPane.setCenter(editThemeView.getRootPane());
+        }
+        else if (type == ControlPaneType.Main){
+            thisPane.setCenter(mainView.getRootPane());
+        }
+        else{
+            throw new RuntimeException("Type of Control Pane not recognized");
+        }
+    }
+
+    @Override
+    public ControlPaneType getControlPaneType() {
+        return currentControlPaneType;
+    }
+
+    @Override
+    public void setThemeName(String name){
+        editThemeView.setThemeName(name);
     }
 
   /*

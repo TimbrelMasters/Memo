@@ -190,6 +190,7 @@ public class CustomAccordion {
             @Override
             public void changed(ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) {
                 currentSection = accordion.getPanes().indexOf(newValue);
+                controller.updateView(currentSection, currentSet, currentCard);
             }
         });
 

@@ -1,6 +1,6 @@
 package memo.view;
 
-import javafx.scene.layout.Pane;
+import memo.controller.AbstractController.ControlPaneType;
 import memo.model.Card;
 import memo.model.CardSet;
 import memo.model.Section;
@@ -29,7 +29,9 @@ public interface RootViewInterface {
     public abstract void removeCardSet(int i, int j);
     public abstract void removeSection(int i);
 
-    public abstract void setControlPane(Pane controlPane);
+    public abstract void setControlPaneType(ControlPaneType type);
+    public abstract ControlPaneType getControlPaneType();
+    public abstract void setThemeName(String themeName);
 
     /**
      * Bring the Window to foreground

@@ -1,6 +1,5 @@
 package memo.view;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -15,7 +14,7 @@ public class EditThemeCode extends AbstractView{
     private AnchorPane thisPane;
 
     @FXML
-    private TextField nameArea;
+    private TextField nameField;
 
     private CustomAccordion customAccordion;
 
@@ -34,8 +33,13 @@ public class EditThemeCode extends AbstractView{
     */
 
     @FXML
-    private void OnDeleteClick(ActionEvent event){
+    private void OnDeleteClick(){
         controller.removeSection(customAccordion.getCurrentSection());
+    }
+
+    @FXML
+    private void OnSaveClick(){
+        
     }
 
  /*
@@ -46,5 +50,9 @@ public class EditThemeCode extends AbstractView{
 
     public void setCustomAccordion(CustomAccordion customAccordion){
         this.customAccordion = customAccordion;
+    }
+
+    public void setThemeName(String name){
+        nameField.setText(name);
     }
 }
