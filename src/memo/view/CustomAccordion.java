@@ -11,7 +11,6 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Accordion;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
@@ -38,28 +37,26 @@ public class CustomAccordion {
     private static final double SECTION_MAX_HEIGHT = 180;
 
     private AbstractController controller;
-    private Accordion accordion;
+    private Accordion mainAccordion;
     private EventHandler<MouseEvent> onOpenTheme;
     private User user;
     private ArrayList<CheckBox> sectionCheckBoxes;
     private ArrayList<ArrayList<CheckBox>> cardSetCheckBoxes;
-    //private ArrayList<ArrayList<ArrayList<CheckBox>>> cardCheckBoxes;
-    private ArrayList<ArrayList<ArrayList<Selectable<Card>>>> cardSelections; //Don't really know if this is helpful
+    private ArrayList<ArrayList<ArrayList<Selectable<Card>>>> cardSelections;
     private int currentSection;
     private int currentSet;
     private int currentCard;
 
     public CustomAccordion(User user, Accordion accordion, AbstractController controller, EventHandler<MouseEvent> onOpenTheme) {
-        this.accordion = accordion;
+        this.mainAccordion = accordion;
         this.user = user;
         this.controller = controller;
-        sectionCheckBoxes = new ArrayList<>();
-        cardSetCheckBoxes = new ArrayList<>();
-        //cardCheckBoxes = new ArrayList<>();
-        cardSelections = new ArrayList<>();
+        this.sectionCheckBoxes = new ArrayList<>();
+        this.cardSetCheckBoxes = new ArrayList<>();
+        this.cardSelections = new ArrayList<>();
+        this.onOpenTheme = onOpenTheme;
         CustomListCell.setController(controller);
         CustomListCell.setCustomAccordion(CustomAccordion.this);
-        this.onOpenTheme = onOpenTheme;
         showUserCards();
     }
 
@@ -93,7 +90,7 @@ public class CustomAccordion {
     }
 
     public void showUserCards() {
-        this.accordion.getPanes().clear();
+        mainAccordion.getPanes().clear();
         addSectionButton();
         ArrayList<Section> sections = user.getSections();
         for(int i = 0; i < sections.size(); i++) {
@@ -106,119 +103,149 @@ public class CustomAccordion {
         }
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+
 
     public void addCard(int i, int j, Card card) {
-        ScrollPane innerSroll = (ScrollPane) accordion.getPanes().get(i).getContent();
-        Accordion inner = (Accordion) innerSroll.getContent();
-        ListView listView = (ListView)inner.getPanes().get(j).getContent();
-        //CheckBox check = new CheckBox();
-        //check.setPadding(new Insets(0, 6, 0, 0));
-        //cardCheckBoxes.get(i).get(j).add(check);
+        ListView listView = getCardSetListView(i, j);
         Selectable<Card> selectableCard = new Selectable<>(card);
         selectableCard.setSelected(cardSetCheckBoxes.get(i).get(j).isSelected());
         cardSelections.get(i).get(j).add(selectableCard);
         listView.getItems().add(listView.getItems().size()-1, selectableCard);
         listView.setPrefHeight(CARD_HEIGHT*listView.getItems().size());
     }
+    
+    private ListView getCardSetListView(int sectionNumner, int cardSetNumber) {
+        Accordion inner = getSectionAccordion(sectionNumner);
+        ListView listView = (ListView) inner.getPanes().get(cardSetNumber).getContent();
+        return listView;
+    }
+    
+    private Accordion getSectionAccordion(int sectionNumber) {
+        ScrollPane sectionScrollPane = (ScrollPane) mainAccordion.getPanes().get(sectionNumber).getContent();
+        Accordion sectionAccordion = (Accordion) sectionScrollPane.getContent();
+        return sectionAccordion;
+    }
 
     public void removeCard(int i, int j, int k) {
-        ScrollPane innerSroll = (ScrollPane) accordion.getPanes().get(i).getContent();
-        Accordion inner = (Accordion) innerSroll.getContent();
-        ListView listView = (ListView)inner.getPanes().get(j).getContent();
+        ListView listView = getCardSetListView(i, j);
         listView.getItems().remove(k);
-        //cardCheckBoxes.get(i).get(j).remove(k);
         cardSelections.get(i).get(j).remove(k);
         listView.setPrefHeight(CARD_HEIGHT*listView.getItems().size());
     }
-
-    public void addCardSetButton(int i) {
-        ScrollPane innerSroll = (ScrollPane) accordion.getPanes().get(i).getContent();
-        Accordion inner = (Accordion) innerSroll.getContent();
-        inner.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
+    
+    private void addCurrentSetListener(Accordion sectionAccordion) {
+        sectionAccordion.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
             @Override
             public void changed(ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) {
-                currentSet = inner.getPanes().indexOf(newValue);
+                currentSet = sectionAccordion.getPanes().indexOf(newValue);
             }
         });
-        inner.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
-
-        //Customized titledPane
-        TitledPane cardSetButton = new TitledPane("Add new card set", null);
-        cardSetButton.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
-        cardSetButton.getStyleClass().add("addCardSetButton");
-
-        cardSetButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+    }
+    
+    private void setAddCardSetButtonStyle(TitledPane addCardSetPane) {
+        addCardSetPane.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
+        addCardSetPane.getStyleClass().add("addCardSetButton");
+    }
+    
+    private void handleAddCardSetButtonClick(TitledPane addCardSetPane, Accordion sectionAccordion, int sectionNumber) {
+        addCardSetPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                controller.addCardSet(i, new CardSet("Empty"));
-                inner.getPanes().get(inner.getPanes().size()-2).setExpanded(true);
-                System.out.println(cardSetButton.getStyleClass().toString());
+                controller.addCardSet(sectionNumber, new CardSet("Empty"));
+                sectionAccordion.getPanes().get(sectionAccordion.getPanes().size() - 2).setExpanded(true);
             }
         });
-        inner.getPanes().add(cardSetButton);
+    }
+    
+    private ObservableList<Selectable<Card>> createCardSetItems(CardSet cardSet) {
+        ObservableList<Selectable<Card>> items = FXCollections.observableArrayList(Selectable.getSelectableList(cardSet.getCards()));
+        items.add(new Selectable<>(new FakeCard()));
+        return items;
+    }
+    
+    private ListView createCardSetListView(ObservableList<Selectable<Card>> cardSetItems) {
+        ListView cardSetListView = new ListView(cardSetItems);
+        cardSetListView.setMaxHeight(CARD_SET_MAX_HEIGHT);
+        cardSetListView.setPrefHeight(CARD_HEIGHT * cardSetListView.getItems().size());
+        return cardSetListView;
+    }
+    
+    private void addCurrentCardListener(ListView cardSetListView) {
+        cardSetListView.getSelectionModel().getSelectedIndices().addListener(new ListChangeListener() {
+            @Override
+            public void onChanged(ListChangeListener.Change c) {
+                currentCard = (Integer) c.getList().get(0);
+            }
+        });
+    }
+    
+    private void setCardSetPaneStyle(TitledPane cardSetPane) {
+        cardSetPane.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
+        cardSetPane.getStyleClass().add("cardSetPane");
+    }
+    
+    private void handleCardSetCheckBoxClick(CheckBox cardSetCheckBox, ObservableList<Selectable<Card>> cardSetItems, int sectionNumber, int cardSetNumber) {
+        cardSetCheckBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                for (int k = 0; k < cardSetItems.size() - 1; k++) {
+                    cardSetItems.get(k).setSelected(cardSetCheckBox.isSelected());
+                    cardSelections.get(sectionNumber).get(cardSetNumber).get(k).setSelected(cardSetCheckBox.isSelected());
+                }
+                forceListViewRedraw(cardSetItems);
+                boolean allCardSetCheckBoxesFired = true;
+                for (int k = 0; k < cardSetCheckBoxes.get(sectionNumber).size(); k++) {
+                    if (cardSetCheckBoxes.get(sectionNumber).get(k).isSelected() == false) {
+                        allCardSetCheckBoxesFired = false;
+                        sectionCheckBoxes.get(sectionNumber).setSelected(false);
+                        break;
+                    }
+                }
+                if (allCardSetCheckBoxesFired == true) {
+                    sectionCheckBoxes.get(sectionNumber).setSelected(true);
+                }
+            }
+        });
+    }
+    
+    private void setListViewCellFactory(ListView cardSetListView, CheckBox cardSetCheckBox, int sectionNumber, int cardSetNumber) {
+        cardSetListView.setCellFactory(new Callback<ListView<Selectable<Card>>, ListCell<Selectable<Card>>>() {
+            @Override
+            public ListCell<Selectable<Card>> call(ListView<Selectable<Card>> param) {
+                return new CustomListCell(sectionCheckBoxes.get(sectionNumber), cardSetCheckBoxes.get(cardSetNumber), cardSetCheckBox, cardSelections.get(sectionNumber).get(cardSetNumber));
+            }
+        });
+    }
+    
+    public void addCardSetButton(int i) {
+        Accordion sectionAccordion = getSectionAccordion(i);
+        sectionAccordion.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
+        addCurrentSetListener(sectionAccordion);
+        TitledPane addCardSetPane = new TitledPane("Add new card set", null);
+        setAddCardSetButtonStyle(addCardSetPane);
+        handleAddCardSetButtonClick(addCardSetPane, sectionAccordion, i);
+        sectionAccordion.getPanes().add(addCardSetPane);
     }
     
     public void addCardSet(int i, CardSet cardSet) {
-        ScrollPane innerSroll = (ScrollPane) accordion.getPanes().get(i).getContent();
-        Accordion inner = (Accordion) innerSroll.getContent();
-        inner.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
-        ObservableList<Selectable<Card>> items = FXCollections.observableArrayList(Selectable.getSelectableList(cardSet.getCards()));
-        items.add(new Selectable<>(new FakeCard()));
-        ListView listView = new ListView(items);
-
-        listView.getSelectionModel().getSelectedIndices().addListener(new ListChangeListener() {
-            @Override
-            public void onChanged(ListChangeListener.Change c) {
-                currentCard = (Integer)c.getList().get(0);
-                System.out.println(currentCard);
-            }
-        });
-
-        listView.setMaxHeight(CARD_SET_MAX_HEIGHT);
-        listView.setPrefHeight(CARD_HEIGHT*listView.getItems().size());
-
-        TitledPane titledPane = new TitledPane(cardSet.getName(), listView);
-        titledPane.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
-        titledPane.getStyleClass().add("cardSetPane");
-        CheckBox checkBox = addCheckBox(titledPane, inner);
-        cardSetCheckBoxes.get(i).add(checkBox);
-        int j = cardSetCheckBoxes.get(i).indexOf(checkBox);
-        //cardCheckBoxes.get(i).add(new ArrayList<>());
+        Accordion sectionAccordion = getSectionAccordion(i);
+        sectionAccordion.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
+        ObservableList<Selectable<Card>> cardSetItems = createCardSetItems(cardSet);
+        ListView cardSetListView = createCardSetListView(cardSetItems);
+        addCurrentCardListener(cardSetListView);        
+        TitledPane cardSetPane = new TitledPane(cardSet.getName(), cardSetListView);
+        setCardSetPaneStyle(cardSetPane);
+        
+        CheckBox cardSetCheckBox = addCheckBox(cardSetPane, sectionAccordion);
+        cardSetCheckBox.setSelected(sectionCheckBoxes.get(i).isSelected());
+        cardSetCheckBoxes.get(i).add(cardSetCheckBox);
+        int j = cardSetCheckBoxes.get(i).indexOf(cardSetCheckBox);
         cardSelections.get(i).add(new ArrayList<>());
-        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                /*ArrayList<CheckBox> innerCheckBoxes = cardCheckBoxes.get(i).get(j);
-                for(int k = 0; k < innerCheckBoxes.size(); k++) {
-                    innerCheckBoxes.get(k).setSelected(newValue);
-                }*/
-                /*ArrayList<Selectable<Card>> selectableCards = cardSelections.get(i).get(j);
-                for (int k = 0; k < selectableCards.size(); k++) {
-                    selectableCards.get(k).setSelected(newValue);
-                    System.out.println();
-                }*/
-                for(int i = 0; i < items.size(); i++) {
-                    items.get(i).setSelected(newValue);
-                }
-                forceListViewRedraw(items);
-            }
-        });
-        for(int k = 0; k < items.size(); k++) {
-            CheckBox check = new CheckBox();
-            check.setPadding(new Insets(0, 6, 0, 0));
-            //cardCheckBoxes.get(i).get(j).add(check);
-        }
         cardSelections.get(i).get(j).addAll(Selectable.getSelectableList(cardSet.getCards()));
-        listView.setCellFactory(new Callback<ListView<Selectable<Card>>, ListCell<Selectable<Card>>>() {
-            @Override
-            public ListCell<Selectable<Card>> call(ListView<Selectable<Card>> param) {
-                return new CustomListCell(cardSelections.get(i).get(j));
-            }
-        });
-        inner.getPanes().add(inner.getPanes().size()-1, titledPane);
+        handleCardSetCheckBoxClick(cardSetCheckBox, cardSetItems, i, j);
+        
+        setListViewCellFactory(cardSetListView, cardSetCheckBox, i, j);
+        sectionAccordion.getPanes().add(sectionAccordion.getPanes().size()-1, cardSetPane);
     }
     
     public void forceListViewRedraw(ObservableList<Selectable<Card>> cards) { // Fucking shitcode, but works fine. StackOverflow has similar solution :(
@@ -226,81 +253,115 @@ public class CustomAccordion {
         cards.remove(cards.size()-1);
     }
     public void removeCardSet(int i, int j) {
-        ScrollPane innerSroll = (ScrollPane)accordion.getPanes().get(i).getContent();
-        Accordion inner = (Accordion)innerSroll.getContent();
-        inner.getPanes().remove(j);
+        Accordion sectionAccordion = getSectionAccordion(i);
+        sectionAccordion.getPanes().remove(j);
         cardSetCheckBoxes.get(i).remove(j);
-        //cardCheckBoxes.get(i).remove(j);
         cardSelections.get(i).remove(j);
     }
     
-    public void addSectionButton() {
-        this.accordion.expandedPaneProperty().addListener(new ChangeListener<TitledPane>(){
+    private void addCurrentSectionListener() {
+        this.mainAccordion.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
             @Override
-            public void changed (ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) {
-                currentSection = accordion.getPanes().indexOf(newValue);
-                if (currentSection != accordion.getPanes().size() - 1){
+            public void changed(ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) {
+                currentSection = mainAccordion.getPanes().indexOf(newValue);
+                if (currentSection != mainAccordion.getPanes().size() - 1) {
                     controller.updateView(currentSection, currentSet, currentCard);
                 }
             }
         });
-
-        //titled pane customized by css
-        TitledPane addSectionButton = new TitledPane("Add new Section", null);
+    }
+    
+    private void setAddSectionButtonStyle(TitledPane addSectionButton) {
         addSectionButton.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
         addSectionButton.getStyleClass().add("addThemeButton");
-
-        accordion.getPanes().add(addSectionButton);
+    }
+    
+    private void handleAddSectionButtonClick(TitledPane addSectionButton) {
         addSectionButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 controller.addSection(new Section("Empty"));
                 addCardSetButton(currentSection);
-                accordion.getPanes().get(accordion.getPanes().size()-2).setExpanded(true);
+                mainAccordion.getPanes().get(mainAccordion.getPanes().size() - 2).setExpanded(true);
                 System.out.println(addSectionButton.getStyleClass().toString());
             }
         });
     }
+    
+    public void addSectionButton() {
+        addCurrentSectionListener();
+        TitledPane addSectionButton = new TitledPane("Add new Section", null);
+        setAddSectionButtonStyle(addSectionButton);
+        mainAccordion.getPanes().add(addSectionButton);
+        handleAddSectionButtonClick(addSectionButton);
+    }
+    
+    private void setSectionScrollPaneProperties(ScrollPane sectionScrollPane) {
+        sectionScrollPane.setFitToWidth(true);
+        sectionScrollPane.setMinHeight(CARD_SET_HEIGHT);
+        Accordion sectionAccordion = (Accordion)sectionScrollPane.getContent();
+        sectionScrollPane.prefHeightProperty().bind(sectionAccordion.heightProperty());
+        sectionScrollPane.setMaxHeight(SECTION_MAX_HEIGHT);
+    }
+    
+    private void setSectionPaneStyle(TitledPane sectionPane) {
+        sectionPane.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
+        sectionPane.getStyleClass().add("themePane");
+    }
+    
+    private void handleSectionCheckBoxClick(CheckBox sectionCheckBox) {
+        sectionCheckBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                int i = sectionCheckBoxes.indexOf(sectionCheckBox);
+                ArrayList<CheckBox> innerCheckBoxes = cardSetCheckBoxes.get(i);
+                for (int j = 0; j < innerCheckBoxes.size(); j++) {
+                    cardSetCheckBoxes.get(i).get(j).setSelected(sectionCheckBox.isSelected());
+                    ArrayList<Selectable<Card>> secondLevel = cardSelections.get(i).get(j);
+                    ListView cardSetListView = getCardSetListView(i, j);
+                    for (int k = 0; k < secondLevel.size(); k++) {
+                        Selectable<Card> selectableCard = (Selectable<Card>) cardSetListView.getItems().get(k);
+                        selectableCard.setSelected(sectionCheckBox.isSelected());
+                        secondLevel.get(k).setSelected(sectionCheckBox.isSelected());
+                        forceListViewRedraw(cardSetListView.getItems());
+                    }
+                }
+            }
+
+        });
+    }
+    
+    private void handleSectionPaneClick(TitledPane sectionPane) {
+        sectionPane.setOnMouseClicked(onOpenTheme);
+    }
 
     public void addSection(Section section) {
-        Accordion inner = new Accordion();
-        ScrollPane innerScroll = new ScrollPane(inner);
-        innerScroll.setFitToWidth(true);
-        innerScroll.setMinHeight(CARD_SET_HEIGHT);
-        innerScroll.prefHeightProperty().bind(inner.heightProperty());
-        innerScroll.setMaxHeight(SECTION_MAX_HEIGHT);
-        TitledPane titledPane = new TitledPane(section.getName(), innerScroll);
-        titledPane.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
-        titledPane.getStyleClass().add("themePane");
-        CheckBox checkBox = addCheckBox(titledPane, accordion);
-        sectionCheckBoxes.add(checkBox);
+        Accordion sectionAccordion = new Accordion();
+        ScrollPane sectionScrollPane = new ScrollPane(sectionAccordion);
+        setSectionScrollPaneProperties(sectionScrollPane);
+        TitledPane sectionPane = new TitledPane(section.getName(), sectionScrollPane);
+        setSectionPaneStyle(sectionPane);
+        handleSectionPaneClick(sectionPane);
+        
+        CheckBox sectionCheckBox = addCheckBox(sectionPane, mainAccordion);
+        sectionCheckBoxes.add(sectionCheckBox);
         cardSetCheckBoxes.add(new ArrayList<>());
-        //cardCheckBoxes.add(new ArrayList<>());
         cardSelections.add(new ArrayList<>());
-        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                    int i = sectionCheckBoxes.indexOf(checkBox);
-                    ArrayList<CheckBox> innerCheckBoxes = cardSetCheckBoxes.get(i);
-                    for (int j = 0; j < innerCheckBoxes.size(); j++) {
-                        cardSetCheckBoxes.get(i).get(j).setSelected(newValue);
-                    }
-            }
-        });
-        titledPane.setOnMouseClicked(onOpenTheme);
-        accordion.getPanes().add(accordion.getPanes().size()-1, titledPane);
+        handleSectionCheckBoxClick(sectionCheckBox);
+ 
+        mainAccordion.getPanes().add(mainAccordion.getPanes().size()-1, sectionPane);
     }
 
     public void removeSection(int i) {
-        accordion.getPanes().remove(i);
+        mainAccordion.getPanes().remove(i);
         sectionCheckBoxes.remove(i);
         cardSetCheckBoxes.remove(i);
-        //cardCheckBoxes.remove(i);
         cardSelections.remove(i);
     }
 
     public Accordion getRoot() {
-        return accordion;
+        return mainAccordion;
     }
 
     public int getCurrentSection() {
@@ -317,6 +378,10 @@ public class CustomAccordion {
 
     public User getUser() {
         return user;
+    }
+    
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

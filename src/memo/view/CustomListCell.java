@@ -5,7 +5,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -21,6 +20,9 @@ public class CustomListCell extends ListCell<Selectable<Card>> {
 
     private ArrayList<Selectable<Card>> cardSelections;
     private boolean isSimpleCell; 
+    private CheckBox cardSetCheckBox;
+    private ArrayList cardSetCheckBoxes;
+    private CheckBox sectionCheckBox;
 
     /* CONTOROLS FOR SIMPLE CELL */
     private final HBox simpleCellHBox;
@@ -33,13 +35,41 @@ public class CustomListCell extends ListCell<Selectable<Card>> {
     private static AbstractController controller;
     private static CustomAccordion customAccordion;
     
-    public CustomListCell(ArrayList<Selectable<Card>> cardSelections) {
+    public CustomListCell(CheckBox sectionCheckBox, ArrayList<CheckBox> cardSetCheckBoxes,  CheckBox cardSetCheckBox, ArrayList<Selectable<Card>> cardSelections) {
         super();
         this.checkBox = new CheckBox();
-        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+        this.cardSelections = cardSelections;
+        this.cardSetCheckBox = cardSetCheckBox;
+        this.sectionCheckBox = sectionCheckBox;
+        this.cardSetCheckBoxes = cardSetCheckBoxes;
+        checkBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                CustomListCell.this.getItem().setSelected(newValue);
+            public void handle(MouseEvent event) {
+                CustomListCell.this.getItem().setSelected(checkBox.isSelected());
+                cardSelections.get(CustomListCell.this.getIndex()).setSelected(checkBox.isSelected());
+                boolean allCheckBoxesFired = true;
+                for(int i = 0; i < cardSelections.size(); i++) {
+                    if(cardSelections.get(i).isSelected() == false) {
+                        cardSetCheckBox.setSelected(false);
+                        sectionCheckBox.setSelected(false);
+                        allCheckBoxesFired = false;
+                        break;
+                    }
+                }
+                if(allCheckBoxesFired == true) {
+                    cardSetCheckBox.setSelected(true);
+                }
+                boolean allCardSetCheckBoxesFired = true;
+                for(int i = 0; i < cardSetCheckBoxes.size(); i++) {
+                    if(cardSetCheckBoxes.get(i).isSelected() == false) {
+                        allCardSetCheckBoxesFired = false;
+                        break;
+                    }
+                }
+                if(allCardSetCheckBoxesFired == true) {
+                    sectionCheckBox.setSelected(true);
+                }
+                    
             }
         });
         this.checkBox.setPadding(new Insets(0, 6, 0, 0));
