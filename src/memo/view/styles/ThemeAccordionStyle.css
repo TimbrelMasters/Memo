@@ -28,6 +28,16 @@
     -fx-background-color: #fff1b2;
 }
 
+.addThemeButton{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 0 0 50 50;
+    -fx-font-weight: bold;
+}
+
+.addThemeButton:hover{
+    -fx-background-color: #fff1b2;
+}
+
 .addThemeButton > .title{
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 0 0 50 50;
@@ -47,4 +57,5 @@
 
 .whiteScrollPane {
     -fx-background: #FFFFFF;
+    -fx-background-color:transparent;
 }

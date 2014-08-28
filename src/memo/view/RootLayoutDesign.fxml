@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="thisPane" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="memo.view.RootLayoutCode">
+<BorderPane fx:id="thisPane" prefHeight="400.0" prefWidth="700.0" style="-fx-border-style: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="memo.view.RootLayoutCode">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -52,14 +52,25 @@
                         </Button>
                      </children>
                   </HBox>
-                  <ScrollPane fitToWidth="true" pannable="true" prefViewportWidth="330.0" styleClass="whiteScrollPane" stylesheets="@styles/ThemeAccordionStyle.css" VBox.vgrow="ALWAYS">
+                  <ScrollPane fx:id="themeScroll" fitToWidth="true" maxHeight="1.7976931348623157E308" minHeight="0.0" pannable="true" prefHeight="0.0" prefViewportWidth="330.0" styleClass="whiteScrollPane" stylesheets="@styles/ThemeAccordionStyle.css">
                      <content>
-                        <Accordion fx:id="themeAccordion" style="-fx-background-color: #FFFFFF;" />
+                        <Accordion fx:id="themeAccordion" style="-fx-background-color: #FFFFFF; -fx-border: none;" />
                      </content>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </ScrollPane>
+                  <HBox>
+                     <children>
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="addThemeButton" stylesheets="@styles/ThemeAccordionStyle.css" text="Add new section" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </children>
       </AnchorPane>
    </left>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 </BorderPane>
