@@ -52,7 +52,7 @@
                         </Button>
                      </children>
                   </HBox>
-                  <ScrollPane fx:id="themeScroll" fitToWidth="true" maxHeight="1.7976931348623157E308" minHeight="0.0" pannable="true" prefHeight="0.0" prefViewportWidth="330.0" styleClass="whiteScrollPane" stylesheets="@styles/ThemeAccordionStyle.css">
+                  <ScrollPane fx:id="themeScroll" fitToWidth="true" maxHeight="1.7976931348623157E308" minHeight="0.0" pannable="true" prefHeight="0.0" prefViewportWidth="330.0" styleClass="whiteScrollPane" stylesheets="@styles/ThemeAccordionStyle.css" vbarPolicy="ALWAYS">
                      <content>
                         <Accordion fx:id="themeAccordion" style="-fx-background-color: #FFFFFF; -fx-border: none;" />
                      </content>

@@ -118,6 +118,12 @@ public class Controller extends AbstractController{
     }
 
     @Override
+    public void changeSectionName(int i, String newName){
+        //some checks..
+        registeredModels.get(0).changeSectionName(i, newName);
+    }
+
+    @Override
     public void changeControlPane(ControlPaneType type,
             int currentSection, int currentCardSet, int currentCard) { //maybe will be wrapped in class-wrapper
         registeredViews.get(0).setControlPaneType(type);

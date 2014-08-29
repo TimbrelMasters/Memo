@@ -71,6 +71,8 @@ public abstract class AbstractController implements ModelChangedListener, NewIns
     public abstract void removeCardSet(int i, int j);
     public abstract void removeSection(int i);
 
+    public abstract void changeSectionName(int sectionIndex, String newName);
+
     public enum ControlPaneType {ThemeEdit, Main};
     /**
      * Replaces controlPane that provide other functionality

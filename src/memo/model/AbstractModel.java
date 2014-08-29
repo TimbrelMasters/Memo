@@ -40,6 +40,8 @@ public abstract class AbstractModel {
     public abstract void removeCardSet(int i, int j);
     public abstract void removeSection(int i);
 
+    public abstract void changeSectionName(int sectionIndex, String newName);
+
     public abstract Section getSection(int i);
 
 }

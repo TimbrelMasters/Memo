@@ -39,7 +39,8 @@ public class EditThemeCode extends AbstractView{
 
     @FXML
     private void OnSaveClick(){
-        
+        controller.changeSectionName(customAccordion.getCurrentSection(), nameField.getText());
+
     }
 
  /*

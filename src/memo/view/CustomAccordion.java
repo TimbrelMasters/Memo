@@ -161,6 +161,10 @@ public class CustomAccordion {
         cardSelections.remove(i);
     }
 
+    public void changeSectionName(int sectionIndex, String newName){
+        mainAccordion.getPanes().get(sectionIndex).setText(newName);
+    }
+
     public int getCurrentSection() {
         return currentSection;
     }

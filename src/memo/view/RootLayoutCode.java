@@ -107,8 +107,8 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
                 }
             }
         };
-        themeScroll.maxHeightProperty().bind(thisPane.heightProperty());
         themeScroll.prefHeightProperty().bind(themeAccordion.heightProperty());
+        themeScroll.maxHeightProperty().bind(thisPane.heightProperty());
         customAccordion = new CustomAccordion(users.get(0), themeAccordion, controller, onOpenTheme);
 
         /*---AFTER ROOT INIT---*/
@@ -382,6 +382,9 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
         customAccordion.removeSection(i);
     }
 
-
+    @Override
+    public void changeSectionName(int i, String newName){
+        customAccordion.changeSectionName(i, newName);
+    }
 
 }

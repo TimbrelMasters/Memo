@@ -29,6 +29,8 @@ public interface RootViewInterface {
     public abstract void removeCardSet(int i, int j);
     public abstract void removeSection(int i);
 
+    public abstract void changeSectionName(int sectionIndex, String newName);
+
     public abstract void setControlPaneType(ControlPaneType type);
     public abstract ControlPaneType getControlPaneType();
     public abstract void setThemeName(String themeName);
