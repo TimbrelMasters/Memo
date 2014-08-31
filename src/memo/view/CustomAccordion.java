@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
@@ -46,8 +47,9 @@ public class CustomAccordion {
     private int currentSection;
     private int currentSet;
     private int currentCard;
+    private Button sectionButton;
 
-    public CustomAccordion(User user, Accordion accordion, AbstractController controller, EventHandler<MouseEvent> onOpenTheme) {
+    public CustomAccordion(User user, Accordion accordion, AbstractController controller, EventHandler<MouseEvent> onOpenTheme, Button sectionButton) {
         this.mainAccordion = accordion;
         this.user = user;
         this.controller = controller;
@@ -57,6 +59,8 @@ public class CustomAccordion {
         this.onOpenTheme = onOpenTheme;
         CustomListCell.setController(controller);
         CustomListCell.setCustomAccordion(CustomAccordion.this);
+        this.sectionButton = sectionButton;
+        handleAddSectionButtonClick(sectionButton);
         showUserCards();
     }
 
@@ -131,10 +135,22 @@ public class CustomAccordion {
 
     public void addSectionButton() {
         addCurrentSectionListener();
-        TitledPane addSectionButton = new TitledPane("Add new Section", null);
-        setAddSectionButtonStyle(addSectionButton);
-        handleAddSectionButtonClick(addSectionButton);
-        mainAccordion.getPanes().add(addSectionButton);
+        //TitledPane addSectionButton = new TitledPane("Add new Section", null);
+        //setAddSectionButtonStyle(addSectionButton);
+        //handleAddSectionButtonClick(addSectionButton);
+        //mainAccordion.getPanes().add(addSectionButton);
+    }
+
+    private void addCurrentSectionListener() {
+        this.mainAccordion.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
+            @Override
+            public void changed(ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) {
+                currentSection = mainAccordion.getPanes().indexOf(newValue);
+                if (currentSection != mainAccordion.getPanes().size() - 1) {
+                    controller.updateView(currentSection, currentSet, currentCard);
+                }
+            }
+        });
     }
 
     public void addSection(Section section) {
@@ -151,7 +167,8 @@ public class CustomAccordion {
         cardSelections.add(new ArrayList<>());
         handleSectionCheckBoxClick(sectionCheckBox);
 
-        mainAccordion.getPanes().add(mainAccordion.getPanes().size()-1, sectionPane);
+        mainAccordion.getPanes().add(mainAccordion.getPanes().size(), sectionPane);
+        mainAccordion.getPanes().get(mainAccordion.getPanes().size() - 1).setExpanded(true);
     }
 
     public void removeSection(int i) {
@@ -330,31 +347,18 @@ public class CustomAccordion {
         sectionPane.setOnMouseClicked(onOpenTheme);
     }
 
-    private void addCurrentSectionListener() {
-        this.mainAccordion.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
-            @Override
-            public void changed(ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) {
-                currentSection = mainAccordion.getPanes().indexOf(newValue);
-                if (currentSection != mainAccordion.getPanes().size() - 1) {
-                    controller.updateView(currentSection, currentSet, currentCard);
-                }
-            }
-        });
-    }
 
     private void setAddSectionButtonStyle(TitledPane addSectionButton) {
         addSectionButton.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
         addSectionButton.getStyleClass().add("addThemeButton");
     }
 
-    private void handleAddSectionButtonClick(TitledPane addSectionButton) {
+    private void handleAddSectionButtonClick(Button addSectionButton) {
         addSectionButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 controller.addSection(new Section("Empty"));
                 addCardSetButton(currentSection);
-                mainAccordion.getPanes().get(mainAccordion.getPanes().size() - 2).setExpanded(true);
-                System.out.println(addSectionButton.getStyleClass().toString());
             }
         });
     }

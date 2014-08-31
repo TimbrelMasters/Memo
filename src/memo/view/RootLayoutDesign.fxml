@@ -62,7 +62,7 @@
                   </ScrollPane>
                   <HBox>
                      <children>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="addThemeButton" stylesheets="@styles/ThemeAccordionStyle.css" text="Add new section" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="addThemeButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="addThemeButton" stylesheets="@styles/ThemeAccordionStyle.css" text="Add new section" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </children>

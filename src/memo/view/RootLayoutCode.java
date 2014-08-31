@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
@@ -62,6 +63,9 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
     @FXML
     private ScrollPane themeScroll;
 
+    @FXML
+    private Button addThemeButton;
+
     private CustomAccordion customAccordion;
 
     private ObservableList<User> users;
@@ -107,9 +111,10 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
                 }
             }
         };
+        themeScroll.setMinHeight(30);
         themeScroll.prefHeightProperty().bind(themeAccordion.heightProperty());
         themeScroll.maxHeightProperty().bind(thisPane.heightProperty());
-        customAccordion = new CustomAccordion(users.get(0), themeAccordion, controller, onOpenTheme);
+        customAccordion = new CustomAccordion(users.get(0), themeAccordion, controller, onOpenTheme, addThemeButton);
 
         /*---AFTER ROOT INIT---*/
         initInnerViews();
