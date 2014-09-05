@@ -3,29 +3,12 @@
     Author     : Pisarik
 */
 
-.cardSetPane > .title{
-    -fx-background-color: #F6FBAF;
-}
-
-.addCardSetButton > .title{
-    -fx-background-color: #FFFFFF;
-    -fx-background-radius: 0 0 50 50;
-    -fx-font-weight: bold;
-}
-
-.addCardSetButton > .title:hover{
-    -fx-background-color: #F6FBAF;
-}
-
-.addCardSetButton > .title > .arrow-button > .arrow {
-    -fx-background-color: -fx-mark-highlight-color, -fx-mark-color;
-    -fx-background-insets: 1 0 -1 0, 0;
-    -fx-padding: 0.25em 0.3125em 0.25em 0.3125em;  /*3 3.75 3 3.75*/
-    -fx-shape: "M 0 0 v -1 h -0.3 v 2 h 0.6 v -1 h -0.3 z M 0 0 v -0.3 h -1 v 0.6 h 1 v -0.3 z M 0.2 0 v -0.3 h 0.8 v 0.6 h -0.8 v -0.3 z";
-}
-
 .themePane > .title{
     -fx-background-color: #fff1b2;
+}
+
+.cardSetPane > .title{
+    -fx-background-color: #F6FBAF;
 }
 
 .addThemeButton{
@@ -38,7 +21,27 @@
     -fx-background-color: #fff1b2;
 }
 
-.addThemeButton > .title{
+.addCardSetButton{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 0 0 50 50;
+    -fx-font-weight: bold;
+}
+
+.addCardSetButton:hover{
+    -fx-background-color: #F6FBAF;
+}
+
+.whiteScrollPane {
+    -fx-background:  #00FF00;
+    -fx-background-insets: 0;
+    -fx-border-style: none;
+    -fx-insets: 0;
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+//old style for titledPane addButtons
+/*.addThemeButton > .title{
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 0 0 50 50;
     -fx-font-weight: bold;
@@ -55,7 +58,20 @@
     -fx-shape: "M 0 0 v -1 h -0.3 v 2 h 0.6 v -1 h -0.3 z M 0 0 v -0.3 h -1 v 0.6 h 1 v -0.3 z M 0.2 0 v -0.3 h 0.8 v 0.6 h -0.8 v -0.3 z";
 }
 
-.whiteScrollPane {
-    -fx-background: #FFFFFF;
-    -fx-background-color:transparent;
+.addCardSetButton > .title{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 0 0 50 50;
+    -fx-font-weight: bold;
 }
+
+.addCardSetButton > .title:hover{
+    -fx-background-color: #F6FBAF;
+}
+
+.addCardSetButton > .title > .arrow-button > .arrow {
+    -fx-background-color: -fx-mark-highlight-color, -fx-mark-color;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-padding: 0.25em 0.3125em 0.25em 0.3125em;
+    -fx-shape: "M 0 0 v -1 h -0.3 v 2 h 0.6 v -1 h -0.3 z M 0 0 v -0.3 h -1 v 0.6 h 1 v -0.3 z M 0.2 0 v -0.3 h 0.8 v 0.6 h -0.8 v -0.3 z";
+}
+*/

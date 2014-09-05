@@ -100,21 +100,7 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
         initUserComboBox();
         handleSelectUser();
 
-        EventHandler<MouseEvent> onOpenTheme = new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent event) {
-                if (currentControlPaneType != ControlPaneType.ThemeEdit &&
-                        customAccordion.getCurrentSection() != -1){
-                    controller.changeControlPane(ControlPaneType.ThemeEdit,
-                        customAccordion.getCurrentSection(), customAccordion.getCurrentSet(), customAccordion.getCurrentCard());
-                }
-            }
-        };
-        themeScroll.setMinHeight(30);
-        themeScroll.prefHeightProperty().bind(themeAccordion.heightProperty());
-        themeScroll.maxHeightProperty().bind(thisPane.heightProperty());
-        customAccordion = new CustomAccordion(users.get(0), themeAccordion, controller, onOpenTheme, addThemeButton);
+        initCustomAccordion();
 
         /*---AFTER ROOT INIT---*/
         initInnerViews();
@@ -141,6 +127,24 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
         catch (IOException e){
             throw new RuntimeException(e);
         }
+    }
+
+    private void initCustomAccordion(){
+        themeScroll.prefHeightProperty().bind(themeAccordion.heightProperty());
+        themeScroll.maxHeightProperty().bind(thisPane.heightProperty());
+        Platform.runLater(() -> {
+            themeScroll.autosize();
+        });
+
+        EventHandler<MouseEvent> onOpenTheme = (MouseEvent event) -> {
+            if (currentControlPaneType != ControlPaneType.ThemeEdit
+                    && customAccordion.getCurrentSection() != -1) {
+                 controller.changeControlPane(ControlPaneType.ThemeEdit,
+                        customAccordion.getCurrentSection(), customAccordion.getCurrentSet(), customAccordion.getCurrentCard());
+            }
+        };
+
+        customAccordion = new CustomAccordion(users.get(0), themeAccordion, controller, onOpenTheme, addThemeButton);
     }
 
 
@@ -200,12 +204,6 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
         });
     }
 
-    private void handleExitClick() {
-        exitItem.setOnAction((ActionEvent e) -> {
-            controller.exit();
-        });
-    }
-
     private void handleTrayExitClick() {
         trayExitItem.addActionListener((java.awt.event.ActionEvent e) -> {
             controller.exit();
@@ -221,6 +219,12 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
     private void handleTrayDoubleClick(){
         trayUtility.setOnDoubleClick((java.awt.event.ActionEvent e) -> {
             controller.showStageFromTray();
+        });
+    }
+
+    private void handleExitClick() {
+        exitItem.setOnAction((ActionEvent e) -> {
+            controller.exit();
         });
     }
 
