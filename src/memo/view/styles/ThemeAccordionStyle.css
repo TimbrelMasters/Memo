@@ -31,6 +31,16 @@
     -fx-background-color: #F6FBAF;
 }
 
+.addCardButton{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 0 0 50 50;
+    -fx-font-weight: bold;
+}
+
+.addCardButton:hover{
+    //-fx-background-color: #blablabla;
+}
+
 .whiteScrollPane {
     -fx-background:  #00FF00;
     -fx-background-insets: 0;
