@@ -103,6 +103,8 @@ public class CustomAccordion {
         //add new sectionPane to the end of mainAccordion and expand it
         mainAccordion.getPanes().add(mainAccordion.getPanes().size(), sectionPane);
         mainAccordion.getPanes().get(mainAccordion.getPanes().size() - 1).setExpanded(true);
+        currentSet = -1;
+        currentCard = -1;
 
         addSelectedCardSetListener(sectionAccordion);
         addCardSetButton(sectionVBox);
@@ -132,13 +134,13 @@ public class CustomAccordion {
         sectionScrollPane.setMinHeight(CARD_SET_HEIGHT);
         sectionScrollPane.setMaxHeight(SECTION_MAX_HEIGHT);
 
-        sectionScrollPane.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-fit-to-width: true");
+        sectionScrollPane.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-border-style: none; -fx-fit-to-width: true");
     }
 
     private void setSectionVBoxLook(VBox sectionVBox){
         sectionVBox.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
 
-        sectionVBox.setStyle("-fx-background-color: #FFFFFF; -fx-border: none");
+        sectionVBox.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: transparent");
     }
 
     private void setSectionPaneLook(TitledPane sectionPane) {
@@ -175,6 +177,7 @@ public class CustomAccordion {
         //add new cardSetPane to the end of sectionAccordion and expand it
         sectionAccordion.getPanes().add(sectionAccordion.getPanes().size(), cardSetPane);
         sectionAccordion.getPanes().get(sectionAccordion.getPanes().size() - 1).setExpanded(true);
+        currentCard = -1;
 
         addCardButton(cardSetVBox);
     }
@@ -200,10 +203,13 @@ public class CustomAccordion {
     private void setCardSetListViewLook(ListView cardSetListView) {
         cardSetListView.setMaxHeight(CARD_SET_MAX_HEIGHT);
         cardSetListView.setPrefHeight(CARD_HEIGHT * cardSetListView.getItems().size());
+
+        cardSetListView.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
+        cardSetListView.getStyleClass().add("cardList");
     }
 
     private void setCardSetVBoxLook(VBox cardSetVBox){
-        cardSetVBox.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
+        cardSetVBox.setPadding(new Insets(0, 0, 0, 0));
 
         cardSetVBox.setStyle("-fx-background-color: #FFFFFF; -fx-border: none");
     }
@@ -316,8 +322,13 @@ public class CustomAccordion {
         cardSetListView.setCellFactory(new Callback<ListView<Selectable<Card>>, ListCell<Selectable<Card>>>() {
             @Override
             public ListCell<Selectable<Card>> call(ListView<Selectable<Card>> param) {
-                return new CustomListCell(sectionCheckBoxes.get(sectionIndex), cardSetCheckBoxes.get(sectionIndex), cardSetCheckBoxes.get(sectionIndex).get(cardSetIndex),
+                ListCell<Selectable<Card>> result = new CustomListCell(sectionCheckBoxes.get(sectionIndex), cardSetCheckBoxes.get(sectionIndex), cardSetCheckBoxes.get(sectionIndex).get(cardSetIndex),
                         cardSelections.get(sectionIndex).get(cardSetIndex));
+
+                result.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
+                result.getStyleClass().add("cardCell");
+
+                return result;
             }
         });
     }
@@ -406,7 +417,7 @@ public class CustomAccordion {
             ObservableList<Selectable<Card>> cards = getCardSetListView(currentSection, currentSet).getItems();
 
             cards.add(new Selectable<>(new Card()));
-            cards.remove(cards.size() - 1);
+            cards.remove(cards.size()-1);
         }
 
     }

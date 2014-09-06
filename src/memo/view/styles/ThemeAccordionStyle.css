@@ -3,12 +3,39 @@
     Author     : Pisarik
 */
 
+.themePane{
+    -fx-border-style: none;
+    -fx-padding: 0;
+}
+
 .themePane > .title{
-    -fx-background-color: #fff1b2;
+    -fx-background-color: #FFFBC5;
+}
+
+.cardSetPane{
+    -fx-border-style: none;
+    -fx-padding: 0;
 }
 
 .cardSetPane > .title{
-    -fx-background-color: #F6FBAF;
+    -fx-background-color: #F9FDC4;
+}
+
+.cardList {
+    -fx-background-color: #EFF9CF;
+    -fx-border-style: none;
+    -fx-background-insets: 0, 1;
+
+     /* There is some oddness if padding is in em values rather than pixels,
+        in particular, the left border of the control doesn't show. */
+    -fx-padding: 1;
+}
+
+.cardCell {
+    -fx-background-color: #EFF9CF;
+    -fx-padding: 3;
+    -fx-text-fill: -fx-text-inner-color;
+    -fx-opacity: 1;
 }
 
 .addThemeButton{
@@ -18,7 +45,7 @@
 }
 
 .addThemeButton:hover{
-    -fx-background-color: #fff1b2;
+    -fx-background-color: #FFFBC5;
 }
 
 .addCardSetButton{
@@ -28,7 +55,7 @@
 }
 
 .addCardSetButton:hover{
-    -fx-background-color: #F6FBAF;
+    -fx-background-color: #F9FDC4;
 }
 
 .addCardButton{
@@ -38,7 +65,7 @@
 }
 
 .addCardButton:hover{
-    //-fx-background-color: #blablabla;
+    -fx-background-color: #EFF9CF;
 }
 
 .whiteScrollPane {
