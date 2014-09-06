@@ -12,24 +12,24 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="%key.file">
             <items>
-                  <RadioMenuItem fx:id="addToStratUpItem" mnemonicParsing="false" text="Launches with system" />
+                  <RadioMenuItem fx:id="addToStratUpItem" mnemonicParsing="false" text="%key.addToStartUp" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="exitItem" mnemonicParsing="false" text="Exit" />
+                  <MenuItem fx:id="exitItem" mnemonicParsing="false" text="%key.exit" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
    </top>
    <left>
-    <AnchorPane prefHeight="370.0" prefWidth="330.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
+    <AnchorPane prefHeight="370.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="368.0" prefWidth="328.0" styleClass="welcomePane" stylesheets="@styles/WelcomePanelStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox prefHeight="368.0" styleClass="welcomePane" stylesheets="@styles/WelcomePanelStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <HBox styleClass="welcomePane" stylesheets="@styles/WelcomePanelStyle.css">
                      <children>
-                        <Label layoutX="17.0" layoutY="172.0" prefHeight="30.0" styleClass="headerUserLabel" stylesheets="@styles/WelcomePanelStyle.css" text="User:">
+                        <Label layoutX="17.0" layoutY="172.0" prefHeight="30.0" styleClass="headerUserLabel" stylesheets="@styles/WelcomePanelStyle.css" text="%key.user">
                            <font>
                               <Font name="Segoe UI" size="20.0" />
                            </font>
@@ -42,7 +42,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </ComboBox>
-                        <Button contentDisplay="CENTER" layoutX="242.0" layoutY="172.0" mnemonicParsing="false" onAction="#OnUserAdd" prefHeight="29.0" prefWidth="93.0" styleClass="headerAddUserButton" stylesheets="@styles/WelcomePanelStyle.css" text="Add User" textOverrun="CLIP">
+                        <Button contentDisplay="CENTER" layoutX="242.0" layoutY="172.0" mnemonicParsing="false" onAction="#OnUserAdd" prefHeight="29.0" styleClass="headerAddUserButton" stylesheets="@styles/WelcomePanelStyle.css" text="%key.addUser" textOverrun="CLIP">
                            <font>
                               <Font name="Arial" size="17.0" />
                            </font>
@@ -62,7 +62,7 @@
                   </ScrollPane>
                   <HBox>
                      <children>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="addThemeButton" stylesheets="@styles/ThemeAccordionStyle.css" text="Add new section" HBox.hgrow="ALWAYS" />
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="addThemeButton" stylesheets="@styles/ThemeAccordionStyle.css" text="%key.addNewSection" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </children>

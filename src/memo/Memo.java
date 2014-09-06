@@ -14,6 +14,7 @@ import memo.controller.AbstractController;
 import memo.controller.Controller;
 import memo.model.AbstractModel;
 import memo.model.Model;
+import memo.utils.internationalization.Internationalizator;
 import memo.utils.singleinstance.SingleInstanceUtility;
 import memo.view.AbstractView;
 import memo.view.RootViewInterface;
@@ -52,6 +53,8 @@ public class Memo extends Application {
 
     private void initMVC() throws IOException{
         FXMLLoader rootLoader = new FXMLLoader(Memo.this.getClass().getResource("view/RootLayoutDesign.fxml"));
+        Internationalizator internationalizator = Internationalizator.newInstance();
+        rootLoader.setResources(internationalizator.getBundle());
         this.rootLayout = (BorderPane)rootLoader.load();
 
         this.model = new Model();

@@ -11,11 +11,14 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
@@ -26,6 +29,9 @@ import memo.model.Card;
 import memo.model.CardSet;
 import memo.model.Section;
 import memo.model.User;
+import memo.utils.internationalization.InternationalizedComponent;
+import memo.utils.internationalization.Internationalizator;
+import memo.utils.internationalization.InternationalizedLabeledObject;
 
 
 public class CustomAccordion {
@@ -39,6 +45,7 @@ public class CustomAccordion {
     private final AbstractController controller;
     private final Accordion mainAccordion;
     private final EventHandler<MouseEvent> onOpenTheme;
+    private final Internationalizator internationalizator;
     private User user;
     private final ArrayList<CheckBox> sectionCheckBoxes;
     private final ArrayList<ArrayList<CheckBox>> cardSetCheckBoxes;
@@ -51,6 +58,7 @@ public class CustomAccordion {
         this.mainAccordion = accordion;
         this.user = user;
         this.controller = controller;
+        this.internationalizator = Internationalizator.newInstance();
         this.sectionCheckBoxes = new ArrayList<>();
         this.cardSetCheckBoxes = new ArrayList<>();
         this.cardSelections = new ArrayList<>();
@@ -94,10 +102,13 @@ public class CustomAccordion {
         Accordion sectionAccordion = getSectionAccordion(i);
         sectionAccordion.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
         addCurrentCardSetListener(sectionAccordion);
-        TitledPane addCardSetPane = new TitledPane("Add new card set", null);
+        TitledPane addCardSetPane = new TitledPane();
+        internationalizator.addObserver(
+                new InternationalizedLabeledObject(addCardSetPane, "key.addNewCardSet"));
         setAddCardSetButtonStyle(addCardSetPane);
         handleAddCardSetButtonClick(addCardSetPane, sectionAccordion, i);
         sectionAccordion.getPanes().add(addCardSetPane);
+        
     }
 
     public void addCardSet(int i, CardSet cardSet) {
@@ -131,7 +142,9 @@ public class CustomAccordion {
 
     public void addSectionButton() {
         addCurrentSectionListener();
-        TitledPane addSectionButton = new TitledPane("Add new Section", null);
+        TitledPane addSectionButton = new TitledPane();
+        internationalizator.addObserver(
+               new InternationalizedLabeledObject(addSectionButton, "key.addNewSection"));
         setAddSectionButtonStyle(addSectionButton);
         handleAddSectionButtonClick(addSectionButton);
         mainAccordion.getPanes().add(addSectionButton);
