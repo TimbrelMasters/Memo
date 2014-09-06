@@ -2,6 +2,7 @@ package memo.view;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -10,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -27,12 +29,13 @@ import memo.model.CardSet;
 import memo.model.Section;
 import memo.model.User;
 import memo.utils.TrayUtility;
+import memo.utils.internationalization.Internationalizator;
 
 /**
  *
  * @author Pisarik
  */
-public class RootLayoutCode extends AbstractView implements RootViewInterface{
+public class RootLayoutCode extends AbstractView implements RootViewInterface, Initializable{
 
     private final URL TRAY_ICON_URL;
 
@@ -44,6 +47,8 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
     private java.awt.PopupMenu trayMenu;
     private java.awt.MenuItem trayExitItem;
     private java.awt.MenuItem trayOpenItem;
+    
+    private Internationalizator internationalizator;
 
     @FXML
     private BorderPane thisPane;
@@ -85,6 +90,7 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
         initStartUpItem();
         initSystemTray();
         initIcons();
+        internationalizator = Internationalizator.newInstance();
 
         /*-----MAIN MENU-------*/
         handleAddToStartUpClick();
@@ -106,6 +112,13 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface{
         initInnerViews();
         setControlPaneType(ControlPaneType.Main);
     }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        addToStratUpItem.setText(resources.getString("key.addToStartUp"));
+    }
+    
+    
 
     private void initInnerViews(){
         try{

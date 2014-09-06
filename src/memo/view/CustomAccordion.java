@@ -29,6 +29,7 @@ import memo.model.Card;
 import memo.model.CardSet;
 import memo.model.Section;
 import memo.model.User;
+import memo.utils.internationalization.Internationalizator;
 
 
 public class CustomAccordion {
@@ -42,6 +43,7 @@ public class CustomAccordion {
     private final AbstractController controller;
     private final Accordion mainAccordion;
     private final EventHandler<MouseEvent> onOpenTheme;
+    private final Internationalizator internationalizator;
     private User user;
 
     private final ArrayList<CheckBox> sectionCheckBoxes;
@@ -57,9 +59,14 @@ public class CustomAccordion {
         this.user = user;
         this.controller = controller;
         this.onOpenTheme = onOpenTheme;
+        this.internationalizator = Internationalizator.newInstance();
         this.sectionCheckBoxes = new ArrayList<>();
         this.cardSetCheckBoxes = new ArrayList<>();
         this.cardSelections = new ArrayList<>();
+
+        currentSection = -1;
+        currentSet = -1;
+        currentCard = -1;
 
         CustomListCell.setController(controller);
         CustomListCell.setCustomAccordion(CustomAccordion.this);
@@ -82,6 +89,7 @@ public class CustomAccordion {
             }
         }
     }
+
 
 /*----------------Section methods---------------------*/
 
@@ -107,14 +115,14 @@ public class CustomAccordion {
         currentCard = -1;
 
         addSelectedCardSetListener(sectionAccordion);
-        addCardSetButton(sectionVBox);
+        addCardSetButton(sectionVBox, mainAccordion.getPanes().size() - 1);
     }
 
-    private void addCardSetButton(VBox sectionVBox) {
+    private void addCardSetButton(VBox sectionVBox, int sectionIndex) {
         Button addCardSetButton = new Button("Add new card set");
 
         setAddCardSetButtonLook(addCardSetButton);
-        handleAddCardSetButtonClick(addCardSetButton, currentSection);
+        handleAddCardSetButtonClick(addCardSetButton, sectionIndex);
 
         sectionVBox.getChildren().add(addCardSetButton);
     }
@@ -179,14 +187,14 @@ public class CustomAccordion {
         sectionAccordion.getPanes().get(sectionAccordion.getPanes().size() - 1).setExpanded(true);
         currentCard = -1;
 
-        addCardButton(cardSetVBox);
+        addCardButton(cardSetVBox, sectionIndex, sectionAccordion.getPanes().size() - 1);
     }
 
-    private void addCardButton(VBox cardSetVBox){
+    private void addCardButton(VBox cardSetVBox, int sectionIndex, int cardSetIndex){
         Button addCardButton = new Button("Add new card");
 
         setAddCardButtonLook(addCardButton);
-        handleAddCardButtonClick(addCardButton, currentSection, currentSet);
+        handleAddCardButtonClick(addCardButton, sectionIndex, cardSetIndex);
 
         cardSetVBox.getChildren().add(addCardButton);
     }
