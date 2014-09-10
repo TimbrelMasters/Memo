@@ -10,17 +10,22 @@
 
 <BorderPane fx:id="thisPane" prefHeight="400.0" prefWidth="700.0" style="-fx-border-style: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="memo.view.RootLayoutCode">
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="%key.file">
-            <items>
-                  <RadioMenuItem fx:id="addToStratUpItem" mnemonicParsing="false" text="%key.addToStartUp" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="exitItem" mnemonicParsing="false" text="%key.exit" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
+      <HBox>
+         <children>
+            <MenuBar prefHeight="25.0" BorderPane.alignment="CENTER" HBox.hgrow="ALWAYS">
+              <menus>
+                <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
+                  <items>
+                        <RadioMenuItem fx:id="addToStratUpItem" mnemonicParsing="false" text="Launches with System" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="exitItem" mnemonicParsing="false" text="Exit" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <ComboBox fx:id="languageComboBox" prefHeight="25.0" />
+         </children>
+      </HBox>
    </top>
    <left>
     <AnchorPane prefHeight="370.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
@@ -29,7 +34,7 @@
                <children>
                   <HBox styleClass="welcomePane" stylesheets="@styles/WelcomePanelStyle.css">
                      <children>
-                        <Label layoutX="17.0" layoutY="172.0" prefHeight="30.0" styleClass="headerUserLabel" stylesheets="@styles/WelcomePanelStyle.css" text="%key.user">
+                        <Label fx:id="userLabel" layoutX="17.0" layoutY="172.0" prefHeight="30.0" styleClass="headerUserLabel" stylesheets="@styles/WelcomePanelStyle.css" text="User">
                            <font>
                               <Font name="Segoe UI" size="20.0" />
                            </font>
@@ -42,7 +47,7 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </ComboBox>
-                        <Button contentDisplay="CENTER" layoutX="242.0" layoutY="172.0" mnemonicParsing="false" onAction="#OnUserAdd" prefHeight="29.0" styleClass="headerAddUserButton" stylesheets="@styles/WelcomePanelStyle.css" text="%key.addUser" textOverrun="CLIP">
+                        <Button fx:id="addUserButton" contentDisplay="CENTER" layoutX="242.0" layoutY="172.0" mnemonicParsing="false" onAction="#OnUserAdd" prefHeight="29.0" styleClass="headerAddUserButton" stylesheets="@styles/WelcomePanelStyle.css" text="Add User" textOverrun="CLIP">
                            <font>
                               <Font name="Arial" size="17.0" />
                            </font>

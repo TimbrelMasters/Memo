@@ -1,17 +1,23 @@
 package memo.controller;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import memo.events.ModelChangedEvent;
 import memo.model.AbstractModel;
 import memo.model.Card;
 import memo.model.CardSet;
 import memo.model.Section;
 import memo.model.User;
+import memo.utils.internationalization.Internationalizator;
 import memo.utils.singleinstance.NewInstanceListener;
 import memo.view.RootViewInterface;
 
 
 public abstract class AbstractController implements ModelChangedListener, NewInstanceListener {
+    
+    public enum ControlPaneType {
+        ThemeEdit, Main
+    };
 
     protected ArrayList<AbstractModel> registeredModels;
     protected ArrayList<RootViewInterface> registeredViews;
@@ -73,7 +79,8 @@ public abstract class AbstractController implements ModelChangedListener, NewIns
 
     public abstract void changeSectionName(int sectionIndex, String newName);
 
-    public enum ControlPaneType {ThemeEdit, Main};
+    public abstract void setLanguage(Locale locale);
+    
     /**
      * Replaces controlPane that provide other functionality
      * @param controlPane - pane with other functions
@@ -85,6 +92,8 @@ public abstract class AbstractController implements ModelChangedListener, NewIns
     public abstract void updateView(int currentSection, int currentCardSet, int currentCard);
 
 
+    
+    
     @Override
     public void onNewInstance() {
         for (int i = 0; i < registeredViews.size(); i++){

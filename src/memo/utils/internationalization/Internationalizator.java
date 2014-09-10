@@ -16,9 +16,9 @@ public final class Internationalizator {
     private ArrayList<InternationalizedComponent> observers;
     
     private Internationalizator() {
-        locale = Locale.getDefault();
-        resourceBundle = ResourceBundle.getBundle(LANGUAGE_BUNDLE, locale);
-        observers = new ArrayList<>();
+        this.locale = Locale.getDefault();
+        this.resourceBundle = ResourceBundle.getBundle(LANGUAGE_BUNDLE, locale);
+        this.observers = new ArrayList<>();
     }
     
     public static Internationalizator newInstance() {
@@ -31,9 +31,13 @@ public final class Internationalizator {
     }
     
     public void setLocale(Locale locale) {
-        this.locale = locale;
-        resourceBundle = ResourceBundle.getBundle(LANGUAGE_BUNDLE, locale);
+        instance.locale = locale;
+        instance.resourceBundle = ResourceBundle.getBundle(LANGUAGE_BUNDLE, instance.locale);
         notifyObservers();
+    }
+    
+    public Locale getLocale() {
+        return locale;
     }
     
     public ResourceBundle getBundle() {

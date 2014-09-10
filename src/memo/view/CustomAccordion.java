@@ -30,6 +30,7 @@ import memo.model.CardSet;
 import memo.model.Section;
 import memo.model.User;
 import memo.utils.internationalization.Internationalizator;
+import memo.utils.internationalization.InternationalizedLabeledComponent;
 
 
 public class CustomAccordion {
@@ -119,8 +120,11 @@ public class CustomAccordion {
     }
 
     private void addCardSetButton(VBox sectionVBox, int sectionIndex) {
-        Button addCardSetButton = new Button("Add new card set");
-
+        Button addCardSetButton = new Button("Add new card set"); // It might not be initialized with string. 
+                                                                  // Just = new Button(); Should be discussed!!     
+        
+        internationalizator.addObserver(new InternationalizedLabeledComponent(addCardSetButton, "key.addNewCardSet"));
+        
         setAddCardSetButtonLook(addCardSetButton);
         handleAddCardSetButtonClick(addCardSetButton, sectionIndex);
 
@@ -192,6 +196,8 @@ public class CustomAccordion {
 
     private void addCardButton(VBox cardSetVBox, int sectionIndex, int cardSetIndex){
         Button addCardButton = new Button("Add new card");
+        
+        internationalizator.addObserver(new InternationalizedLabeledComponent(addCardButton, "key.addNewCard"));
 
         setAddCardButtonLook(addCardButton);
         handleAddCardButtonClick(addCardButton, sectionIndex, cardSetIndex);

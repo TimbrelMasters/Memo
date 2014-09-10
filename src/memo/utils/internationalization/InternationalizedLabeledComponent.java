@@ -5,11 +5,11 @@ package memo.utils.internationalization;
 import javafx.scene.control.Labeled;
 
 
-public class InternationalizedLabeledObject extends InternationalizedComponent {
+public class InternationalizedLabeledComponent extends InternationalizedComponent {
 
     private final Labeled labeled;
     
-    public InternationalizedLabeledObject(Labeled labeled, String key) {
+    public InternationalizedLabeledComponent(Labeled labeled, String key) {
         super(key);
         this.labeled = labeled;
     }
