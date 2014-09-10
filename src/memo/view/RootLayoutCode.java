@@ -2,7 +2,10 @@ package memo.view;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -11,10 +14,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.ScrollPane;
@@ -22,6 +28,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 import memo.controller.AbstractController;
 import memo.controller.AbstractController.ControlPaneType;
 import memo.model.Card;
@@ -30,12 +37,15 @@ import memo.model.Section;
 import memo.model.User;
 import memo.utils.TrayUtility;
 import memo.utils.internationalization.Internationalizator;
+import memo.utils.internationalization.InternationalizedAWTMenuItem;
+import memo.utils.internationalization.InternationalizedLabeledComponent;
+import memo.utils.internationalization.InternationalizedMenuItem;
 
 /**
  *
  * @author Pisarik
  */
-public class RootLayoutCode extends AbstractView implements RootViewInterface, Initializable{
+public class RootLayoutCode extends AbstractView implements RootViewInterface {
 
     private final URL TRAY_ICON_URL;
 
@@ -54,10 +64,22 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface, I
     private BorderPane thisPane;
 
     @FXML
+    private ComboBox<Map.Entry<Image, Locale>> languageComboBox;
+
+    @FXML
+    private Menu fileMenu;
+
+    @FXML
     private RadioMenuItem addToStratUpItem;
 
     @FXML
     private MenuItem exitItem;
+
+    @FXML
+    private Label userLabel;
+
+    @FXML
+    private Button addUserButton;
 
     @FXML
     private ComboBox<User> userComboBox;
@@ -103,22 +125,18 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface, I
         handleTrayDoubleClick();
 
         /*------CONTROLS-------*/
+        initLanguageComboBox();
         initUserComboBox();
-        handleSelectUser();
 
+        handleSelectLanguage();
+        handleSelectUser();
         initCustomAccordion();
+        internationalizeComponents();
 
         /*---AFTER ROOT INIT---*/
         initInnerViews();
         setControlPaneType(ControlPaneType.Main);
     }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        addToStratUpItem.setText(resources.getString("key.addToStartUp"));
-    }
-
-
 
     private void initInnerViews(){
         try{
@@ -139,6 +157,29 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface, I
         }
         catch (IOException e){
             throw new RuntimeException(e);
+        }
+    }
+
+    private void initLanguageComboBox() {
+        Map.Entry russianEntry = new AbstractMap.SimpleEntry(
+                new Image(this.getClass().getResourceAsStream("resources/russia.png")),
+                new Locale("ru", "RU"));
+        Map.Entry britainEntry = new AbstractMap.SimpleEntry(
+                new Image(this.getClass().getResourceAsStream("resources/britain.png")),
+                new Locale("en", "EN"));
+        languageComboBox.getItems().addAll(russianEntry, britainEntry);
+
+        Callback<ListView<Map.Entry<Image, Locale>>, ListCell<Map.Entry<Image, Locale>>> cellfactory =
+                               (ListView<Map.Entry<Image, Locale>> p) -> new LanguageComboBoxListCell();
+        languageComboBox.setCellFactory(cellfactory);
+        languageComboBox.setButtonCell(cellfactory.call(null));
+        List<Map.Entry<Image, Locale>> languageEntries = languageComboBox.getItems();
+        Locale localeToSelect = internationalizator.getLocale();
+        for(int i = 0; i < languageEntries.size(); i++) {
+            if(languageEntries.get(i).getValue().equals(localeToSelect)) {
+                languageComboBox.getSelectionModel().select(i);
+                break;
+            }
         }
     }
 
@@ -206,6 +247,17 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface, I
         userComboBox.getSelectionModel().selectFirst();
     }
 
+    private void internationalizeComponents() {
+        internationalizator.addObserver(new InternationalizedMenuItem(addToStratUpItem, "key.addToStartUp"));
+        internationalizator.addObserver(new InternationalizedMenuItem(exitItem, "key.exit"));
+        internationalizator.addObserver(new InternationalizedMenuItem(fileMenu, "key.file"));
+        internationalizator.addObserver(new InternationalizedLabeledComponent(userLabel, "key.user"));
+        internationalizator.addObserver(new InternationalizedLabeledComponent(addUserButton, "key.addUser"));
+        internationalizator.addObserver(new InternationalizedLabeledComponent(addThemeButton, "key.addNewTheme"));
+        internationalizator.addObserver(new InternationalizedAWTMenuItem(trayOpenItem, "key.open"));
+        internationalizator.addObserver(new InternationalizedAWTMenuItem(trayExitItem, "key.exit"));
+    }
+
     private void handleAddToStartUpClick(){
         addToStratUpItem.setOnAction((ActionEvent e) -> {
             if (addToStratUpItem.isSelected()){
@@ -253,12 +305,6 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface, I
         });
     }
 
- /*
-   ***
-   *** Controls handle
-   ***
-    */
-
     @FXML
     private void OnUserAdd(ActionEvent event){
         controller.addUser(new User("Pisarik"));
@@ -269,6 +315,13 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface, I
         userComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (ObservableValue<? extends User> observable, User oldValue, User newValue) -> {
             controller.setCurrentUser(newValue);
+        });
+    }
+
+    private void handleSelectLanguage() {
+        languageComboBox.getSelectionModel().selectedItemProperty().addListener(
+                (ObservableValue<? extends Map.Entry<Image, Locale>> observable, Map.Entry<Image, Locale> oldValue, Map.Entry<Image, Locale> newValue) -> {
+                    controller.setLanguage(newValue.getValue());
         });
     }
 

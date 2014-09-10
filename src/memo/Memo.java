@@ -53,8 +53,8 @@ public class Memo extends Application {
 
     private void initMVC() throws IOException{
         FXMLLoader rootLoader = new FXMLLoader(Memo.this.getClass().getResource("view/RootLayoutDesign.fxml"));
-        Internationalizator internationalizator = Internationalizator.newInstance();
-        rootLoader.setResources(internationalizator.getBundle());
+        //Internationalizator internationalizator = Internationalizator.newInstance();
+        //rootLoader.setResources(internationalizator.getBundle());
         this.rootLayout = (BorderPane)rootLoader.load();
 
         this.model = new Model();

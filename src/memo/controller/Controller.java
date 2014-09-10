@@ -1,12 +1,14 @@
 package memo.controller;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import javafx.application.Platform;
 import memo.model.AbstractModel;
 import memo.model.Card;
 import memo.model.CardSet;
 import memo.model.Section;
 import memo.model.User;
+import memo.utils.internationalization.Internationalizator;
 import memo.utils.platform.PlatformUtils;
 import memo.utils.platform.WindowsUtils;
 import memo.utils.singleinstance.SingleInstanceUtility;
@@ -122,6 +124,14 @@ public class Controller extends AbstractController{
         //some checks..
         registeredModels.get(0).changeSectionName(i, newName);
     }
+
+    @Override
+    public void setLanguage(Locale locale) {
+        Internationalizator.newInstance().setLocale(locale);
+        registeredModels.get(0).setLocale(locale);
+    }
+    
+    
 
     @Override
     public void changeControlPane(ControlPaneType type,

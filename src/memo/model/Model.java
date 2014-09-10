@@ -1,6 +1,7 @@
 package memo.model;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import memo.events.AddUserEvent;
 import memo.events.CardAddedEvent;
 import memo.events.CardRemovedEvent;
@@ -10,6 +11,7 @@ import memo.events.CurrentUserChangedEvent;
 import memo.events.SectionAddedEvent;
 import memo.events.SectionChangedEvent;
 import memo.events.SectionRemovedEvent;
+import memo.utils.internationalization.Internationalizator;
 
 /**
  *
@@ -19,12 +21,14 @@ public class Model extends AbstractModel{
 
     private ArrayList<User> users;
     private User currentUser;
-
+    private Locale locale;
+    
     public Model(){
         super();
         users = new ArrayList<>();
         users.add(new User());
         currentUser = users.get(0);
+        locale = Internationalizator.newInstance().getLocale();
     }
 
     @Override
@@ -96,7 +100,11 @@ public class Model extends AbstractModel{
         return currentUser;
     }
 
-
-
+    @Override
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+    
+    
 
 }

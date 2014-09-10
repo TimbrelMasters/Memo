@@ -1,6 +1,7 @@
 package memo.model;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import memo.controller.ModelChangedListener;
 import memo.events.ModelChangedEvent;
 
@@ -43,5 +44,7 @@ public abstract class AbstractModel {
     public abstract void changeSectionName(int sectionIndex, String newName);
 
     public abstract Section getSection(int i);
+    
+    public abstract void setLocale(Locale locale);
 
 }
