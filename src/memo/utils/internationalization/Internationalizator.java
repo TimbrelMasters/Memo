@@ -1,7 +1,6 @@
 
 package memo.utils.internationalization;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
