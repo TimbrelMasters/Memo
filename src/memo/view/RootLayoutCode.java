@@ -47,7 +47,7 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface, I
     private java.awt.PopupMenu trayMenu;
     private java.awt.MenuItem trayExitItem;
     private java.awt.MenuItem trayOpenItem;
-    
+
     private Internationalizator internationalizator;
 
     @FXML
@@ -117,8 +117,8 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface, I
     public void initialize(URL location, ResourceBundle resources) {
         addToStratUpItem.setText(resources.getString("key.addToStartUp"));
     }
-    
-    
+
+
 
     private void initInnerViews(){
         try{
