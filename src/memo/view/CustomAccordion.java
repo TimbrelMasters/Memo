@@ -3,6 +3,8 @@ package memo.view;
 import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -39,7 +41,7 @@ public class CustomAccordion {
     private static final double CARD_HEIGHT = 24;
     private static final double CARD_SET_HEIGHT = 26;
     private static final double CARD_SET_MAX_HEIGHT = 120;
-    private static final double SECTION_MAX_HEIGHT = 180;
+    private static IntegerProperty SECTION_MAX_HEIGHT = new SimpleIntegerProperty(200);
 
     private final AbstractController controller;
     private final Accordion mainAccordion;
@@ -148,15 +150,14 @@ public class CustomAccordion {
 
         sectionScrollPane.prefHeightProperty().bind(sectionAccordion.heightProperty());
         sectionScrollPane.setMinHeight(0);
-        sectionScrollPane.setMaxHeight(SECTION_MAX_HEIGHT);
+        sectionScrollPane.maxHeightProperty().bind(SECTION_MAX_HEIGHT);
 
-        sectionScrollPane.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-border-style: none; -fx-fit-to-width: true");
+        sectionScrollPane.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
+        sectionScrollPane.getStyleClass().add("whiteScrollPane");
     }
 
     private void setSectionVBoxLook(VBox sectionVBox){
         sectionVBox.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
-
-        sectionVBox.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: transparent");
     }
 
     private void setSectionPaneLook(TitledPane sectionPane) {
@@ -227,9 +228,7 @@ public class CustomAccordion {
     }
 
     private void setCardSetVBoxLook(VBox cardSetVBox){
-        cardSetVBox.setPadding(new Insets(0, 0, 0, 0));
-
-        cardSetVBox.setStyle("-fx-background-color: #FFFFFF; -fx-border: none");
+        cardSetVBox.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
     }
 
     private void setCardSetPaneLook(TitledPane cardSetPane) {
