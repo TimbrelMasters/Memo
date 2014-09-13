@@ -3,7 +3,6 @@ package memo.view;
 import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.beans.binding.DoubleBinding;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -21,6 +20,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
@@ -101,6 +101,7 @@ public class CustomAccordion {
         VBox sectionVBox = new VBox(sectionScrollPane);
         TitledPane sectionPane = new TitledPane(section.getName(), sectionVBox);
 
+        addSectionAccordionHeightListener(sectionAccordion);
         setSectionScrollPaneLook(sectionScrollPane);
         setSectionVBoxLook(sectionVBox);
         setSectionPaneLook(sectionPane);
@@ -120,11 +121,11 @@ public class CustomAccordion {
     }
 
     private void addCardSetButton(VBox sectionVBox, int sectionIndex) {
-        Button addCardSetButton = new Button("Add new card set"); // It might not be initialized with string. 
-                                                                  // Just = new Button(); Should be discussed!!     
-        
+        Button addCardSetButton = new Button("Add new card set"); // It might not be initialized with string.
+                                                                  // Just = new Button(); Should be discussed!!
+
         internationalizator.addObserver(new InternationalizedLabeledComponent(addCardSetButton, "key.addNewCardSet"));
-        
+
         setAddCardSetButtonLook(addCardSetButton);
         handleAddCardSetButtonClick(addCardSetButton, sectionIndex);
 
@@ -142,8 +143,11 @@ public class CustomAccordion {
 
     private void setSectionScrollPaneLook(ScrollPane sectionScrollPane) {
         Accordion sectionAccordion = (Accordion) sectionScrollPane.getContent();
+
+        VBox.setVgrow(sectionScrollPane, Priority.ALWAYS);
+
         sectionScrollPane.prefHeightProperty().bind(sectionAccordion.heightProperty());
-        sectionScrollPane.setMinHeight(CARD_SET_HEIGHT);
+        sectionScrollPane.setMinHeight(0);
         sectionScrollPane.setMaxHeight(SECTION_MAX_HEIGHT);
 
         sectionScrollPane.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-border-style: none; -fx-fit-to-width: true");
@@ -196,7 +200,7 @@ public class CustomAccordion {
 
     private void addCardButton(VBox cardSetVBox, int sectionIndex, int cardSetIndex){
         Button addCardButton = new Button("Add new card");
-        
+
         internationalizator.addObserver(new InternationalizedLabeledComponent(addCardButton, "key.addNewCard"));
 
         setAddCardButtonLook(addCardButton);
@@ -440,14 +444,18 @@ public class CustomAccordion {
      * Bad method that updates mainScrollPane
      */
     private void addMainAccordionHeightListener(){
-        mainAccordion.heightProperty().addListener(new ChangeListener<Number>() {
+        mainAccordion.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            Platform.runLater(() -> {
+                mainAccordion.getParent().requestLayout();
+            });
+        });
+    }
 
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                Platform.runLater(() -> {
-                    mainAccordion.getParent().requestLayout();
-                });
-            }
+    private void addSectionAccordionHeightListener(Accordion sectionAccordion){
+        sectionAccordion.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            Platform.runLater(() -> {
+                sectionAccordion.getParent().requestLayout();
+            });
         });
     }
 

@@ -28,7 +28,7 @@
       </HBox>
    </top>
    <left>
-    <AnchorPane prefHeight="370.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
+    <AnchorPane style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="368.0" styleClass="welcomePane" stylesheets="@styles/WelcomePanelStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>

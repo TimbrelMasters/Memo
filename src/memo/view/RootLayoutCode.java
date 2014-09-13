@@ -185,7 +185,6 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
 
     private void initCustomAccordion(){
         themeScroll.prefHeightProperty().bind(themeAccordion.heightProperty());
-        themeScroll.maxHeightProperty().bind(thisPane.heightProperty());
         Platform.runLater(() -> {
             themeScroll.autosize();
         });
