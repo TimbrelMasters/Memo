@@ -342,9 +342,6 @@ public class CustomAccordion {
                 ListCell<Selectable<Card>> result = new CustomListCell(sectionCheckBoxes.get(sectionIndex), cardSetCheckBoxes.get(sectionIndex), cardSetCheckBoxes.get(sectionIndex).get(cardSetIndex),
                         cardSelections.get(sectionIndex).get(cardSetIndex));
 
-                result.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
-                result.getStyleClass().add("cardCell");
-
                 return result;
             }
         });

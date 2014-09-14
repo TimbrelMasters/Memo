@@ -21,7 +21,7 @@
                   <Insets />
                </opaqueInsets>
             </Label>
-            <TextField fx:id="nameField" prefHeight="25.0">
+            <TextField fx:id="nameField" prefHeight="25.0" HBox.hgrow="ALWAYS">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
