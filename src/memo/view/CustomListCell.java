@@ -1,11 +1,10 @@
 package memo.view;
 
 import java.util.ArrayList;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.MultipleSelectionModel;
@@ -22,7 +21,7 @@ public class CustomListCell extends ListCell<Selectable<Card>> {
     private final CheckBox cardSetCheckBox;
     private final ArrayList<CheckBox> cardSetCheckBoxes;
     private final ArrayList<Selectable<Card>> cardSelections;
-    private boolean isSimpleCell; 
+    private boolean isSimpleCell;
 
     /* CONTOROLS FOR SIMPLE CELL */
     private final HBox simpleCellHBox;
@@ -30,13 +29,13 @@ public class CustomListCell extends ListCell<Selectable<Card>> {
     private final Pane pane;
     private boolean isSelected;
     private final CheckBox checkBox;
-    
+
     /* CONTROLS FOR FAKECARD CELL */
     private final HBox fakeCardCellHBox;
-    
+
     private static AbstractController controller;
     private static CustomAccordion customAccordion;
-    
+
     public CustomListCell(CheckBox sectionCheckBox, ArrayList<CheckBox> cardSetCheckBoxes,  CheckBox cardSetCheckBox, ArrayList<Selectable<Card>> cardSelections) {
         super();
         this.checkBox = new CheckBox();
@@ -46,14 +45,18 @@ public class CustomListCell extends ListCell<Selectable<Card>> {
         this.cardSetCheckBox = cardSetCheckBox;
         this.sectionCheckBox = sectionCheckBox;
         this.cardSetCheckBoxes = cardSetCheckBoxes;
-        
+
         /* Simple CardCell initialization */
         simpleCellHBox = new HBox();
         label = new Label();
+        label.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
+        label.getStyleClass().add("cardLabel");
         pane = new Pane();
-        simpleCellHBox.getChildren().addAll(label,pane, checkBox);
+        simpleCellHBox.getChildren().addAll(label, pane, checkBox);
         HBox.setHgrow(pane, Priority.ALWAYS);
-        
+
+        this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+
         /* Fake CardCell initialization */
         fakeCardCellHBox = new HBox();
     }
@@ -64,7 +67,6 @@ public class CustomListCell extends ListCell<Selectable<Card>> {
         if(item != null)
             isSimpleCell = item.getObject() instanceof FakeCard != true;
         if(isSimpleCell) {
-            setText(null);
             if (item == null) {
                 setGraphic(null);
             } else {
@@ -80,7 +82,7 @@ public class CustomListCell extends ListCell<Selectable<Card>> {
             setGraphic(null);
         }
     }
-    
+
     private void handleCheckBoxClick() {
         checkBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -113,7 +115,7 @@ public class CustomListCell extends ListCell<Selectable<Card>> {
             }
         });
     }
-    
+
     private void handleCellClick() {
         CustomListCell.this.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -125,7 +127,7 @@ public class CustomListCell extends ListCell<Selectable<Card>> {
         });
 
     }
-    
+
     public static void setController(AbstractController controller) {
         CustomListCell.controller = controller;
     }

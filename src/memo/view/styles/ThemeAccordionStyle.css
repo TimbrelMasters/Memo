@@ -14,7 +14,7 @@
 }
 
 .themePane > .title{
-    -fx-background-color: #FFFBC5;
+    -fx-background-color: #FFFAC6;
 }
 
 .cardSetPane{
@@ -34,37 +34,39 @@
 .cardList {
     -fx-background-color: #EFF9CF;
     -fx-border-style: none;
-    -fx-background-insets: 0, 1;
+    -fx-background-insets: 0;
 
-     /* There is some oddness if padding is in em values rather than pixels,
-        in particular, the left border of the control doesn't show. */
     -fx-padding: 1 0 0 0;
-    -fx-text-fill: black;
 }
 
-.cardCell {
-    -fx-background-color: #EFF9CF;
+.cardList > .virtual-flow > .clipped-container > .sheet > .list-cell {
+    -fx-background-color: #E7F7BF;
     -fx-padding: 3 9 3 3;
     -fx-text-fill: black;
 }
 
-.cardCell:filled:selected:focused, .cardCell:filled:selected {
-    -fx-text: black;
+.cardList > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:focused:selected {
     -fx-text-fill: black;
-    -fx-font-fill: black;
-    -fx-font-color: black;
+    -fx-font-weight: bold;
+}
+
+.cardLabel{
+    -fx-text-fill: black;
+}
+
+.cardLabel:selected{
     -fx-font-weight: bold;
 }
 
 .addThemeButton{
-    -fx-background-color: #FFFBC5;
+    -fx-background-color: #FFFAC6;
     //-fx-background-color: #FFFFFF;
     -fx-background-radius: 0 0 50 50;
     //-fx-font-weight: bold;
 }
 
 .addThemeButton:hover{
-    -fx-background-color: #FFFBC5;
+    -fx-background-color: #FAF5C3;
     -fx-font-weight: bold;
 }
 
@@ -76,19 +78,19 @@
 }
 
 .addCardSetButton:hover{
-    -fx-background-color: #F9FDC4;
+    -fx-background-color: #F4FBC1;
     -fx-font-weight: bold;
 }
 
 .addCardButton{
     //-fx-background-color: #FFFFFF;
-    -fx-background-color: #EFF9CF;
+    -fx-background-color: #E7F7BF;
     -fx-background-radius: 0 0 50 50;
     //-fx-font-weight: bold;
 }
 
 .addCardButton:hover{
-    -fx-background-color: #EFF9CF;
+    -fx-background-color: #E2F2BD;
     -fx-font-weight: bold;
 }
 
