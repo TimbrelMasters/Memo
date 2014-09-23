@@ -30,10 +30,12 @@ public interface RootViewInterface {
     public abstract void removeSection(int i);
 
     public abstract void changeSectionName(int sectionIndex, String newName);
+    public abstract void changeUserName(String newName);
 
     public abstract void setControlPaneType(ControlPaneType type);
     public abstract ControlPaneType getControlPaneType();
     public abstract void setThemeName(String themeName);
+    public abstract void setUserName(String userName);
 
     /**
      * Bring the Window to foreground

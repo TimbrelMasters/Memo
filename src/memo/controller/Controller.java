@@ -126,12 +126,17 @@ public class Controller extends AbstractController{
     }
 
     @Override
+    public void changeUserName(String newName){
+        registeredModels.get(0).changeCurrentUserName(newName);
+    }
+
+    @Override
     public void setLanguage(Locale locale) {
         Internationalizator.newInstance().setLocale(locale);
         registeredModels.get(0).setLocale(locale);
     }
-    
-    
+
+
 
     @Override
     public void changeControlPane(ControlPaneType type,
@@ -146,7 +151,10 @@ public class Controller extends AbstractController{
         RootViewInterface view = registeredViews.get(0);
         ControlPaneType type = view.getControlPaneType();
 
-        if (type == ControlPaneType.ThemeEdit){
+        if (type == ControlPaneType.UserEdit){
+            view.setUserName(model.getCurrentUser().getName());
+        }
+        else if (type == ControlPaneType.ThemeEdit){
             if (currentSection != -1){
                 view.setThemeName(model.getSection(currentSection).getName());
             }

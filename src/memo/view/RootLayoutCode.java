@@ -52,6 +52,7 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
     private ControlPaneType currentControlPaneType;
     private MainViewCode mainView;
     private EditThemeCode editThemeView;
+    private EditUserCode editUserView;
 
     private TrayUtility trayUtility;
     private java.awt.PopupMenu trayMenu;
@@ -60,38 +61,21 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
 
     private Internationalizator internationalizator;
 
-    @FXML
-    private BorderPane thisPane;
+    @FXML private BorderPane thisPane;
 
-    @FXML
-    private ComboBox<Map.Entry<Image, Locale>> languageComboBox;
+    @FXML private ComboBox<Map.Entry<Image, Locale>> languageComboBox;
+    @FXML private Menu fileMenu;
+    @FXML private RadioMenuItem addToStratUpItem;
+    @FXML private MenuItem exitItem;
 
-    @FXML
-    private Menu fileMenu;
+    @FXML private Label userLabel;
+    @FXML private Button addUserButton;
+    @FXML private Button editUserButton;
+    @FXML private ComboBox<User> userComboBox;
 
-    @FXML
-    private RadioMenuItem addToStratUpItem;
-
-    @FXML
-    private MenuItem exitItem;
-
-    @FXML
-    private Label userLabel;
-
-    @FXML
-    private Button addUserButton;
-
-    @FXML
-    private ComboBox<User> userComboBox;
-
-    @FXML
-    private Accordion themeAccordion;
-
-    @FXML
-    private ScrollPane themeScroll;
-
-    @FXML
-    private Button addThemeButton;
+    @FXML private Accordion themeAccordion;
+    @FXML private ScrollPane themeScroll;
+    @FXML private Button addThemeButton;
 
     private CustomAccordion customAccordion;
 
@@ -130,6 +114,8 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
 
         handleSelectLanguage();
         handleSelectUser();
+        handleChangeUser();
+
         initCustomAccordion();
         internationalizeComponents();
 
@@ -154,6 +140,14 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
             editThemeView.setPrimaryStage(primaryStage);
             editThemeView.setCustomAccordion(customAccordion);
             editThemeView.manualInitialize();
+
+            FXMLLoader editUserViewLoader = new FXMLLoader(this.getClass().getResource("EditUserDesign.fxml"));
+            editUserViewLoader.load();
+            editUserView = editUserViewLoader.getController();
+            editUserView.setController(controller);
+            editUserView.setPrimaryStage(primaryStage);
+            editUserView.setCustomAccordion(customAccordion);
+            editUserView.manualInitialize();
         }
         catch (IOException e){
             throw new RuntimeException(e);
@@ -251,7 +245,6 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
         internationalizator.addObserver(new InternationalizedMenuItem(exitItem, "key.exit"));
         internationalizator.addObserver(new InternationalizedMenuItem(fileMenu, "key.file"));
         internationalizator.addObserver(new InternationalizedLabeledComponent(userLabel, "key.user"));
-        internationalizator.addObserver(new InternationalizedLabeledComponent(addUserButton, "key.addUser"));
         internationalizator.addObserver(new InternationalizedLabeledComponent(addThemeButton, "key.addNewTheme"));
         internationalizator.addObserver(new InternationalizedAWTMenuItem(trayOpenItem, "key.open"));
         internationalizator.addObserver(new InternationalizedAWTMenuItem(trayExitItem, "key.exit"));
@@ -306,15 +299,24 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
 
     @FXML
     private void OnUserAdd(ActionEvent event){
-        controller.addUser(new User("Pisarik"));
+        controller.addUser(new User("Unknown"));
     }
 
+    @FXML
+    private void OnUserEdit(){
+        controller.changeControlPane(ControlPaneType.UserEdit,
+                customAccordion.getCurrentSection(), customAccordion.getCurrentSet(), customAccordion.getCurrentCard());
+    }
 
     private void handleSelectUser(){
         userComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (ObservableValue<? extends User> observable, User oldValue, User newValue) -> {
             controller.setCurrentUser(newValue);
         });
+    }
+
+    private void handleChangeUser(){
+
     }
 
     private void handleSelectLanguage() {
@@ -350,7 +352,10 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
     public void setControlPaneType(ControlPaneType type){
         currentControlPaneType = type;
 
-        if (type == ControlPaneType.ThemeEdit){
+        if (type == ControlPaneType.UserEdit){
+            thisPane.setCenter(editUserView.getRootPane());
+        }
+        else if (type == ControlPaneType.ThemeEdit){
             thisPane.setCenter(editThemeView.getRootPane());
         }
         else if (type == ControlPaneType.Main){
@@ -369,6 +374,11 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
     @Override
     public void setThemeName(String name){
         editThemeView.setThemeName(name);
+    }
+
+    @Override
+    public void setUserName(String name){
+        editUserView.setUserName(name);
     }
 
   /*
@@ -459,6 +469,12 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
     @Override
     public void changeSectionName(int i, String newName){
         customAccordion.changeSectionName(i, newName);
+    }
+
+    @Override
+    public void changeUserName(String newName){
+        users.add(new User("systemUser"));
+        users.remove(users.size() - 1);
     }
 
 }

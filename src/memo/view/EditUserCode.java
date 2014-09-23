@@ -12,7 +12,7 @@ import memo.utils.internationalization.InternationalizedLabeledComponent;
  *
  * @author Pisarik
  */
-public class EditThemeCode extends AbstractView{
+public class EditUserCode extends AbstractView{
 
     @FXML private AnchorPane thisPane;
 
@@ -28,7 +28,7 @@ public class EditThemeCode extends AbstractView{
 
     private Internationalizator internationalizator;
 
-    public EditThemeCode() {
+    public EditUserCode() {
     }
 
 
@@ -59,13 +59,12 @@ public class EditThemeCode extends AbstractView{
 
     @FXML
     private void OnDeleteClick(){
-        controller.removeSection(customAccordion.getCurrentSection());
+        //controller.removeSection(customAccordion.getCurrentSection());
     }
 
     @FXML
     private void OnSaveClick(){
-        controller.changeSectionName(customAccordion.getCurrentSection(), nameField.getText());
-
+       controller.changeUserName(nameField.getText());
     }
 
  /*
@@ -78,7 +77,7 @@ public class EditThemeCode extends AbstractView{
         this.customAccordion = customAccordion;
     }
 
-    public void setThemeName(String name){
+    public void setUserName(String name){
         nameField.setText(name);
     }
 }

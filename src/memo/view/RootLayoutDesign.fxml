@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -47,19 +48,47 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
                         </ComboBox>
-                        <Button fx:id="addUserButton" contentDisplay="CENTER" layoutX="242.0" layoutY="172.0" mnemonicParsing="false" onAction="#OnUserAdd" prefHeight="29.0" styleClass="headerAddUserButton" stylesheets="@styles/WelcomePanelStyle.css" text="Add User" textOverrun="CLIP">
+                        <Button fx:id="editUserButton" contentDisplay="GRAPHIC_ONLY" layoutX="242.0" layoutY="172.0" mnemonicParsing="false" onAction="#OnUserEdit" prefHeight="32.0" prefWidth="32.0" styleClass="headerUserButton" stylesheets="@styles/WelcomePanelStyle.css" textOverrun="CLIP">
                            <font>
                               <Font name="Arial" size="17.0" />
                            </font>
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </HBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <viewport>
+                                    <Rectangle2D minX="16.0" minY="16.0" />
+                                 </viewport>
+                                 <image>
+                                    <Image url="@resources/buttons/EditUserButton.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="addUserButton" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#OnUserAdd" prefHeight="32.0" prefWidth="32.0" styleClass="headerUserButton" stylesheets="@styles/WelcomePanelStyle.css" textOverrun="CLIP">
+                           <font>
+                              <Font name="Arial" size="17.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@resources/buttons/AddUserButton.png" />
+                                 </image>
+                                 <viewport>
+                                    <Rectangle2D minX="16.0" minY="16.0" />
+                                 </viewport>
+                              </ImageView>
+                           </graphic>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
                         </Button>
                      </children>
                   </HBox>
-                  <ScrollPane fx:id="themeScroll" fitToWidth="true" maxHeight="1.7976931348623157E308" minHeight="0.0" pannable="true" prefHeight="0.0" prefViewportWidth="330.0" styleClass="whiteScrollPane" stylesheets="@styles/ThemeAccordionStyle.css">
+                  <ScrollPane fx:id="themeScroll" fitToWidth="true" maxHeight="1.7976931348623157E308" minHeight="0.0" pannable="true" prefViewportWidth="330.0" styleClass="whiteScrollPane" stylesheets="@styles/ThemeAccordionStyle.css">
                      <content>
-                        <Accordion fx:id="themeAccordion" style="-fx-background-color: #FFFFFF; -fx-border-style: none; -fx-padding: 0;">
+                        <Accordion fx:id="themeAccordion" minHeight="0.0" style="-fx-background-color: #FFFFFF; -fx-border-style: none; -fx-padding: 0;">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets></Accordion>

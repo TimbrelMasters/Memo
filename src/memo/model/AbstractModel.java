@@ -42,9 +42,10 @@ public abstract class AbstractModel {
     public abstract void removeSection(int i);
 
     public abstract void changeSectionName(int sectionIndex, String newName);
+    public abstract void changeCurrentUserName(String newName);
 
     public abstract Section getSection(int i);
-    
+
     public abstract void setLocale(Locale locale);
 
 }

@@ -11,6 +11,7 @@ import memo.events.CurrentUserChangedEvent;
 import memo.events.SectionAddedEvent;
 import memo.events.SectionChangedEvent;
 import memo.events.SectionRemovedEvent;
+import memo.events.UserChangedEvent;
 import memo.utils.internationalization.Internationalizator;
 
 /**
@@ -22,7 +23,7 @@ public class Model extends AbstractModel{
     private ArrayList<User> users;
     private User currentUser;
     private Locale locale;
-    
+
     public Model(){
         super();
         users = new ArrayList<>();
@@ -91,6 +92,12 @@ public class Model extends AbstractModel{
     }
 
     @Override
+    public void changeCurrentUserName(String newName) {
+        currentUser.setName(newName);
+        fireModelChanged(new UserChangedEvent(currentUser));
+    }
+
+    @Override
     public Section getSection(int i){
         return currentUser.getSections().get(i);
     }
@@ -104,7 +111,7 @@ public class Model extends AbstractModel{
     public void setLocale(Locale locale) {
         this.locale = locale;
     }
-    
-    
+
+
 
 }

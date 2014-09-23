@@ -11,15 +11,14 @@
     -fx-text-alignment: center;
 }
 
-.headerAddUserButton {
-    -fx-background-color: #999;
+.headerUserButton {
     -fx-border-style: none;
-    -fx-background-radius: 0;
+    -fx-background-radius: 50;
     -fx-text-fill: #FFFFFF;
-    -fx-padding: 5;
+    -fx-padding: 0;
 }
 
-.headerAddUserButton:hover{
+.headerUserButton:hover{
     -fx-background-color: #666;
 }
 

@@ -8,15 +8,16 @@ import memo.model.Card;
 import memo.model.CardSet;
 import memo.model.Section;
 import memo.model.User;
-import memo.utils.internationalization.Internationalizator;
 import memo.utils.singleinstance.NewInstanceListener;
 import memo.view.RootViewInterface;
 
 
 public abstract class AbstractController implements ModelChangedListener, NewInstanceListener {
-    
+
     public enum ControlPaneType {
-        ThemeEdit, Main
+        Main,
+        UserEdit,
+        ThemeEdit
     };
 
     protected ArrayList<AbstractModel> registeredModels;
@@ -78,9 +79,10 @@ public abstract class AbstractController implements ModelChangedListener, NewIns
     public abstract void removeSection(int i);
 
     public abstract void changeSectionName(int sectionIndex, String newName);
+    public abstract void changeUserName(String newName);
 
     public abstract void setLanguage(Locale locale);
-    
+
     /**
      * Replaces controlPane that provide other functionality
      * @param controlPane - pane with other functions
@@ -92,8 +94,8 @@ public abstract class AbstractController implements ModelChangedListener, NewIns
     public abstract void updateView(int currentSection, int currentCardSet, int currentCard);
 
 
-    
-    
+
+
     @Override
     public void onNewInstance() {
         for (int i = 0; i < registeredViews.size(); i++){

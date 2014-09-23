@@ -14,7 +14,6 @@ import memo.controller.AbstractController;
 import memo.controller.Controller;
 import memo.model.AbstractModel;
 import memo.model.Model;
-import memo.utils.internationalization.Internationalizator;
 import memo.utils.singleinstance.SingleInstanceUtility;
 import memo.view.AbstractView;
 import memo.view.RootViewInterface;
