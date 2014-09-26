@@ -21,8 +21,6 @@ public class User {
         tenses.addCard(presentSimple);
         tenses.addCard(pastSimple);
         CardSet tenses1 = new CardSet("Tenses");
-        Card presentSimple1 = new Card("Present Simple");
-        Card pastSimple1 = new Card("Past Simple");
         tenses1.addCard(presentSimple);
         tenses1.addCard(pastSimple);
         english.addCardSet(tenses);
@@ -39,7 +37,7 @@ public class User {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
@@ -47,11 +45,11 @@ public class User {
         return sections;
     }
 
-    public void setSections(ArrayList<Section> sections) {
+    void setSections(ArrayList<Section> sections) {
         this.sections = sections;
     }
 
-    public void addSection(Section section) {
+    void addSection(Section section) {
         this.sections.add(section);
     }
 

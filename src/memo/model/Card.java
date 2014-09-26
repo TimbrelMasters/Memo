@@ -17,7 +17,7 @@ public class Card {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
@@ -25,7 +25,7 @@ public class Card {
         return isSelected;
     }
 
-    public void setIsSelected(boolean isSelected) {
+    void setIsSelected(boolean isSelected) {
         this.isSelected = isSelected;
     }
 

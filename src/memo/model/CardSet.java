@@ -24,7 +24,7 @@ public class CardSet {
         cards = new ArrayList<>();
     }
 
-    public void addCard(Card card) {
+    void addCard(Card card) {
         cards.add(card);
     }
 
@@ -35,7 +35,7 @@ public class CardSet {
     public String getName() {
         return name;
     }
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
@@ -43,7 +43,7 @@ public class CardSet {
         return cards;
     }
 
-    public void setCards(ArrayList<Card> cardSet) {
+    void setCards(ArrayList<Card> cardSet) {
         this.cards = cardSet;
     }
 
