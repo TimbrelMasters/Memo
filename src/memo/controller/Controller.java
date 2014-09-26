@@ -101,7 +101,9 @@ public class Controller extends AbstractController{
 
     @Override
     public void addSection(Section section) {
-        registeredModels.get(0).addSection(section);
+        if (registeredModels.get(0).getCurrentUser() != null){
+            registeredModels.get(0).addSection(section);
+        }
     }
 
     @Override
@@ -149,17 +151,17 @@ public class Controller extends AbstractController{
     public void updateView(int currentSection, int currentCardSet, int currentCard){
         AbstractModel model = registeredModels.get(0);
         RootViewInterface view = registeredViews.get(0);
-        ControlPaneType type = view.getControlPaneType();
+        ControlPaneType paneType = view.getControlPaneType();
 
-        if (type == ControlPaneType.UserEdit){
+        if (paneType == ControlPaneType.UserEdit){
             view.setUserName(model.getCurrentUser().getName());
         }
-        else if (type == ControlPaneType.ThemeEdit){
+        else if (paneType == ControlPaneType.ThemeEdit){
             if (currentSection != -1){
                 view.setThemeName(model.getSection(currentSection).getName());
             }
         }
-        else if (type == ControlPaneType.Main){
+        else if (paneType == ControlPaneType.Main){
             //empty yet
         }
         else{

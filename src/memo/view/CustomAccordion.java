@@ -47,7 +47,7 @@ public class CustomAccordion {
     private final Accordion mainAccordion;
     private final EventHandler<MouseEvent> onOpenTheme;
     private final Internationalizator internationalizator;
-    private User user;
+    //private User user;
 
     private final ArrayList<CheckBox> sectionCheckBoxes;
     private final ArrayList<ArrayList<CheckBox>> cardSetCheckBoxes;
@@ -57,9 +57,9 @@ public class CustomAccordion {
     private int currentSet;
     private int currentCard;
 
-    public CustomAccordion(User user, Accordion accordion, AbstractController controller, EventHandler<MouseEvent> onOpenTheme, Button sectionButton) {
+    public CustomAccordion(Accordion accordion, AbstractController controller, EventHandler<MouseEvent> onOpenTheme, Button sectionButton) {
         this.mainAccordion = accordion;
-        this.user = user;
+        //this.user = user;
         this.controller = controller;
         this.onOpenTheme = onOpenTheme;
         this.internationalizator = Internationalizator.newInstance();
@@ -78,17 +78,19 @@ public class CustomAccordion {
         addMainAccordionHeightListener();
         handleAddSectionButtonClick(sectionButton);
 
-        showUserCards();
+        //showUserCards();
     }
 
-    public void showUserCards() {
+    public void showUserCards(User user) {
         mainAccordion.getPanes().clear();
-        ArrayList<Section> sections = user.getSections();
-        for(int i = 0; i < sections.size(); i++) {
-            addSection(sections.get(i));
-            ArrayList<CardSet> cardSets = sections.get(i).getCardSets();
-            for(int j = 0; j < cardSets.size(); j++) {
-                addCardSet(i, cardSets.get(j));
+        if (user != null){
+            ArrayList<Section> sections = user.getSections();
+            for(int i = 0; i < sections.size(); i++) {
+                addSection(sections.get(i));
+                ArrayList<CardSet> cardSets = sections.get(i).getCardSets();
+                for(int j = 0; j < cardSets.size(); j++) {
+                    addCardSet(i, cardSets.get(j));
+                }
             }
         }
     }
@@ -115,8 +117,13 @@ public class CustomAccordion {
         //add new sectionPane to the end of mainAccordion and expand it
         mainAccordion.getPanes().add(mainAccordion.getPanes().size(), sectionPane);
         mainAccordion.getPanes().get(mainAccordion.getPanes().size() - 1).setExpanded(true);
+
         currentSet = -1;
         currentCard = -1;
+
+        //I need to make handcall because setExpanded don't generate event about pane expanded
+        controller.changeControlPane(AbstractController.ControlPaneType.ThemeEdit,
+                currentSection, currentSet, currentCard);
 
         addSelectedCardSetListener(sectionAccordion);
         addCardSetButton(sectionVBox, mainAccordion.getPanes().size() - 1);
@@ -139,6 +146,22 @@ public class CustomAccordion {
         sectionCheckBoxes.remove(i);
         cardSetCheckBoxes.remove(i);
         cardSelections.remove(i);
+
+        if (mainAccordion.getPanes().size() != 0){
+            int nextOpenedPane = i != mainAccordion.getPanes().size()? i: i-1;
+            mainAccordion.getPanes().get(nextOpenedPane).setExpanded(true);
+
+            currentSection = nextOpenedPane;
+            currentSet = -1;
+            currentCard = -1;
+
+            //I need to make handcall because setExpanded don't generate event about pane expanded
+            controller.changeControlPane(AbstractController.ControlPaneType.ThemeEdit,
+                    currentSection, currentSet, currentCard);
+        }
+        else{
+            controller.changeControlPane(AbstractController.ControlPaneType.Main, currentSection, currentSet, currentCard);
+        }
     }
 
 /*---------------Section elements look and feel----------*/
@@ -484,17 +507,17 @@ public class CustomAccordion {
         return currentCard;
     }
 
-    public User getUser() {
+    /*public User getUser() {
         return user;
-    }
+    }*/
 
     public Accordion getRoot() {
         return mainAccordion;
     }
 
-    public void setUser(User user) {
+    /*public void setUser(User user) {
         this.user = user;
-    }
+    }*/
 
     public void changeSectionName(int sectionIndex, String newName){
         mainAccordion.getPanes().get(sectionIndex).setText(newName);

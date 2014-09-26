@@ -27,8 +27,8 @@ public class Model extends AbstractModel{
     public Model(){
         super();
         users = new ArrayList<>();
-        users.add(new User());
-        currentUser = users.get(0);
+        //users.add(new User());
+        currentUser = null;//users.get(0);
         locale = Internationalizator.newInstance().getLocale();
     }
 
