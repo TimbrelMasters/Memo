@@ -26,6 +26,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import memo.Memo;
 import memo.controller.AbstractController;
 import memo.model.Card;
 import memo.model.CardSet;
@@ -33,9 +34,12 @@ import memo.model.Section;
 import memo.model.User;
 import memo.utils.internationalization.Internationalizator;
 import memo.utils.internationalization.InternationalizedLabeledComponent;
+import org.apache.log4j.Logger;
 
 
 public class CustomAccordion {
+    
+    private static final Logger LOG = Logger.getLogger(CustomAccordion.class);
 
     private static final double INNER_ACCORDION_PADDING = 24;
     private static final double CARD_HEIGHT = 24;
@@ -82,6 +86,7 @@ public class CustomAccordion {
     }
 
     public void showUserCards(User user) {
+        LOG.debug("showUserCards");
         sectionCheckBoxes.clear();
         cardSetCheckBoxes.clear();
         cardSelections.clear();
@@ -103,6 +108,7 @@ public class CustomAccordion {
 
     public void addSection(Section section) {
         //TitledPane -> VBox -> (ScrollPane -> Accordion) + AddButton
+        LOG.debug("addSection");
         Accordion sectionAccordion = new Accordion();
         ScrollPane sectionScrollPane = new ScrollPane(sectionAccordion);
         VBox sectionVBox = new VBox(sectionScrollPane);
@@ -133,6 +139,7 @@ public class CustomAccordion {
     }
 
     private void addCardSetButton(VBox sectionVBox, int sectionIndex) {
+        LOG.debug("addCardSetButton");
         Button addCardSetButton = new Button("Add new card set"); // It might not be initialized with string.
                                                                   // Just = new Button(); Should be discussed!!
 
@@ -145,6 +152,7 @@ public class CustomAccordion {
     }
 
     public void removeSection(int i) {
+        LOG.debug("removeSection");
         mainAccordion.getPanes().remove(i);
         sectionCheckBoxes.remove(i);
         cardSetCheckBoxes.remove(i);
@@ -170,6 +178,7 @@ public class CustomAccordion {
 /*---------------Section elements look and feel----------*/
 
     private void setSectionScrollPaneLook(ScrollPane sectionScrollPane) {
+        LOG.debug("setSectionScrollPaneLook");
         Accordion sectionAccordion = (Accordion) sectionScrollPane.getContent();
 
         VBox.setVgrow(sectionScrollPane, Priority.ALWAYS);
@@ -183,15 +192,18 @@ public class CustomAccordion {
     }
 
     private void setSectionVBoxLook(VBox sectionVBox){
+        LOG.debug("setSectionVBoxLook");
         sectionVBox.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
     }
 
     private void setSectionPaneLook(TitledPane sectionPane) {
+        LOG.debug("setSectionPaneLook");
         sectionPane.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
         sectionPane.getStyleClass().add("themePane");
     }
 
     private void setAddCardSetButtonLook(Button addCardSetButton) {
+        LOG.debug("setAddCardSetButtonLook");
         addCardSetButton.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         addCardSetButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
@@ -201,6 +213,7 @@ public class CustomAccordion {
 
 /*---------------------CardSet methods-------------------*/
     public void addCardSet(int sectionIndex, CardSet cardSet) {
+        LOG.debug("addCardSet");
         Accordion sectionAccordion = getSectionAccordion(sectionIndex);
 
         ObservableList<Selectable<Card>> cardSetItems = FXCollections.observableArrayList(Selectable.getSelectableList(cardSet.getCards()));
@@ -226,6 +239,7 @@ public class CustomAccordion {
     }
 
     private void addCardButton(VBox cardSetVBox, int sectionIndex, int cardSetIndex){
+        LOG.debug("addCardButton");
         Button addCardButton = new Button("Add new card");
 
         internationalizator.addObserver(new InternationalizedLabeledComponent(addCardButton, "key.addNewCard"));
@@ -237,6 +251,7 @@ public class CustomAccordion {
     }
 
     public void removeCardSet(int sectionIndex, int cardSetIndex) {
+        LOG.debug("removeCardSet");
         Accordion sectionAccordion = getSectionAccordion(sectionIndex);
         sectionAccordion.getPanes().remove(cardSetIndex);
         cardSetCheckBoxes.get(sectionIndex).remove(cardSetIndex);
@@ -246,6 +261,7 @@ public class CustomAccordion {
 /*---------------CardSet elements look and feel----------*/
 
     private void setCardSetListViewLook(ListView cardSetListView) {
+        LOG.debug("setCardSetListViewLook");
         cardSetListView.setMaxHeight(CARD_SET_MAX_HEIGHT);
         cardSetListView.setPrefHeight(CARD_HEIGHT * cardSetListView.getItems().size());
 
@@ -254,15 +270,18 @@ public class CustomAccordion {
     }
 
     private void setCardSetVBoxLook(VBox cardSetVBox){
+        LOG.debug("setCardSetVBoxLook");
         cardSetVBox.setPadding(new Insets(0, 0, 0, INNER_ACCORDION_PADDING));
     }
 
     private void setCardSetPaneLook(TitledPane cardSetPane) {
+        LOG.debug("setCardSetPaneLook");
         cardSetPane.getStylesheets().add("memo/view/styles/ThemeAccordionStyle.css");
         cardSetPane.getStyleClass().add("cardSetPane");
     }
 
     private void setAddCardButtonLook(Button addCardButton) {
+        LOG.debug("setAddCardButtonLook");
         addCardButton.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         addCardButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
@@ -273,6 +292,7 @@ public class CustomAccordion {
 /*------------------------Card methods-----------------------*/
 
     public void addCard(int sectionIndex, int cardSetIndex, Card card) {
+        LOG.debug("addCard");
         ListView listView = getCardSetListView(sectionIndex, cardSetIndex);
         Selectable<Card> selectableCard = new Selectable<>(card);
         selectableCard.setSelected(cardSetCheckBoxes.get(sectionIndex).get(cardSetIndex).isSelected());
@@ -282,6 +302,7 @@ public class CustomAccordion {
     }
 
     public void removeCard(int sectionIndex, int cardSetIndex, int cardIndex) {
+        LOG.debug("removeCard");
         ListView listView = getCardSetListView(sectionIndex, cardSetIndex);
         listView.getItems().remove(cardIndex);
         cardSelections.get(sectionIndex).get(cardSetIndex).remove(cardIndex);
@@ -291,19 +312,25 @@ public class CustomAccordion {
 /*-----------Listeners for Buttons----------------*/
 
     private void handleAddSectionButtonClick(Button addSectionButton) {
+        LOG.debug("handleAddSectionButtonClick");
         addSectionButton.setOnMouseClicked((MouseEvent event) -> {
+            LOG.debug("addSectionButtonClicked");
             controller.addSection(new Section("Empty"));
         });
     }
 
     private void handleAddCardSetButtonClick(Button addCardSetButton, int sectionIndex) {
+        LOG.debug("handleAddCardSetButtonClick");
         addCardSetButton.setOnMouseClicked((MouseEvent event) -> {
+            LOG.debug("addCardSetButtonClicked");
             controller.addCardSet(sectionIndex, new CardSet("Empty"));
         });
     }
 
     private void handleAddCardButtonClick(Button addCardButton, int sectionIndex, int cardSetIndex){
+        LOG.debug("handleAddCardButtonClick");
         addCardButton.setOnMouseClicked((MouseEvent event) -> {
+            LOG.debug("addCardButtonClicked");
             controller.addCard(sectionIndex, cardSetIndex, new Card("Empty"));
         });
     }
@@ -311,27 +338,36 @@ public class CustomAccordion {
 /*------------------Listeners for current section\cardSet\card--------*/
 
     private void addSelectedSectionListener() {
+        LOG.debug("addSelectedSectionListener");
         mainAccordion.expandedPaneProperty().addListener((ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) -> {
+            LOG.debug("sectionSelected");
             currentSection = mainAccordion.getPanes().indexOf(newValue);
             controller.updateView(currentSection, currentSet, currentCard);
         });
     }
 
     private void addSelectedCardSetListener(Accordion sectionAccordion) {
+        LOG.debug("addSelectedCardSetListener");
         sectionAccordion.expandedPaneProperty().addListener((ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) -> {
+            LOG.debug("cardSetSelected");
             currentSet = sectionAccordion.getPanes().indexOf(newValue);
         });
     }
 
     private void addSelectedCardListener(ListView cardSetListView) {
+        LOG.debug("addSelectedCardListener");
         cardSetListView.getSelectionModel().getSelectedIndices().addListener((ListChangeListener.Change c) -> {
-            currentCard = (Integer) c.getList().get(0);
+            LOG.debug("cardSelected");
+            if(c.getList().size() != 0) {
+                currentCard = (Integer) c.getList().get(0);
+            }
         });
     }
 
 /*------------------CheckBoxes part------------------*/
 
     private void initSectionCheckBox(TitledPane sectionPane){
+        LOG.debug("initSectionCheckBox");
         CheckBox sectionCheckBox = addCheckBox(sectionPane, mainAccordion);
 
         sectionCheckBoxes.add(sectionCheckBox);
@@ -342,6 +378,7 @@ public class CustomAccordion {
     }
 
     private void initCardSetCheckBox(TitledPane cardSetPane, int sectionIndex){
+        LOG.debug("initCardSetCheckBox");
         Accordion sectionAccordion = getSectionAccordion(sectionIndex);
         CheckBox cardSetCheckBox = addCheckBox(cardSetPane, sectionAccordion);
 
@@ -353,6 +390,7 @@ public class CustomAccordion {
     }
 
     private void initCardListCheckBoxes(ListView cardSetListView, CardSet cardSet, int sectionIndex){
+        LOG.debug("initCardListCheckBoxes");
         cardSelections.get(sectionIndex).add(new ArrayList<>());
         int cardSetIndex = cardSelections.get(sectionIndex).size() - 1;
 
@@ -362,6 +400,7 @@ public class CustomAccordion {
     }
 
     private void setCardSetListViewCellFactory(ListView cardSetListView, int sectionIndex, int cardSetIndex) {
+        LOG.debug("setCardSetListViewCellFactory");
         cardSetListView.setCellFactory(new Callback<ListView<Selectable<Card>>, ListCell<Selectable<Card>>>() {
             @Override
             public ListCell<Selectable<Card>> call(ListView<Selectable<Card>> param) {
@@ -374,6 +413,7 @@ public class CustomAccordion {
     }
 
     private CheckBox addCheckBox(TitledPane titledPane, Accordion acco) {
+        LOG.debug("addCheckBox");
         Label label = new Label();
         CheckBox checkBox = new CheckBox();
         AnchorPane title = new AnchorPane();
@@ -406,10 +446,12 @@ public class CustomAccordion {
 /*----------------CheckBoxes handlers------------------*/
 
     private void handleSectionCheckBoxClick(CheckBox sectionCheckBox) {
+        LOG.debug("handleSectionCheckBoxClick");
         sectionCheckBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent event) {
+                LOG.debug("sectionCheckBoxClicked");
                 int i = sectionCheckBoxes.indexOf(sectionCheckBox);
                 ArrayList<CheckBox> innerCheckBoxes = cardSetCheckBoxes.get(i);
                 for (int j = 0; j < innerCheckBoxes.size(); j++) {
@@ -429,7 +471,9 @@ public class CustomAccordion {
     }
 
     private void handleCardSetCheckBoxClick(CheckBox cardSetCheckBox, int sectionIndex, int cardSetIndex) {
+        LOG.debug("handleCardSetCheckBoxClick");
         cardSetCheckBox.setOnMouseClicked((MouseEvent event) -> {
+            LOG.debug("cardSetCheckBoxClicked");
             ObservableList<Selectable<Card>> cardSetItems = getCardSetListView(sectionIndex, cardSetIndex).getItems();
 
             for (int cardIndex = 0; cardIndex < cardSetItems.size(); cardIndex++) {
@@ -452,6 +496,7 @@ public class CustomAccordion {
      * Bad method that updates listView checkBoxes
      */
     public void forceVisibleCardListRedraw() {
+        LOG.debug("forceVisibleCardListRedraw");
         boolean isCardListVisible = currentSection >= 0 && currentSet >= 0;
         if (isCardListVisible){
             ObservableList<Selectable<Card>> cards = getCardSetListView(currentSection, currentSet).getItems();
@@ -466,15 +511,23 @@ public class CustomAccordion {
      * Bad method that updates mainScrollPane
      */
     private void addMainAccordionHeightListener(){
+        LOG.debug("addMainAccordionHeightListener");
         mainAccordion.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            LOG.debug("mainAccordionHeightChanged");
             Platform.runLater(() -> {
                 mainAccordion.getParent().requestLayout();
+                LOG.debug("mainAccordionHeightChanged: " + mainAccordion.getWidth() + " " + mainAccordion.getHeight() + "\n" +
+                                                           mainAccordion.getMinWidth()+ " " + mainAccordion.getMinHeight() + "\n" +
+                                                           mainAccordion.getMaxWidth() + " " + mainAccordion.getMaxHeight() + "\n" +
+                                                           mainAccordion.getPrefWidth() + " " + mainAccordion.getPrefHeight());
             });
         });
     }
 
-    private void addSectionAccordionHeightListener(Accordion sectionAccordion){
+    private void addSectionAccordionHeightListener(Accordion sectionAccordion) {
+        LOG.debug("addSectionAccordionHeightListener");
         sectionAccordion.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            LOG.debug("sectionAccordionHeightChanged");
             Platform.runLater(() -> {
                 sectionAccordion.getParent().requestLayout();
             });
@@ -484,6 +537,7 @@ public class CustomAccordion {
 /*--------------------private getters------------------*/
 
     private Accordion getSectionAccordion(int sectionIndex) {
+        LOG.debug("getSectionAccordion");
         VBox sectionVBox = (VBox)mainAccordion.getPanes().get(sectionIndex).getContent();
         ScrollPane sectionScrollPane = (ScrollPane)sectionVBox.getChildren().get(0);
         Accordion sectionAccordion = (Accordion) sectionScrollPane.getContent();
@@ -491,6 +545,7 @@ public class CustomAccordion {
     }
 
     private ListView getCardSetListView(int sectionIndex, int cardSetIndex) {
+        LOG.debug("getcardSetListView");
         Accordion inner = getSectionAccordion(sectionIndex);
         VBox vBox = (VBox) inner.getPanes().get(cardSetIndex).getContent();
         return (ListView)vBox.getChildren().get(0);
@@ -523,6 +578,7 @@ public class CustomAccordion {
     }*/
 
     public void changeSectionName(int sectionIndex, String newName){
+        LOG.debug("changeSectionName");
         mainAccordion.getPanes().get(sectionIndex).setText(newName);
     }
 

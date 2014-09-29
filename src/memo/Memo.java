@@ -2,7 +2,6 @@ package memo;
 
 import java.io.IOException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -17,13 +16,21 @@ import memo.model.Model;
 import memo.utils.singleinstance.SingleInstanceUtility;
 import memo.view.AbstractView;
 import memo.view.RootViewInterface;
-
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
 /**
  *
  * @author TimbrelMasters
  */
 public class Memo extends Application {
-
+    
+    static {
+        new DOMConfigurator().doConfigure("log4j.xml", LogManager.getLoggerRepository());
+    }
+    
+    private static final Logger LOG = Logger.getLogger(Memo.class);
+    
     private Stage primaryStage;
     private BorderPane rootLayout;
     private Pane mainLayout;
@@ -41,7 +48,7 @@ public class Memo extends Application {
         try {
             initMVC();
         } catch (IOException ex) {
-            Logger.getLogger(Memo.class.getName()).log(Level.SEVERE, null, ex);
+            LOG.error(ex);
         }
 
         Scene scene = new Scene(rootLayout);
@@ -87,7 +94,7 @@ public class Memo extends Application {
             }
         }
         catch (RuntimeException e){
-            Logger.getLogger(Memo.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+            LOG.error(e);
             SingleInstanceUtility.closeInstance();
         }
     }
