@@ -82,6 +82,9 @@ public class CustomAccordion {
     }
 
     public void showUserCards(User user) {
+        sectionCheckBoxes.clear();
+        cardSetCheckBoxes.clear();
+        cardSelections.clear();
         mainAccordion.getPanes().clear();
         if (user != null){
             ArrayList<Section> sections = user.getSections();
@@ -449,7 +452,7 @@ public class CustomAccordion {
      * Bad method that updates listView checkBoxes
      */
     public void forceVisibleCardListRedraw() {
-        boolean isCardListVisible = currentSection * currentSet >= 0;
+        boolean isCardListVisible = currentSection >= 0 && currentSet >= 0;
         if (isCardListVisible){
             ObservableList<Selectable<Card>> cards = getCardSetListView(currentSection, currentSet).getItems();
 

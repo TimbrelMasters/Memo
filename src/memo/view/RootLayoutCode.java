@@ -307,7 +307,6 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
     @FXML
     private void OnUserAdd(ActionEvent event){
         controller.addUser(new User("Unknown"));
-        controller.setCurrentUser(users.get(users.size()-1));
         userComboBox.getSelectionModel().selectLast();
 
         controller.changeControlPane(ControlPaneType.UserEdit,
@@ -446,7 +445,6 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
 
     @Override
     public void showUserCards(User user) {
-        //customAccordion.setUser(user);
         customAccordion.showUserCards(user);
     }
 

@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import memo.utils.internationalization.Internationalizator;
 import memo.utils.internationalization.InternationalizedLabeledComponent;
 
@@ -14,7 +14,8 @@ import memo.utils.internationalization.InternationalizedLabeledComponent;
  */
 public class EditUserCode extends AbstractView{
 
-    @FXML private AnchorPane thisPane;
+    @FXML private BorderPane thisPane;
+    @FXML private Label titleLabel;
 
     @FXML private Label nameLabel;
     @FXML private TextField nameField;
@@ -46,6 +47,7 @@ public class EditUserCode extends AbstractView{
     }
 
     public void internationalizeComponents() {
+        internationalizator.addObserver(new InternationalizedLabeledComponent(titleLabel, "key.userSettings"));
         internationalizator.addObserver(new InternationalizedLabeledComponent(nameLabel, "key.name"));
         internationalizator.addObserver(new InternationalizedLabeledComponent(saveButton, "key.save"));
         internationalizator.addObserver(new InternationalizedLabeledComponent(deleteButton, "key.delete"));

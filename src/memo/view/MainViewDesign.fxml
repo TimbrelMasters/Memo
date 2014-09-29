@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
@@ -12,9 +13,14 @@
 
 <AnchorPane fx:id="thisPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="memo.view.MainViewCode">
    <children>
-      <Label layoutY="3.0" text="Content">
-         <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </padding></Label>
+      <Label layoutX="57.0" prefHeight="5.0" prefWidth="83.0" text="Content" />
+      <ImageView pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+         <image>
+            <Image url="@resources/tempBackground.jpg" />
+         </image>
+         <viewport>
+            <Rectangle2D minX="50.0" minY="50.0" />
+         </viewport>
+      </ImageView>
    </children>
 </AnchorPane>
