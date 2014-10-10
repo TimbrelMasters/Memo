@@ -61,7 +61,8 @@ public class EditUserCode extends AbstractView{
 
     @FXML
     private void OnDeleteClick(){
-        //controller.removeSection(customAccordion.getCurrentSection());
+        
+        controller.removeUser();
     }
 
     @FXML

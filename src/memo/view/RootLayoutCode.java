@@ -121,7 +121,7 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
 
         /*---AFTER ROOT INIT---*/
         initInnerViews();
-        setControlPaneType(ControlPaneType.Main);
+        setControlPaneType(ControlPaneType.MAIN);
 
         /*------INIT DATA-----*/
         if (users.size() != 0){
@@ -190,11 +190,11 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
 
         EventHandler<MouseEvent> onOpenTheme = (MouseEvent event) -> {
             if (customAccordion.getCurrentSection() != -1) {
-                 controller.changeControlPane(ControlPaneType.ThemeEdit,
+                 controller.changeControlPane(ControlPaneType.THEME_EDIT,
                         customAccordion.getCurrentSection(), customAccordion.getCurrentSet(), customAccordion.getCurrentCard());
             }
             else{
-                controller.changeControlPane(ControlPaneType.Main, -1, -1, -1);
+                controller.changeControlPane(ControlPaneType.MAIN, -1, -1, -1);
             }
         };
 
@@ -309,14 +309,14 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
         controller.addUser(new User("Unknown"));
         userComboBox.getSelectionModel().selectLast();
 
-        controller.changeControlPane(ControlPaneType.UserEdit,
+        controller.changeControlPane(ControlPaneType.USER_EDIT,
                     customAccordion.getCurrentSection(), customAccordion.getCurrentSet(), customAccordion.getCurrentCard());
     }
 
     @FXML
     private void OnUserEdit(){
         if (!userComboBox.getSelectionModel().isEmpty()){
-            controller.changeControlPane(ControlPaneType.UserEdit,
+            controller.changeControlPane(ControlPaneType.USER_EDIT,
                     customAccordion.getCurrentSection(), customAccordion.getCurrentSet(), customAccordion.getCurrentCard());
         }
     }
@@ -365,13 +365,13 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
     public void setControlPaneType(ControlPaneType type){
         currentControlPaneType = type;
 
-        if (type == ControlPaneType.UserEdit){
+        if (type == ControlPaneType.USER_EDIT){
             thisPane.setCenter(editUserView.getRootPane());
         }
-        else if (type == ControlPaneType.ThemeEdit){
+        else if (type == ControlPaneType.THEME_EDIT){
             thisPane.setCenter(editThemeView.getRootPane());
         }
-        else if (type == ControlPaneType.Main){
+        else if (type == ControlPaneType.MAIN){
             thisPane.setCenter(mainView.getRootPane());
         }
         else{
@@ -394,6 +394,11 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
         editUserView.setUserName(name);
     }
 
+    @Override
+    public int getCurrentUserIndex() {
+        return userComboBox.getSelectionModel().getSelectedIndex();
+    }
+    
   /*
    ***
    *** Some action methods
@@ -463,6 +468,11 @@ public class RootLayoutCode extends AbstractView implements RootViewInterface {
         customAccordion.addSection(section);
     }
 
+    @Override
+    public void removeUser(int index) {
+        userComboBox.getItems().remove(index);
+    }
+    
     @Override
     public void removeCard(int i, int j, int k) {
         customAccordion.removeCard(i, j, k);

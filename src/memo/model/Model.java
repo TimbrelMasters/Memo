@@ -12,6 +12,7 @@ import memo.events.SectionAddedEvent;
 import memo.events.SectionChangedEvent;
 import memo.events.SectionRemovedEvent;
 import memo.events.UserChangedEvent;
+import memo.events.UserRemovedEvent;
 import memo.utils.internationalization.Internationalizator;
 
 /**
@@ -41,6 +42,12 @@ public class Model extends AbstractModel{
     public void addUser(User user) {
         users.add(user);
         fireModelChanged(new AddUserEvent(user));
+    }
+
+    @Override
+    public void removeUser(int index) {
+        users.remove(index);
+        fireModelChanged(new UserRemovedEvent(index));
     }
 
     @Override

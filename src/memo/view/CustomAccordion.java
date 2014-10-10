@@ -131,7 +131,7 @@ public class CustomAccordion {
         currentCard = -1;
 
         //I need to make handcall because setExpanded don't generate event about pane expanded
-        controller.changeControlPane(AbstractController.ControlPaneType.ThemeEdit,
+        controller.changeControlPane(AbstractController.ControlPaneType.THEME_EDIT,
                 currentSection, currentSet, currentCard);
 
         addSelectedCardSetListener(sectionAccordion);
@@ -167,11 +167,11 @@ public class CustomAccordion {
             currentCard = -1;
 
             //I need to make handcall because setExpanded don't generate event about pane expanded
-            controller.changeControlPane(AbstractController.ControlPaneType.ThemeEdit,
+            controller.changeControlPane(AbstractController.ControlPaneType.THEME_EDIT,
                     currentSection, currentSet, currentCard);
         }
         else{
-            controller.changeControlPane(AbstractController.ControlPaneType.Main, currentSection, currentSet, currentCard);
+            controller.changeControlPane(AbstractController.ControlPaneType.MAIN, currentSection, currentSet, currentCard);
         }
     }
 

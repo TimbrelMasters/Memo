@@ -15,9 +15,9 @@ import memo.view.RootViewInterface;
 public abstract class AbstractController implements ModelChangedListener, NewInstanceListener {
 
     public enum ControlPaneType {
-        Main,
-        UserEdit,
-        ThemeEdit
+        MAIN,
+        USER_EDIT,
+        THEME_EDIT
     };
 
     protected ArrayList<AbstractModel> registeredModels;
@@ -68,12 +68,15 @@ public abstract class AbstractController implements ModelChangedListener, NewIns
 
     public abstract ArrayList<User> getUserList();
     public abstract void setCurrentUser(User user);
+    
+    //public abstract int getCurrentUserIndex();
 
     public abstract void addUser(User user);
     public abstract void addCard(int i, int j, Card card);
     public abstract void addCardSet(int i, CardSet cardSet);
     public abstract void addSection(Section section);
 
+    public abstract void removeUser();
     public abstract void removeCard(int i, int j, int k);
     public abstract void removeCardSet(int i, int j);
     public abstract void removeSection(int i);

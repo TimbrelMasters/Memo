@@ -25,6 +25,7 @@ public interface RootViewInterface {
     public void addCardSet(int i, CardSet cardSet);
     public void addSection(Section section);
 
+    public abstract void removeUser(int index);
     public abstract void removeCard(int i, int j, int k);
     public abstract void removeCardSet(int i, int j);
     public abstract void removeSection(int i);
@@ -32,6 +33,7 @@ public interface RootViewInterface {
     public abstract void changeSectionName(int sectionIndex, String newName);
     public abstract void changeUserName(String newName);
 
+    public abstract int getCurrentUserIndex();
     public abstract void setControlPaneType(ControlPaneType type);
     public abstract ControlPaneType getControlPaneType();
     public abstract void setThemeName(String themeName);

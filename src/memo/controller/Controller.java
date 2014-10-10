@@ -79,6 +79,11 @@ public class Controller extends AbstractController{
         return registeredModels.get(0).getUserList();
     }
 
+    /*@Override
+    public int getCurrentUserIndex() {
+        return registeredViews.get(0).getCurrentUserIndex();
+    }*/
+
     @Override
     public void addUser(User user) {
         registeredModels.get(0).addUser(user);
@@ -106,6 +111,15 @@ public class Controller extends AbstractController{
         }
     }
 
+    @Override
+    public void removeUser() {
+        registeredModels.get(0).removeUser(registeredViews.get(0).getCurrentUserIndex());
+        if(registeredViews.get(0).getCurrentUserIndex() == -1) {
+            changeControlPane(ControlPaneType.MAIN, -1, -1, -1);
+        } 
+    }
+    
+    
     @Override
     public void removeCard(int i, int j, int k) {
         registeredModels.get(0).removeCard(i, j, k);
@@ -153,15 +167,15 @@ public class Controller extends AbstractController{
         RootViewInterface view = registeredViews.get(0);
         ControlPaneType paneType = view.getControlPaneType();
 
-        if (paneType == ControlPaneType.UserEdit){
+        if (paneType == ControlPaneType.USER_EDIT){
             view.setUserName(model.getCurrentUser().getName());
         }
-        else if (paneType == ControlPaneType.ThemeEdit){
+        else if (paneType == ControlPaneType.THEME_EDIT){
             if (currentSection != -1){
                 view.setThemeName(model.getSection(currentSection).getName());
             }
         }
-        else if (paneType == ControlPaneType.Main){
+        else if (paneType == ControlPaneType.MAIN){
             //empty yet
         }
         else{
